@@ -120,5 +120,9 @@ app.*.symbols
 # Caliber local state
 .caliber/
 
+# Local MCP credentials
+.cursor/mcp.local.json
+.cursor/mcp.secrets.json
+
 # Local court import dump (133MB+ — use import-local.ps1, do not commit)
 backend/scripts/courts.sql

@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:baller_app/auth/auth_service.dart';
-import 'package:baller_app/pages/Home/home_page.dart';
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/Home/main_page.dart';
 import 'package:baller_app/widgets/profile_creation/avatar.dart';
 import 'package:baller_app/widgets/text_fields/drop_down_field_custom.dart';
 import 'package:baller_app/widgets/text_fields/text_form_field_custom';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileCreationPage extends StatefulWidget {
@@ -20,7 +17,6 @@ class ProfileCreationPage extends StatefulWidget {
 }
 
 class _ProfileCreationPageState extends State<ProfileCreationPage> {
-  File? imageFile;
   final formkey = GlobalKey<FormState>();
   String? imageUrl;
   final authService = AuthService();
@@ -35,7 +31,6 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
 
   void createProfile() async {
     final username = usernameController.text;
-    final age = selectedAge;
     final gender = genderController.text;
     switch (gender) {
       case 'Male':
@@ -93,56 +88,53 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
       }
     }
   }
-  //6820
-  //15102007Gmail#.
-
-  Future pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      setState(() {
-        imageFile = File(image.path);
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    final userId = Supabase.instance.client.auth.currentUser!.id;
+    if (!AppConfig.useLegacySupabase) return;
+
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
     Supabase.instance.client
         .from('profiles')
         .select('avatar_url')
-        .eq('id', userId)
+        .eq('id', user.id)
         .single()
         .then((data) {
-          setState(() {
-            imageUrl = data['avatar_url'] as String?;
-          });
+          if (mounted) {
+            setState(() {
+              imageUrl = data['avatar_url'] as String?;
+            });
+          }
         });
+  }
+
+  Future<void> updateLegacyAvatarUrl(String imageUrl) async {
+    if (!AppConfig.useLegacySupabase) return;
+
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    await Supabase.instance.client
+        .from('profiles')
+        .update({'avatar_url': imageUrl})
+        .eq('id', user.id);
+  }
+
+  Future<void> setAvatarUrl(String uploadedImageUrl) async {
+    setState(() {
+      imageUrl = uploadedImageUrl;
+    });
+    await updateLegacyAvatarUrl(uploadedImageUrl);
   }
 
   @override
   void dispose() {
+    usernameController.dispose();
+    levelController.dispose();
+    genderController.dispose();
     super.dispose();
-  }
-
-  Future uploadImage() async {
-    if (imageFile == null) return;
-
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final path = 'uploads/$fileName';
-
-    await Supabase.instance.client.storage
-        .from('images')
-        .upload(path, imageFile!)
-        .then(
-          (data) => ScaffoldMessenger(
-            child: SnackBar(content: Text("Image uploaded successfully!")),
-          ),
-        );
   }
 
   @override
@@ -163,16 +155,8 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
             // Avatar widget soll hier kommen
             Avatar(
               imageUrl: imageUrl,
-              onUpload: (imageUrl) async {
-                setState(() {
-                  imageUrl = imageUrl;
-                });
-                final userId = Supabase.instance.client.auth.currentUser!.id;
-                await Supabase.instance.client
-                    .from('profiles')
-                    .update({'avatar_url': imageUrl})
-                    .eq('id', userId);
-              },
+              enabled: AppConfig.useLegacySupabase,
+              onUpload: setAvatarUrl,
             ),
             Form(
               key: formkey,
@@ -312,7 +296,6 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
                       onPressed: () async {
                         if (formkey.currentState!.validate()) {
                           createProfile();
-                          print('Profile created');
                         }
                       },
                       child: Center(

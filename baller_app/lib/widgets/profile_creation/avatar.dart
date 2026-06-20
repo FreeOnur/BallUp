@@ -3,33 +3,52 @@ import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Avatar extends StatelessWidget {
-  const Avatar({super.key, required this.imageUrl, required this.onUpload});
+  const Avatar({
+    super.key,
+    required this.imageUrl,
+    required this.onUpload,
+    this.enabled = true,
+  });
 
   final String? imageUrl;
-  final void Function(String imageUrl) onUpload;
+  final Future<void> Function(String imageUrl) onUpload;
+  final bool enabled;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        final ImagePicker picker = ImagePicker();
-        XFile? image = await picker.pickImage(source: ImageSource.gallery);
-        if (image == null) return;
-        final imageExtension = image.path.split('.').last.toLowerCase();
-        final imageBytes = await image.readAsBytes();
-        final userId = Supabase.instance.client.auth.currentUser!.id;
-        final imagePath = '/$userId/image';
-        await Supabase.instance.client.storage
-            .from('images')
-            .uploadBinary(imagePath, imageBytes, fileOptions: FileOptions(
-              upsert: true,
-              contentType: 'image/$imageExtension',
-            ));
-        String imageUrl = Supabase.instance.client.storage
-            .from('images')
-            .getPublicUrl(imagePath);
-            imageUrl = Uri.parse(imageUrl).replace(queryParameters: {'t': DateTime.now().millisecondsSinceEpoch.toString()}).toString();
-        onUpload(imageUrl);
-      },
+      onTap: enabled
+          ? () async {
+              final ImagePicker picker = ImagePicker();
+              XFile? image = await picker.pickImage(source: ImageSource.gallery);
+              if (image == null) return;
+              final imageExtension = image.path.split('.').last.toLowerCase();
+              final imageBytes = await image.readAsBytes();
+              final userId = Supabase.instance.client.auth.currentUser!.id;
+              final imagePath = '/$userId/image';
+              await Supabase.instance.client.storage
+                  .from('images')
+                  .uploadBinary(
+                    imagePath,
+                    imageBytes,
+                    fileOptions: FileOptions(
+                      upsert: true,
+                      contentType: 'image/$imageExtension',
+                    ),
+                  );
+              String imageUrl = Supabase.instance.client.storage
+                  .from('images')
+                  .getPublicUrl(imagePath);
+              imageUrl = Uri.parse(imageUrl)
+                  .replace(
+                    queryParameters: {
+                      't': DateTime.now().millisecondsSinceEpoch.toString(),
+                    },
+                  )
+                  .toString();
+              await onUpload(imageUrl);
+            }
+          : null,
       child: CircleAvatar(
         radius: 60,
         backgroundColor: const Color.fromRGBO(231, 85, 39, 100),

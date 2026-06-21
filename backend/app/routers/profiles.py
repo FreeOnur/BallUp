@@ -42,7 +42,7 @@ def upsert_my_profile(
             INSERT INTO profiles (id, username, avatar_url, age, location, gender, skill_level)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (id) DO UPDATE SET
-                username = COALESCE(EXCLUDED.username, profiles.username),
+                username = COALESCE(NULLIF(EXCLUDED.username, ''), profiles.username),
                 avatar_url = COALESCE(EXCLUDED.avatar_url, profiles.avatar_url),
                 age = COALESCE(EXCLUDED.age, profiles.age),
                 location = COALESCE(EXCLUDED.location, profiles.location),

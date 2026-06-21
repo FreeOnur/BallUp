@@ -1,29 +1,37 @@
-import 'dart:io';
+import 'dart:developer' as developer;
+
 import 'package:baller_app/auth/auth_service.dart';
-import 'package:baller_app/pages/Home/home_page.dart';
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/Home/main_page.dart';
+import 'package:baller_app/repositories/profile_repository.dart';
+import 'package:baller_app/repositories/repository_provider.dart';
 import 'package:baller_app/widgets/profile_creation/avatar.dart';
 import 'package:baller_app/widgets/text_fields/drop_down_field_custom.dart';
 import 'package:baller_app/widgets/text_fields/text_form_field_custom';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileCreationPage extends StatefulWidget {
-  const ProfileCreationPage({super.key, this.onProfileComplete});
+  const ProfileCreationPage({
+    super.key,
+    this.onProfileComplete,
+    this.authService,
+    this.profileRepository,
+  });
 
   final VoidCallback? onProfileComplete;
+  final AuthService? authService;
+  final ProfileRepository? profileRepository;
 
   @override
   State<ProfileCreationPage> createState() => _ProfileCreationPageState();
 }
 
 class _ProfileCreationPageState extends State<ProfileCreationPage> {
-  File? imageFile;
   final formkey = GlobalKey<FormState>();
   String? imageUrl;
-  final authService = AuthService();
+  late final AuthService _authService;
+  late final ProfileRepository _profiles;
 
   final usernameController = TextEditingController();
   int? selectedAge;
@@ -34,8 +42,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
   int? selectedLevel;
 
   void createProfile() async {
-    final username = usernameController.text;
-    final age = selectedAge;
+    final username = usernameController.text.trim();
     final gender = genderController.text;
     switch (gender) {
       case 'Male':
@@ -68,8 +75,9 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
     }
 
     try {
-      await authService.createProfile(
+      await _authService.createProfile(
         username: username,
+        avatarURL: imageUrl,
         age: selectedAge,
         location: location,
         gender: selectedGender,
@@ -93,56 +101,47 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
       }
     }
   }
-  //6820
-  //15102007Gmail#.
+  Future<void> _loadExistingProfile() async {
+    try {
+      final profile = await _profiles.getMyProfile();
+      if (!mounted || profile == null) return;
 
-  Future pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
+      final loadedImageUrl = profile['avatar_url'];
+      final loadedUsername = profile['username'];
       setState(() {
-        imageFile = File(image.path);
+        if (loadedImageUrl is String && loadedImageUrl.isNotEmpty) {
+          imageUrl = loadedImageUrl;
+        }
+        if (loadedUsername is String &&
+            loadedUsername.trim().isNotEmpty &&
+            usernameController.text.isEmpty) {
+          usernameController.text = loadedUsername;
+        }
       });
+    } catch (error, stackTrace) {
+      developer.log(
+        'Failed to load existing profile during onboarding',
+        name: 'ProfileCreationPage',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 
   @override
   void initState() {
     super.initState();
-    final userId = Supabase.instance.client.auth.currentUser!.id;
-    Supabase.instance.client
-        .from('profiles')
-        .select('avatar_url')
-        .eq('id', userId)
-        .single()
-        .then((data) {
-          setState(() {
-            imageUrl = data['avatar_url'] as String?;
-          });
-        });
+    _authService = widget.authService ?? AuthService();
+    _profiles = widget.profileRepository ?? RepositoryProvider.profiles;
+    _loadExistingProfile();
   }
 
   @override
   void dispose() {
+    usernameController.dispose();
+    levelController.dispose();
+    genderController.dispose();
     super.dispose();
-  }
-
-  Future uploadImage() async {
-    if (imageFile == null) return;
-
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final path = 'uploads/$fileName';
-
-    await Supabase.instance.client.storage
-        .from('images')
-        .upload(path, imageFile!)
-        .then(
-          (data) => ScaffoldMessenger(
-            child: SnackBar(content: Text("Image uploaded successfully!")),
-          ),
-        );
   }
 
   @override
@@ -160,20 +159,35 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
         child: Column(
           children: [
             SizedBox(height: screenheight * 0.2),
-            // Avatar widget soll hier kommen
-            Avatar(
-              imageUrl: imageUrl,
-              onUpload: (imageUrl) async {
-                setState(() {
-                  imageUrl = imageUrl;
-                });
-                final userId = Supabase.instance.client.auth.currentUser!.id;
-                await Supabase.instance.client
-                    .from('profiles')
-                    .update({'avatar_url': imageUrl})
-                    .eq('id', userId);
-              },
-            ),
+            if (AppConfig.useLegacySupabase)
+              Avatar(
+                imageUrl: imageUrl,
+                onUpload: (uploadedImageUrl) async {
+                  try {
+                    await _profiles.updateAvatarUrl(uploadedImageUrl);
+                    if (mounted) {
+                      setState(() {
+                        imageUrl = uploadedImageUrl;
+                      });
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error updating avatar: $e')),
+                      );
+                    }
+                  }
+                },
+              )
+            else
+              CircleAvatar(
+                radius: 60,
+                backgroundColor: const Color.fromRGBO(231, 85, 39, 100),
+                backgroundImage: imageUrl != null ? NetworkImage(imageUrl!) : null,
+                child: imageUrl == null
+                    ? const Icon(Icons.camera_alt, size: 40, color: Colors.white)
+                    : null,
+              ),
             Form(
               key: formkey,
               child: Column(
@@ -312,7 +326,6 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
                       onPressed: () async {
                         if (formkey.currentState!.validate()) {
                           createProfile();
-                          print('Profile created');
                         }
                       },
                       child: Center(

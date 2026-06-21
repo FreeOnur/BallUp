@@ -7,22 +7,28 @@ class ProfileRepository {
 
   final ApiClient _apiClient;
 
-  Future<bool> hasProfile({String? userId}) async {
+  Future<Map<String, dynamic>?> getMyProfile() async {
     if (AppConfig.useLegacySupabase) {
       final user = Supabase.instance.client.auth.currentUser;
-      if (user == null) return false;
+      if (user == null) return null;
       final response = await Supabase.instance.client
           .from('profiles')
           .select()
           .eq('id', user.id)
           .maybeSingle();
-      return response != null;
+      return response == null ? null : Map<String, dynamic>.from(response);
     }
 
-    if (userId == null) return false;
+    final res = await _apiClient.dio.get('/profiles/me');
+    return Map<String, dynamic>.from(res.data as Map);
+  }
+
+  Future<bool> hasProfile({String? userId}) async {
+    if (!AppConfig.useLegacySupabase && userId == null) return false;
     try {
-      await _apiClient.dio.get('/profiles/me');
-      return true;
+      final profile = await getMyProfile();
+      final username = profile?['username'];
+      return username is String && username.trim().isNotEmpty;
     } catch (_) {
       return false;
     }
@@ -61,5 +67,21 @@ class ProfileRepository {
         'avatar_url': avatarUrl,
       },
     );
+  }
+
+  Future<void> updateAvatarUrl(String avatarUrl) async {
+    if (AppConfig.useLegacySupabase) {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        throw Exception('No user logged in');
+      }
+      await Supabase.instance.client
+          .from('profiles')
+          .update({'avatar_url': avatarUrl})
+          .eq('id', user.id);
+      return;
+    }
+
+    await _apiClient.dio.put('/profiles/me', data: {'avatar_url': avatarUrl});
   }
 }

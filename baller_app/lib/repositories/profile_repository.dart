@@ -7,22 +7,25 @@ class ProfileRepository {
 
   final ApiClient _apiClient;
 
-  Future<bool> hasProfile({String? userId}) async {
+  Future<Map<String, dynamic>?> getMyProfile({String? userId}) async {
     if (AppConfig.useLegacySupabase) {
       final user = Supabase.instance.client.auth.currentUser;
-      if (user == null) return false;
+      if (user == null) return null;
       final response = await Supabase.instance.client
           .from('profiles')
           .select()
           .eq('id', user.id)
           .maybeSingle();
-      return response != null;
+      return response == null ? null : Map<String, dynamic>.from(response);
     }
 
-    if (userId == null) return false;
+    final response = await _apiClient.dio.get('/profiles/me');
+    return Map<String, dynamic>.from(response.data as Map);
+  }
+
+  Future<bool> hasProfile({String? userId}) async {
     try {
-      await _apiClient.dio.get('/profiles/me');
-      return true;
+      return await getMyProfile(userId: userId) != null;
     } catch (_) {
       return false;
     }

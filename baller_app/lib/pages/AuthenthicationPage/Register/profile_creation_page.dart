@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:baller_app/auth/auth_service.dart';
-import 'package:baller_app/pages/Home/home_page.dart';
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/Home/main_page.dart';
 import 'package:baller_app/widgets/profile_creation/avatar.dart';
 import 'package:baller_app/widgets/text_fields/drop_down_field_custom.dart';
@@ -93,8 +93,6 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
       }
     }
   }
-  //6820
-  //15102007Gmail#.
 
   Future pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -111,6 +109,8 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
   @override
   void initState() {
     super.initState();
+    if (!AppConfig.useLegacySupabase) return;
+
     final userId = Supabase.instance.client.auth.currentUser!.id;
     Supabase.instance.client
         .from('profiles')
@@ -122,6 +122,17 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
             imageUrl = data['avatar_url'] as String?;
           });
         });
+  }
+
+  Future<void> _updateLegacyAvatar(String imageUrl) async {
+    setState(() {
+      this.imageUrl = imageUrl;
+    });
+    final userId = Supabase.instance.client.auth.currentUser!.id;
+    await Supabase.instance.client
+        .from('profiles')
+        .update({'avatar_url': imageUrl})
+        .eq('id', userId);
   }
 
   @override
@@ -161,19 +172,14 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
           children: [
             SizedBox(height: screenheight * 0.2),
             // Avatar widget soll hier kommen
-            Avatar(
-              imageUrl: imageUrl,
-              onUpload: (imageUrl) async {
-                setState(() {
-                  imageUrl = imageUrl;
-                });
-                final userId = Supabase.instance.client.auth.currentUser!.id;
-                await Supabase.instance.client
-                    .from('profiles')
-                    .update({'avatar_url': imageUrl})
-                    .eq('id', userId);
-              },
-            ),
+            if (AppConfig.useLegacySupabase)
+              Avatar(imageUrl: imageUrl, onUpload: _updateLegacyAvatar)
+            else
+              const CircleAvatar(
+                radius: 60,
+                backgroundColor: Color.fromRGBO(231, 85, 39, 100),
+                child: Icon(Icons.camera_alt, size: 40, color: Colors.white),
+              ),
             Form(
               key: formkey,
               child: Column(
@@ -312,7 +318,6 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
                       onPressed: () async {
                         if (formkey.currentState!.validate()) {
                           createProfile();
-                          print('Profile created');
                         }
                       },
                       child: Center(

@@ -1,9 +1,11 @@
 import 'package:baller_app/core/api/api_client.dart';
 import 'package:baller_app/core/config/app_config.dart';
+import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileRepository {
-  ProfileRepository({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  ProfileRepository({ApiClient? apiClient})
+      : _apiClient = apiClient ?? ApiClient();
 
   final ApiClient _apiClient;
 
@@ -23,8 +25,11 @@ class ProfileRepository {
     try {
       await _apiClient.dio.get('/profiles/me');
       return true;
-    } catch (_) {
-      return false;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404 || e.response?.statusCode == 401) {
+        return false;
+      }
+      rethrow;
     }
   }
 

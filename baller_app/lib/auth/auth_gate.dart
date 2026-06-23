@@ -95,7 +95,12 @@ class _ApiAuthGateState extends State<_ApiAuthGate> {
     if (userId == null) {
       return _ApiGateState.loggedOut;
     }
-    final hasProfile = await RepositoryProvider.profiles.hasProfile(userId: userId);
+    final hasProfile = await RepositoryProvider.profiles.hasProfile(
+      userId: userId,
+    );
+    if (!hasProfile && !await RepositoryProvider.auth.hasSession()) {
+      return _ApiGateState.loggedOut;
+    }
     return hasProfile ? _ApiGateState.home : _ApiGateState.needsProfile;
   }
 

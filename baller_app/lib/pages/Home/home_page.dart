@@ -1,31 +1,16 @@
+import 'package:baller_app/auth/auth_service.dart';
 import 'package:baller_app/pages/AuthenthicationPage/Register/login_page.dart';
 import 'package:baller_app/pages/Map/map_page.dart';
-import 'package:baller_app/widgets/bars/bottom_navigation_bars/bottom_navigation_bar_1.dart';
+import 'package:baller_app/repositories/repository_provider.dart';
 import 'package:baller_app/widgets/buttons/navigation_button.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<String> getUserName() async {
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) {
-      throw Exception('No user logged in');
-    }
-
-    try {
-      final data = await Supabase.instance.client
-          .from('profiles')
-          .select('username')
-          .eq('id', user.id)
-          .single();
-
-      // 'data' ist hier ein Map<String, dynamic>
-      return data['username'] as String;
-    } catch (e) {
-      throw Exception('Error fetching username: $e');
-    }
+    final userId = await AuthService().resolveUserId();
+    return RepositoryProvider.profiles.getUsername(userId: userId);
   }
 
   @override

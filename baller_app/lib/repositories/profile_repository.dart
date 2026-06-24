@@ -7,6 +7,11 @@ class ProfileRepository {
 
   final ApiClient _apiClient;
 
+  static bool isCompleteProfile(Map<String, dynamic>? profile) {
+    final username = profile?['username'];
+    return username is String && username.trim().isNotEmpty;
+  }
+
   Future<bool> hasProfile({String? userId}) async {
     if (AppConfig.useLegacySupabase) {
       final user = Supabase.instance.client.auth.currentUser;
@@ -16,16 +21,35 @@ class ProfileRepository {
           .select()
           .eq('id', user.id)
           .maybeSingle();
-      return response != null;
+      return isCompleteProfile(response);
     }
 
     if (userId == null) return false;
     try {
-      await _apiClient.dio.get('/profiles/me');
-      return true;
+      final response = await _apiClient.dio.get('/profiles/me');
+      return isCompleteProfile(Map<String, dynamic>.from(response.data as Map));
     } catch (_) {
       return false;
     }
+  }
+
+  Future<String> getUsername({String? userId}) async {
+    if (AppConfig.useLegacySupabase) {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) throw Exception('No user logged in');
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('username')
+          .eq('id', user.id)
+          .maybeSingle();
+      return _usernameFromProfile(response);
+    }
+
+    if (userId == null) throw Exception('No user logged in');
+    final response = await _apiClient.dio.get('/profiles/me');
+    return _usernameFromProfile(
+      Map<String, dynamic>.from(response.data as Map),
+    );
   }
 
   Future<void> upsertProfile({
@@ -61,5 +85,12 @@ class ProfileRepository {
         'avatar_url': avatarUrl,
       },
     );
+  }
+
+  String _usernameFromProfile(Map<String, dynamic>? profile) {
+    if (!isCompleteProfile(profile)) {
+      throw Exception('Profile is incomplete');
+    }
+    return (profile!['username'] as String).trim();
   }
 }

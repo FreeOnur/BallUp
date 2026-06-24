@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/models/Court.dart';
 import 'package:baller_app/pages/Map/map_selection_page.dart';
 import 'package:baller_app/services/http/get_address.dart';
@@ -47,6 +48,15 @@ class _CreateMapWindowState extends State<CreateMapWindow> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Name fehlt')));
+      return;
+    }
+
+    if (!AppConfig.useLegacySupabase && imageFileList.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Photo uploads are not available in API mode yet.'),
+        ),
+      );
       return;
     }
 

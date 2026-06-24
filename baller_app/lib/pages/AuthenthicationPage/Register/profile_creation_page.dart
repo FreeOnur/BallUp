@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:baller_app/auth/auth_service.dart';
-import 'package:baller_app/pages/Home/home_page.dart';
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/Home/main_page.dart';
 import 'package:baller_app/widgets/profile_creation/avatar.dart';
 import 'package:baller_app/widgets/text_fields/drop_down_field_custom.dart';
 import 'package:baller_app/widgets/text_fields/text_form_field_custom';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileCreationPage extends StatefulWidget {
@@ -20,7 +17,6 @@ class ProfileCreationPage extends StatefulWidget {
 }
 
 class _ProfileCreationPageState extends State<ProfileCreationPage> {
-  File? imageFile;
   final formkey = GlobalKey<FormState>();
   String? imageUrl;
   final authService = AuthService();
@@ -70,6 +66,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
     try {
       await authService.createProfile(
         username: username,
+        avatarURL: imageUrl,
         age: selectedAge,
         location: location,
         gender: selectedGender,
@@ -93,56 +90,35 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
       }
     }
   }
-  //6820
-  //15102007Gmail#.
-
-  Future pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      setState(() {
-        imageFile = File(image.path);
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    final userId = Supabase.instance.client.auth.currentUser!.id;
-    Supabase.instance.client
+    if (AppConfig.useLegacySupabase) {
+      _loadLegacyAvatar();
+    }
+  }
+
+  Future<void> _loadLegacyAvatar() async {
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    if (userId == null) return;
+
+    final data = await Supabase.instance.client
         .from('profiles')
         .select('avatar_url')
         .eq('id', userId)
-        .single()
-        .then((data) {
-          setState(() {
-            imageUrl = data['avatar_url'] as String?;
-          });
-        });
+        .maybeSingle();
+    if (!mounted) return;
+    setState(() {
+      imageUrl = data?['avatar_url'] as String?;
+    });
   }
 
   @override
   void dispose() {
+    usernameController.dispose();
+    levelController.dispose();
+    genderController.dispose();
     super.dispose();
-  }
-
-  Future uploadImage() async {
-    if (imageFile == null) return;
-
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final path = 'uploads/$fileName';
-
-    await Supabase.instance.client.storage
-        .from('images')
-        .upload(path, imageFile!)
-        .then(
-          (data) => ScaffoldMessenger(
-            child: SnackBar(content: Text("Image uploaded successfully!")),
-          ),
-        );
   }
 
   @override
@@ -161,19 +137,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
           children: [
             SizedBox(height: screenheight * 0.2),
             // Avatar widget soll hier kommen
-            Avatar(
-              imageUrl: imageUrl,
-              onUpload: (imageUrl) async {
-                setState(() {
-                  imageUrl = imageUrl;
-                });
-                final userId = Supabase.instance.client.auth.currentUser!.id;
-                await Supabase.instance.client
-                    .from('profiles')
-                    .update({'avatar_url': imageUrl})
-                    .eq('id', userId);
-              },
-            ),
+            _buildAvatar(),
             Form(
               key: formkey,
               child: Column(
@@ -312,7 +276,6 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
                       onPressed: () async {
                         if (formkey.currentState!.validate()) {
                           createProfile();
-                          print('Profile created');
                         }
                       },
                       child: Center(
@@ -332,6 +295,31 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAvatar() {
+    if (!AppConfig.useLegacySupabase) {
+      return const CircleAvatar(
+        radius: 60,
+        backgroundColor: Color.fromRGBO(231, 85, 39, 100),
+        child: Icon(Icons.person, size: 40, color: Colors.white),
+      );
+    }
+
+    return Avatar(
+      imageUrl: imageUrl,
+      onUpload: (uploadedImageUrl) async {
+        setState(() {
+          imageUrl = uploadedImageUrl;
+        });
+        final userId = Supabase.instance.client.auth.currentUser?.id;
+        if (userId == null) return;
+        await Supabase.instance.client
+            .from('profiles')
+            .update({'avatar_url': uploadedImageUrl})
+            .eq('id', userId);
+      },
     );
   }
 }

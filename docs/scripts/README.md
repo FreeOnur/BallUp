@@ -2,13 +2,15 @@
 
 Repo-root Node scripts (ESM, Node ≥20). Run via `npm run <script>` from repo root.
 
+**v2 note:** Deploy scripts target `docker-compose.yml` at repo root (to be added with `api/` service). Until then, `deploy:check` can still verify `healthUrl` if production API is up.
+
 ## Setup
 
 ```bash
 cp scripts/config/deploy.example.json scripts/config/deploy.json
 ```
 
-Edit `scripts/config/deploy.json` with your server details. **Never commit `deploy.json`** — it may contain hostnames and paths.
+Edit `scripts/config/deploy.json` with your server details. **Never commit `deploy.json`**.
 
 ## Available commands
 
@@ -18,36 +20,25 @@ Edit `scripts/config/deploy.json` with your server details. **Never commit `depl
 | `npm run deploy:check` | same + `--check-only` | Fetch/check git + health, no rebuild |
 | `npm run deploy:dry` | same + `--dry-run` | Print planned commands |
 
-## CLI flags
-
-```
-node scripts/deploy/pull-and-redeploy.mjs [options]
-
-  --mode local|ssh|coolify-webhook   Override config mode
-  --check-only                       No rebuild; report git + health status
-  --dry-run                          Print commands only
-  --config <path>                    Config file (default: scripts/config/deploy.json)
-```
-
 ## Config reference (`deploy.example.json`)
 
 | Field | Description |
 |-------|-------------|
 | `mode` | `local`, `ssh`, or `coolify-webhook` |
-| `repoUrl` | Git remote for initial clone |
-| `branch` | Branch to deploy (default `main`) |
-| `deployPath` | Absolute path to repo on server |
-| `composeFile` | Compose file name (default `docker-compose.yml`) |
-| `healthUrl` | URL to curl after deploy |
-| `ssh.host` | VPS hostname or IP |
-| `ssh.user` | SSH user |
-| `ssh.keyPath` | Path to private key (optional) |
-| `coolify.webhookUrl` | Coolify deploy webhook URL |
+| `composeFile` | Default `docker-compose.yml` (v2 Hono stack when added) |
+| `healthUrl` | Production: `https://api.ballup.net/health` |
+| `deployPath` | Absolute path to repo on Hetzner/Coolify |
 
-## Adding script #2, #3, …
+See [server deploy](../deploy/server.md) and [env migration](../deploy/env-migration.md).
+
+## Caliber hooks
+
+Shared hook scripts live in `scripts/hooks/` (referenced from `.cursor/hooks.json` and `.claude/hooks/`).
+
+## Adding scripts
 
 1. Create `scripts/<name>/your-script.mjs`
-2. Add npm script in root `package.json`
-3. Document here with purpose, config, and examples
+2. Register in root `package.json` and `scripts/index.mjs`
+3. Document here
 
-See also `scripts/README.md` in the scripts folder.
+See also `scripts/README.md`.

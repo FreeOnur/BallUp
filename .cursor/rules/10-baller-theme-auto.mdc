@@ -6,7 +6,7 @@ alwaysApply: false
 
 # BallerApp Theme & Tokens
 
-Alle Werte aus `@baller_app/DESIGN.md` · `@baller-design-knowledge.md` (§4 Farbe, §3 Typo, §5 Spacing, §6 Schatten/Radius, §7 Motion, §8 Flutter-Theming). OKLCH entwerfen, als Hex ausliefern.
+Alle Werte aus `@design/DESIGN.md` · `@baller-design-knowledge.md` (§4 Farbe, §3 Typo, §5 Spacing, §6 Schatten/Radius, §7 Motion, §8 Flutter-Theming). OKLCH entwerfen, als Hex ausliefern.
 
 ## Architektur (Pflicht)
 

@@ -2,32 +2,35 @@
 
 Pickup basketball — courts, games, community.
 
-## Deploy (Coolify)
+**v2 restart (June 2026):** App and API code removed. This repo holds agent setup (`.claude/`, `.cursor/`, `.caliber/`), docs, design tokens, deploy scripts, and exported data. Build phases come next — see [docs/architecture/feature-plan.md](docs/architecture/feature-plan.md).
 
-| Setting | Value |
-|---------|--------|
-| Base Directory | empty (repo root) |
-| Docker Compose | `docker-compose.yml` |
-| Domain | `api.ballup.net` → service `api` → port `8000` → HTTPS |
+## Stack (defined, not built)
 
-Set in Coolify **Environment Variables**: `POSTGRES_*`, `JWT_SECRET`, `B2_*` (bucket `courtfinder-image`, EU endpoint from Backblaze bucket settings).
+| Layer | Choice |
+|-------|--------|
+| Mobile | Flutter |
+| API | Hono + TypeScript + Drizzle |
+| Database | Postgres + PostGIS (Hetzner) |
+| Auth | Custom JWT + Resend |
+| Images | Backblaze B2 |
 
-DNS: domain panel → A record `api` → server IP (not in Coolify).
+Decision: [ADR-0012](docs/decisions/0012-hono-postgres-resend-b2-backend.md)
 
-Deploy automation: copy `scripts/config/deploy.example.json` → `scripts/config/deploy.json`, then `npm run deploy` (see `docs/deploy/server.md`).
+## Docs
 
-## Local API
+Start at [docs/README.md](docs/README.md).
 
-```bash
-docker compose up -d --build
-curl http://localhost:8000/health
-```
+## Deploy (when API exists)
 
-## Flutter (own server)
+Copy `scripts/config/deploy.example.json` → `scripts/config/deploy.json`, then `npm run deploy`. See [docs/deploy/server.md](docs/deploy/server.md).
 
-```bash
-cd baller_app
-flutter run --dart-define=USE_LEGACY_SUPABASE=false --dart-define=API_BASE_URL=https://api.ballup.net
-```
+## v1 archive
 
-Data migration: `backend/scripts/export-from-supabase.md` · local `backend/scripts/courts.sql` (gitignored, 133MB+) via `backend/scripts/import-local.ps1`
+- Branch: `archive/v1-flutter-fastapi`
+- Tag: `v1-flutter-fastapi-archive`
+- Data: `backups/` (gitignored) + `%USERPROFILE%/Documents/BallerApp-backups/`
+
+## Secrets
+
+- Env: `api/.env.example` — migrate from `backups/env/backend.env.v1` ([guide](docs/deploy/env-migration.md))
+- MCP: copy `.cursor/mcp.json.example` → `.cursor/mcp.json` ([rotate exposed tokens](docs/security/rotate-exposed-secrets.md))

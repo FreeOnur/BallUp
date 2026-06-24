@@ -4,8 +4,8 @@ Implement UI from Claude Design handoff or manifest into Flutter design system.
 
 ## Read first
 
-- `baller_app/DESIGN.md`
-- `baller_app/baller-design-knowledge.md`
+- `design/DESIGN.md`
+- `design/baller-design-knowledge.md`
 - `baller_app/design/handoff/design-manifest.md`
 - Handoff bundle README if available (from Claude Design export)
 

@@ -2,134 +2,106 @@
 
 Pickup basketball: court discovery, ranked games, tournaments. Repo: `FreeOnur/BallerApp`.
 
-## Stack
+**v2 restart:** v1 archived on branch `archive/v1-flutter-fastapi`. **Current:** `baller_app/` + `backend/` (FastAPI interim). **Target:** Hono API in `api/` (ADR-0012).
 
-Flutter (`baller_app/pubspec.yaml`, SDK `^3.9.0`) · **legacy** `supabase_flutter` **or** self-hosted API (`backend/`, FastAPI + PostGIS) · `google_maps_flutter` · `geolocator` · B2 presign (`backend/app/routers/uploads.py` or edge fn) · Playwright (`package.json` → `@playwright/test`)
+## Stack (target — ADR-0012)
+
+Flutter · Hono + TypeScript + Drizzle · Postgres/PostGIS · custom Auth + **Resend** · **Backblaze B2** presign
 
 ## Architecture
 
 @./.cursor/project/architecture.md
 @./.cursor/project/tech_stack.md
 @./.cursor/project/product.md
+
 | Layer | Paths |
 |-------|-------|
-| **Entry** | `baller_app/lib/main.dart` → `BadwordFilter.loadWords()` (`services/badword_filter.dart`) → optional Supabase init → `AuthGate()` |
-| **Auth** | `baller_app/lib/auth/auth_gate.dart` · `auth_service.dart` |
-| **API client** | `baller_app/lib/core/config/app_config.dart` · `core/api/api_client.dart` · `core/api/token_storage.dart` |
-| **Repositories** | `repository_provider.dart` · `auth_repository.dart` · `api_auth_repository.dart` · `supabase_auth_repository.dart` · `court_repository.dart` · `profile_repository.dart` · `upload_repository.dart` · `auth_result.dart` |
-| **Backend** | `backend/app/main.py` → `routers/auth.py` · `courts.py` · `profiles.py` · `uploads.py` · `dependencies.py` · `db.py` · `security/jwt.py` · `security/passwords.py` |
-| **Schema** | `backend/migrations/001_initial.sql` (`users`, `profiles`, `courts`, `court_images`, `refresh_tokens`) |
-| **Models** | `baller_app/lib/models/Court.dart` — `factory Court.fromMap` (baseline: `id`, `name`, `lat`, `lng`, `indoor`; extend for `lights`, `has_markings`, `surface`, `hoops`, `address`) |
-| **Services** | `baller_app/lib/services/load_position.dart` (`LocationService`) · `badword_filter.dart` |
-| **Legacy Supabase** | `baller_app/lib/supabase/court_services.dart` — only when `USE_LEGACY_SUPABASE=true` |
-| **Theme** | `baller_app/DESIGN.md` · `baller_app/baller-design-knowledge.md` · `baller_app/lib/design_system/` · `baller_app/lib/theme/app_colors.dart` · `app_spacing.dart` · `app_sizes` |
-| **Edge** | `baller_app/supabase/functions/get-upload-url/index.ts` · `config.toml` → `[functions.get-upload-url]` |
-| **Deploy** | `docker-compose.yml` (repo root, Coolify) · `scripts/deploy/` · `docs/deploy/server.md` |
-| **Ops scripts** | `scripts/index.mjs` · `scripts/config/deploy.json` · `npm run deploy` |
-| **Import** | `backend/scripts/export-from-supabase.md` · local `backend/scripts/courts.sql` (gitignored) via `import-local.ps1` |
+| **Flutter** | `baller_app/` |
+| **API** | `backend/app/` (interim FastAPI) · `api/src/` (target Hono): auth, courts, profiles, uploads |
+| **Schema** | `backend/migrations/` · `api/drizzle/` |
+| **Design** | `design/DESIGN.md` · `design/baller-design-knowledge.md` |
+| **Deploy** | `scripts/deploy/` · `docs/deploy/server.md` |
+| **Backups** | `backups/` (gitignored) · `docs/deploy/env-migration.md` |
 
 ## Commands
 
-### Flutter
-
 ```bash
-cd baller_app && flutter pub get
-cd baller_app && flutter analyze
-cd baller_app && flutter test
+npm run deploy:check
+npm run deploy:dry
+npm run deploy
+caliber refresh --dry-run
 ```
-
-```bash
-cd baller_app && flutter run --dart-define=USE_LEGACY_SUPABASE=false --dart-define=API_BASE_URL=http://10.0.2.2:8000
-```
-
-```bash
-cd baller_app && flutter run --dart-define=USE_LEGACY_SUPABASE=true --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_ANON_KEY=your-anon-key
-```
-
-Prefer repo-root `.vscode/launch.json` configs (`cwd: baller_app`, pre-set `toolArgs`) over ad-hoc `flutter run`.
-
-### Backend (local)
 
 ```bash
 docker compose --env-file backend/.env up -d --build
 curl -s http://localhost:8000/health
+cd baller_app && flutter analyze
+cd baller_app && flutter run --dart-define=USE_LEGACY_SUPABASE=false --dart-define=API_BASE_URL=http://10.0.2.2:8000
 ```
-
-```bash
-cd backend/scripts && .\import-local.ps1
-```
-
-```bash
-cp scripts/config/deploy.example.json scripts/config/deploy.json
-npm run deploy:dry
-npm run deploy
-```
-
-### Edge + e2e + Caliber
-
-```bash
-cd baller_app && supabase functions serve get-upload-url --no-verify-jwt
-npx playwright test
-caliber refresh --dry-run
-```
-
-## MCP (`.cursor/mcp.json`)
-
-- **supabase** · **github** · **filesystem** · **browser** (`@playwright/mcp`)
 
 ## Conventions
 
-- **New data/auth work**: `backend/app/routers/` + `baller_app/lib/repositories/*` — not new `Supabase.instance.client` calls
-- **Auth flag**: `--dart-define=USE_LEGACY_SUPABASE` (default `true`); API mode uses `ApiAuthRepository` + `TokenStorage`
-- **Profile gating**: `ProfileRepository.hasProfile()` requires non-empty `username` — register seeds empty row
-- **AuthGate (API)**: 401/403 from `/profiles/me` → `signOut()` (stale JWT when switching `API_BASE_URL`)
-- **Token refresh gap**: `POST /auth/refresh` exists; wire in `api_client.dart` — not per-screen retries
-- **Uploads**: `RepositoryProvider.uploads` (`upload_repository.dart`) — `POST /uploads/presign` then bare `Dio` PUT (API mode) or legacy Storage
-- **Models**: `Court.fromMap`; snake_case DB keys — align with `001_initial.sql` and repositories
-- **Location**: `LocationService.loadPosition()` only — no raw `Geolocator` in widgets
-- **Secrets**: `--dart-define` / `backend/.env` — never commit keys
-- **CI**: `.github/workflows/pr-quality.yaml` — `peakoss/anti-slop@v0` on PR open/reopen
-- **Skills**: `repository-layer` · `fastapi-router` · `auth-flow` · `postgres-migrations` · `setup-caliber`
-- **Learnings**: `CALIBER_LEARNINGS.md` when present
+- **Data access**: Repository pattern (ADR-0008) — no Supabase in new code
+- **Secrets**: `backend/.env` from `backend/.env.example` (interim API); `api/.env` from `api/.env.example`; migrate v1 values from `backups/env/backend.env.v1`
+- **Images**: Backblaze B2 only via `POST /uploads/presign`
+- **Email**: Resend for verify + password reset
+- **Skills**: `hono-router` · `fastapi-router` · `repository-layer` · `auth-flow` · `setup-caliber`
+- **Learnings**: `CALIBER_LEARNINGS.md`
 
-<!-- caliber:managed:pre-commit -->
-## Before Committing
+## MCP
 
-**IMPORTANT:** Before every git commit, ensure Caliber syncs agent configs.
-
-```bash
-grep -q "caliber" .git/hooks/pre-commit 2>/dev/null && echo "hook-active" || echo "no-hook"
-```
-
-- **hook-active**: commit normally; Caliber syncs via hook.
-- **no-hook**: run `caliber refresh && git add CALIBER_LEARNINGS.md CLAUDE.md .claude/ .cursor/ 2>/dev/null` then commit.
-
-Valid `caliber refresh` flags: `--quiet`, `--dry-run` only. `caliber config` is interactive (no flags).
-
-If `caliber` missing: run `/setup-caliber`.
-<!-- /caliber:managed:pre-commit -->
-
-<!-- caliber:managed:learnings -->
-## Session Learnings
-
-Read `CALIBER_LEARNINGS.md` for project-specific patterns from prior sessions.
-<!-- /caliber:managed:learnings -->
-
-<!-- caliber:managed:model-config -->
-## Model Configuration
-
-Default: `claude-sonnet-4-6` with high effort. Pin via `/model` or `CALIBER_MODEL`.
-<!-- /caliber:managed:model-config -->
-
-<!-- caliber:managed:sync -->
-## Context Sync
-
-[Caliber](https://github.com/caliber-ai-org/ai-setup) keeps Claude/Cursor configs aligned; `caliber refresh` on pre-commit.
-<!-- /caliber:managed:sync -->
+Copy `.cursor/mcp.json.example` → `.cursor/mcp.json` (gitignored). See `docs/security/rotate-exposed-secrets.md`.
 
 ## Docs (read first)
 
 @./docs/README.md
 @./docs/agent/context-checklist.md
-@./docs/deploy/server.md
-@./docs/scripts/README.md
+@./docs/decisions/0012-hono-postgres-resend-b2-backend.md
+@./docs/architecture/feature-plan.md
+
+<!-- caliber:managed:pre-commit -->
+## Before Committing
+
+**IMPORTANT:** Before every git commit, you MUST ensure Caliber syncs agent configs with the latest code changes.
+
+First, check if the pre-commit hook is already installed:
+```bash
+grep -q "caliber" .git/hooks/pre-commit 2>/dev/null && echo "hook-active" || echo "no-hook"
+```
+
+- If **hook-active**: the hook handles sync automatically — just commit normally. Tell the user: "Caliber will sync your agent configs automatically via the pre-commit hook."
+- If **no-hook**: run Caliber manually before committing:
+  1. Tell the user: "Caliber: Syncing agent configs with your latest changes..."
+  2. Run: `caliber refresh && git add CALIBER_LEARNINGS.md CLAUDE.md .claude/ .cursor/ .cursorrules 2>/dev/null`
+  3. After it completes, briefly tell the user what Caliber updated. Then proceed with the commit.
+
+**Valid `caliber refresh` options:** `--quiet` (suppress output) and `--dry-run` (preview without writing). Do not pass any other flags — options like `--auto-approve`, `--debug`, or `--force` do not exist and will cause errors.
+
+**`caliber config`** takes no flags — it runs an interactive provider setup. Do not pass `--provider`, `--api-key`, or `--endpoint`.
+
+If `caliber` is not found, tell the user: "This project uses Caliber for agent config sync. Run /setup-caliber to get set up."
+<!-- /caliber:managed:pre-commit -->
+
+<!-- caliber:managed:learnings -->
+## Session Learnings
+
+Read `CALIBER_LEARNINGS.md` for patterns and anti-patterns learned from previous sessions.
+These are auto-extracted from real tool usage — treat them as project-specific rules.
+<!-- /caliber:managed:learnings -->
+
+<!-- caliber:managed:model-config -->
+## Model Configuration
+
+Recommended default: `claude-sonnet-4-6` with high effort (stronger reasoning; higher cost and latency than smaller models).
+Smaller/faster models trade quality for speed and cost — pick what fits the task.
+Pin your choice (`/model` in Claude Code, or `CALIBER_MODEL` when using Caliber with an API provider) so upstream default changes do not silently change behavior.
+
+<!-- /caliber:managed:model-config -->
+
+<!-- caliber:managed:sync -->
+## Context Sync
+
+This project uses [Caliber](https://github.com/caliber-ai-org/ai-setup) to keep AI agent configs in sync across Claude Code, Cursor, Copilot, and Codex.
+Configs update automatically before each commit via `caliber refresh`.
+If the pre-commit hook is not set up, run `/setup-caliber` to configure everything automatically.
+<!-- /caliber:managed:sync -->

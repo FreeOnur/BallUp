@@ -7,7 +7,7 @@ Implement a feature from user stories using current BallerApp architecture.
 1. Read `.cursor/project/architecture.md`, `tech_stack.md`, `product.md`, `user_stories.md`.
 2. Read `.cursor/workflow.md` and relevant rules (especially `repositories.mdc`, `adr-0008`).
 3. Load matching skill if applicable (`repository-layer`, `fastapi-router`, `auth-flow`, etc.).
-4. For UI: read `baller_app/baller-design-knowledge.md`; apply Baller token rules.
+4. For UI: read `design/baller-design-knowledge.md`; apply Baller token rules.
 
 ## Implementation
 

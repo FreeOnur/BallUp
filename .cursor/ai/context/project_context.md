@@ -21,7 +21,7 @@ Brief context for AI and developers. Update when architecture or conventions cha
 | Repositories | `lib/repositories/` — **all new data access here** |
 | Pages / widgets | `lib/pages/` · `lib/widgets/` — no direct Supabase/API |
 | Models | `lib/models/` — `fromMap` / Freezed, no business logic |
-| Theme / design | `lib/theme/` · **`baller_app/baller-design-knowledge.md`** |
+| Theme / design | `lib/theme/` · **`design/baller-design-knowledge.md`** |
 | Backend | `backend/app/routers/` · `migrations/` |
 | Legacy Supabase | `lib/supabase/` — only when legacy flag is on |
 

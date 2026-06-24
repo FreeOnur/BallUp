@@ -1,74 +1,36 @@
-# Local Backend & Development
+# Local Development (v2 — planned)
 
-Run the FastAPI + PostGIS stack locally for API-mode Flutter development.
+> **Current state:** No `docker-compose.yml` or `api/` in repo. Use this when the backend is scaffolded.
 
-## Start stack
+## Prerequisites
 
-From repo root:
+- Docker Desktop
+- Node ≥20 (for API)
+- Flutter SDK ^3.9.0 (for app, when created)
 
-```bash
-docker compose up -d --build
-curl -s http://localhost:8000/health
-```
+## Env setup
 
-Expected: `{"status":"ok",...}`
+1. Copy v1 values: see [env-migration.md](env-migration.md) (`backups/env/backend.env.v1` → `api/.env`)
+2. Or start fresh from `api/.env.example`
 
-Open API docs: `http://localhost:8000/docs`
-
-## Environment
-
-Copy backend env template:
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-Root `docker-compose.yml` reads `POSTGRES_*`, `JWT_SECRET`, and B2 vars from the environment (`.env` at repo root or exported vars).
-
-## Flutter (local API, Android emulator)
-
-```bash
-cd baller_app && flutter run \
-  --dart-define=USE_LEGACY_SUPABASE=false \
-  --dart-define=API_BASE_URL=http://10.0.2.2:8000
-```
-
-| Device | API_BASE_URL |
-|--------|----------------|
-| Android emulator | `http://10.0.2.2:8000` |
-| iOS simulator | `http://localhost:8000` |
-| Physical device | `http://<your-lan-ip>:8000` |
-
-## Legacy Supabase mode
-
-```bash
-cd baller_app && flutter run \
-  --dart-define=USE_LEGACY_SUPABASE=true \
-  --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=your-anon-key
-```
-
-## Import court data
-
-Large SQL dump is gitignored (`backend/scripts/courts.sql`). Import via:
+## Start stack (when available)
 
 ```powershell
-cd backend/scripts && .\import-local.ps1
+docker compose up -d --build
+curl -s http://localhost:3000/health
 ```
 
-Export guide: `backend/scripts/export-from-supabase.md`
+## Flutter emulator (when app exists)
 
-## Verify changes
-
-```bash
-cd baller_app && flutter analyze
-cd baller_app && flutter test
-npx playwright test
+```powershell
+cd baller_app
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3000
 ```
 
-## Stop / reset
+## Data restore
 
-```bash
-docker compose down        # stop
-docker compose down -v     # stop + wipe DB volume (dev only)
-```
+Import from `backups/baller-data-*.sql` after schema is created. Export row counts documented in [env-migration.md](env-migration.md).
+
+## v1 local dev
+
+Checkout `archive/v1-flutter-fastapi` for FastAPI + port 8000 workflow.

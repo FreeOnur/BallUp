@@ -1,33 +1,36 @@
 ---
-description: Self-hosted BallerApp API (FastAPI) — preferred over Supabase client for new work
-globs: backend/**,baller_app/lib/core/api/**,baller_app/lib/repositories/**
+description: BallerApp API — FastAPI interim + Hono target conventions for Flutter integration
+globs: backend/**,api/**,baller_app/lib/core/api/**,baller_app/lib/repositories/**
 alwaysApply: false
 ---
 
 ## Architecture
 
 - Flutter talks only to `API_BASE_URL` (HTTPS in prod) — never to Postgres directly.
-- Backend: `backend/app/` FastAPI routers `auth`, `courts`, `profiles`, `uploads`.
-- Local: `docker compose up -d` from repo root.
+- **Current backend:** `backend/app/` FastAPI routes `auth`, `courts`, `profiles`, `uploads`.
+- **Target backend:** `api/` Hono routes (ADR-0012). ORM: Drizzle. Validation: Zod.
+- Local: `docker compose --env-file backend/.env up -d --build` from repo root.
 
 ## Flutter integration
 
-- `AppConfig.useLegacySupabase` from `--dart-define=USE_LEGACY_SUPABASE` (default `true`).
-- When `false`: use `lib/repositories/*` + `ApiClient` with Bearer token from `TokenStorage`.
-- New features: add API route + repository method; do not add `Supabase.instance.client` calls.
+- Use `lib/repositories/*` + `ApiClient` with Bearer token from `TokenStorage`.
+- New features: add API route + repository method.
+- No `Supabase.instance.client` in new code.
 
-## Auth endpoints
+## Auth endpoints (planned)
 
-- `POST /auth/register`, `/auth/login`, `/auth/refresh`, `/auth/logout`
+- `POST /auth/register`, `/login`, `/refresh`, `/logout`
+- `POST /auth/verify-email`, `/forgot-password`, `/reset-password`
 - Passwords: Argon2id server-side only.
+- Email: Resend
 
 ## Courts / profiles / uploads
 
 - `GET /courts` — approved courts
 - `POST /courts` — authenticated create
 - `GET /profiles/me`, `PUT /profiles/me`
-- `POST /uploads/presign` — B2 presigned upload (JWT)
+- `POST /uploads/presign` — **Backblaze B2** presigned upload (JWT)
 
-## Deprecated
+## v1 archive
 
-- Direct Supabase table access for new code — see `supabase-services.mdc` (legacy only).
+FastAPI v1 reference: branch `archive/v1-flutter-fastapi`. Current interim: `backend/app/`.

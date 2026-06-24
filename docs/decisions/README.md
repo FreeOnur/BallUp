@@ -42,7 +42,8 @@ No slash command or automation — describe the decision in chat; the agent writ
 | # | Title | Status | Date |
 |---|-------|--------|------|
 | [0008](0008-repository-pattern-for-portability.md) | Repository pattern for portability | accepted | 2026-06-02 |
-| [0011](0011-fastapi-postgres-b2-backend.md) | FastAPI + Postgres + B2 backend | accepted | 2026-06-02 |
+| [0011](0011-fastapi-postgres-b2-backend.md) | FastAPI + Postgres + B2 backend | superseded | 2026-06-02 |
+| [0012](0012-hono-postgres-resend-b2-backend.md) | Hono + Postgres + Resend + B2 (v2) | accepted | 2026-06-24 |
 
 ### Pending migration (content in Obsidian vault — add when available)
 

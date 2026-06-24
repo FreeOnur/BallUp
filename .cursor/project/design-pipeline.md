@@ -22,7 +22,7 @@
 | Schritt | Wo | Aktion |
 |---------|-----|--------|
 | 1 | claude.ai/design | Zugang (Pro/Max/Team/Enterprise) |
-| 2 | Design System | Repo verbinden oder `baller_app/DESIGN.md` + `baller-design-knowledge.md` importieren |
+| 2 | Design System | Repo verbinden oder `design/DESIGN.md` + `baller-design-knowledge.md` importieren |
 | 3 | Publish | Design System in Claude Design veröffentlichen — alle Projekte nutzen Baller-Tokens |
 | 4 | Optional | `baller_app/design/claude-design-tokens.json` als Token-Referenz |
 
@@ -97,7 +97,7 @@ Handoff-Regeln (in Prompt mitgeben):
 ```
 Integrate this Claude Design handoff into BallerApp Flutter.
 
-Authoritative design: baller_app/DESIGN.md and baller-design-knowledge.md.
+Authoritative design: design/DESIGN.md and baller-design-knowledge.md.
 On token conflict, prefer DESIGN.md — do not introduce Inter or purple.
 
 Map each component to baller_app/lib/design_system/components/<category>/baller_*.dart.
@@ -152,8 +152,8 @@ Slash command: **`/design-implement`** oder **`/design-handoff`**
 
 | Was | Pfad |
 |-----|------|
-| Claude Design authority | `baller_app/DESIGN.md` |
-| Full spec | `baller_app/baller-design-knowledge.md` |
+| Claude Design authority | `design/DESIGN.md` |
+| Full spec | `design/baller-design-knowledge.md` |
 | Handoff tracking | `baller_app/design/handoff/` |
 | Flutter components | `baller_app/lib/design_system/components/` |
 | Slop audit | `@50-baller-design-audit-manual` |

@@ -2,10 +2,10 @@
 
 | Field | Value |
 |-------|-------|
-| Status | accepted |
+| Status | superseded |
 | Date | 2026-06-02 |
 | Supersedes | 0002 (backend self-host strategy — not yet migrated to docs) |
-| Superseded by | — |
+| Superseded by | [0012](0012-hono-postgres-resend-b2-backend.md) |
 
 ## Context
 

@@ -123,8 +123,14 @@ app.*.symbols
 # Deploy config (may contain server paths / hostnames)
 scripts/config/deploy.json
 
-# Local court import dump (133MB+ — use import-local.ps1, do not commit)
-backend/scripts/courts.sql
+# Local backups (DB dumps, env snapshots — see docs/deploy/env-migration.md)
+backups/
+
+# v2 API env (copy from api/.env.example; values from backups/env/backend.env.v1)
+api/.env
+
+# MCP config with personal tokens (use .cursor/mcp.json.example)
+.cursor/mcp.json
 
 # Local-only compose override (publishes API port to host; prod uses base file)
 docker-compose.override.yml

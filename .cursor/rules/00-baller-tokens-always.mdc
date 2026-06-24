@@ -8,7 +8,7 @@ alwaysApply: true
 
 **BallerApp** — Flutter (Android + iOS), Pickup-Basketball: Courts auf Karte, Spieler verbinden; später Ranked Games + Info-Marketing-Site. **Custom Design System**, Dark-Default, Tonalität **editorial-meets-streetball**. Kein Material-Default-Look, kein AI-Slop.
 
-**Source of Truth:** `@baller_app/DESIGN.md` · `@baller-design-knowledge.md` — alle Tokens dort nachlesen. **Keine Werte erfinden.**
+**Source of Truth:** `@design/DESIGN.md` · `@design/baller-design-knowledge.md` — alle Tokens dort nachlesen. **Keine Werte erfinden.**
 
 ## Harte Verbote (Default)
 
@@ -17,6 +17,6 @@ alwaysApply: true
 - **Layout/Form:** reflexhaft `BorderRadius.circular` überall; inline `EdgeInsets.all(16)`; Centered-Everything-Hero; Drei-Karten-Raster.
 - **Inhalt:** Emoji als Feature-Icon; erfundene Metriken oder Floskeln.
 
-Vor UI-Code: 3–6 Zeilen Zweck + Tonalität + merkbares Element (§2 in `@baller-design-knowledge.md`). Slop-Gate: `@50-baller-design-audit-manual.mdc`.
+Vor UI-Code: 3–6 Zeilen Zweck + Tonalität + merkbares Element (§2 in `@design/baller-design-knowledge.md`). Slop-Gate: `@50-baller-design-audit-manual.mdc`.
 
 **Referenz-Ausnahme:** Nutzer liefert explizit Design-Bilder zum Nachbauen → `@55-baller-reference-rebuild-manual.mdc` hat Vorrang vor generischen Layout-/Farb-Verbotsmustern.

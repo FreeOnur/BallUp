@@ -1,53 +1,37 @@
 # Repository Map
 
-Quick path reference for BallerApp. Use this instead of full-tree search.
+Quick path reference for BallerApp v2. v1 code lives on branch `archive/v1-flutter-fastapi`.
 
-## Flutter app (`baller_app/`)
+## Flutter app (`baller_app/` — not built yet)
 
-| What | Path |
-|------|------|
-| Entry | `lib/main.dart` |
-| Auth gate | `lib/auth/auth_gate.dart` |
-| Auth service | `lib/auth/auth_service.dart` |
-| App config | `lib/core/config/app_config.dart` |
-| API client | `lib/core/api/api_client.dart` |
-| Token storage | `lib/core/api/token_storage.dart` |
-| Repository provider | `lib/repositories/repository_provider.dart` |
-| Auth repos | `lib/repositories/*_auth_repository.dart` |
-| Court repo | `lib/repositories/court_repository.dart` |
-| Profile repo | `lib/repositories/profile_repository.dart` |
-| Court model | `lib/models/Court.dart` |
-| Map page | `lib/pages/Map/` |
-| Design system | `lib/design_system/` |
-| Theme tokens | `lib/theme/` |
-| Design authority | `DESIGN.md`, `baller-design-knowledge.md` |
-| Legacy Supabase | `lib/supabase/court_services.dart` |
+Will contain: `lib/main.dart`, `lib/auth/`, `lib/repositories/`, `lib/pages/`, `lib/core/api/`.
 
-## Backend (`backend/`)
+## Backend (`api/` — not built yet)
+
+| What | Path (planned) |
+|------|----------------|
+| Hono entry | `api/src/index.ts` |
+| Routes | `api/src/routes/` |
+| Drizzle schema | `api/src/db/schema.ts` |
+| Migrations | `api/drizzle/` |
+| Env template | `api/.env.example` |
+
+## Design (`design/`)
 
 | What | Path |
 |------|------|
-| App factory | `app/main.py` |
-| Auth router | `app/routers/auth.py` |
-| Courts router | `app/routers/courts.py` |
-| Profiles router | `app/routers/profiles.py` |
-| Uploads (B2 presign) | `app/routers/uploads.py` |
-| JWT / passwords | `app/security/` |
-| DB connection | `app/db.py` |
-| Dependencies | `app/dependencies.py` |
-| Initial schema | `migrations/001_initial.sql` |
-| Dockerfile | `Dockerfile` |
-| Env template | `.env.example` |
+| Design tokens | `design/DESIGN.md` |
+| Design knowledge | `design/baller-design-knowledge.md` |
 
 ## Root / infra
 
 | What | Path |
 |------|------|
-| Production compose | `docker-compose.yml` |
 | Deploy docs | `docs/deploy/server.md` |
+| Env migration | `docs/deploy/env-migration.md` |
 | Deploy scripts | `scripts/deploy/` |
 | Root README | `README.md` |
-| Playwright e2e | `package.json`, `playwright.config.*` |
+| Playwright e2e | `package.json` |
 
 ## Agent & docs
 
@@ -56,16 +40,22 @@ Quick path reference for BallerApp. Use this instead of full-tree search.
 | Docs (SSOT) | `docs/` |
 | Cursor rules | `.cursor/rules/` |
 | Cursor skills | `.cursor/skills/` |
-| Cursor commands | `.cursor/commands/` |
-| Cursor project | `.cursor/project/` |
 | Claude config | `.claude/`, `CLAUDE.md` |
-| Caliber learnings | `CALIBER_LEARNINGS.md` (when present) |
+| Caliber | `.caliber/`, `.caliberignore` |
+| Caliber learnings | `CALIBER_LEARNINGS.md` |
 | Shared hooks | `scripts/hooks/` |
 
-## Data migration
+## Backups (gitignored)
 
 | What | Path |
 |------|------|
-| Export guide | `backend/scripts/export-from-supabase.md` |
-| Local import | `backend/scripts/import-local.ps1` |
-| Courts SQL dump | `backend/scripts/courts.sql` (gitignored) |
+| DB dumps | `backups/baller-data-*.sql` |
+| Env snapshot | `backups/env/backend.env.v1` |
+| External copy | `%USERPROFILE%/Documents/BallerApp-backups/` |
+
+## v1 archive
+
+| What | Path / ref |
+|------|------------|
+| Git branch | `archive/v1-flutter-fastapi` |
+| Git tag | `v1-flutter-fastapi-archive` |

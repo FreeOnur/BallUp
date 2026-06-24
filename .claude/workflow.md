@@ -10,7 +10,7 @@ Follow this workflow when using Claude Code. Rules in `.claude/rules/` and skill
 2. **Project context** — `.cursor/project/` (`architecture.md`, `tech_stack.md`, `product.md`) via `CLAUDE.md` references.
 3. **Respect rules** — `.claude/rules/` (repositories, auth, backend-api, flutter-conventions, testing-patterns).
 4. **Pick the right layer** — Widget → Provider/Notifier → Repository → API/Supabase. No direct SDK calls in widgets.
-5. **UI / design work** — Read `baller_app/baller-design-knowledge.md` and `baller_app/DESIGN.md`. Design in Claude Design; implement via **design-handoff** command.
+5. **UI / design work** — Read `design/baller-design-knowledge.md` and `design/DESIGN.md`. Design in Claude Design; implement via **design-handoff** command.
 6. **Analyze existing code** — Locate current logic and UI; prefer minimal, safe edits.
 
 ---
@@ -26,7 +26,7 @@ Follow this workflow when using Claude Code. Rules in `.claude/rules/` and skill
 | Postgres schema | `/postgres-migrations` |
 | Deploy / Docker | `/docker-compose-hetzner`, `npm run deploy` |
 | Landing / marketing UI | `/hallmark` |
-| App UI design | Claude Design + `baller_app/DESIGN.md` |
+| App UI design | Claude Design + `design/DESIGN.md` |
 | Handoff → Flutter | **design-handoff** · `lib/design_system/components/` |
 | Security review | `/security-hardening`, `.cursor/ai/security/security_checks.md` |
 | Agent config sync | `/setup-caliber`, `caliber refresh` before commit |
@@ -49,7 +49,7 @@ Full guide: `.cursor/project/design-pipeline.md`
 
 | Phase | Tool | Command / path |
 |-------|------|----------------|
-| Design | Claude Design | `baller_app/DESIGN.md` · **design-claude-session** |
+| Design | Claude Design | `design/DESIGN.md` · **design-claude-session** |
 | Handoff | Export → Claude Code | **design-handoff** · `design/handoff/` |
 | Flutter code | Claude Code | **design-implement** · `lib/design_system/components/` |
 

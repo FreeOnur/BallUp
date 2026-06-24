@@ -10,8 +10,8 @@ If URL: fetch bundle, read included README/manifest.
 
 ## Read first (authoritative — wins over bundle on conflict)
 
-- `baller_app/DESIGN.md`
-- `baller_app/baller-design-knowledge.md`
+- `design/DESIGN.md`
+- `design/baller-design-knowledge.md`
 - `baller_app/design/handoff/design-manifest.md`
 - `baller_app/design/handoff/token-map.json`
 

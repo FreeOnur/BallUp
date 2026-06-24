@@ -4,28 +4,28 @@ overview: "Repo saeubern und Stack definieren (nicht bauen): BallerApp im selben
 todos:
   - id: archive
     content: Aktuellen Stand als archive/v1-flutter-fastapi Branch + Tag sichern
-    status: in_progress
+    status: completed
   - id: data-export
     content: Daten aus lokalem Docker-Postgres per pg_dump exportieren (courts, profiles, court_images, users, refresh_tokens) nach backups/ (gitignored) + extern
-    status: pending
+    status: completed
   - id: rotate-secrets
     content: GitHub PAT + Stitch Key aus .cursor/mcp.json rotieren, mcp.json untracken/gitignoren, Tokens via Env
-    status: pending
+    status: completed
   - id: preserve-env
     content: backend/.env-Tokens (inkl. Backblaze B2) sichern und Mapping fuer neue api/.env dokumentieren
-    status: pending
+    status: completed
   - id: clean-repo
     content: baller_app/, backend/, altes docker-compose.yml entfernen; .claude/.cursor/.caliber/docs/scripts/MD behalten (eigener Commit)
-    status: pending
+    status: completed
   - id: define-stack
     content: Stack nur DEFINIEREN (nicht bauen) - ADRs schreiben (Flutter+Hono+Postgres+eigenes Auth+Resend+Backblaze B2), ADR-0011 als superseded markieren
     status: pending
   - id: agent-config
     content: Agent-Regeln/Skills/CLAUDE.md/docs von FastAPI+Supabase auf Hono/Drizzle/Resend/B2 umstellen
-    status: pending
+    status: completed
   - id: adapt-scripts
     content: scripts/ ans neue Repo anpassen (deploy/hooks/config) - Pfade/Stack-Annahmen auf neue Struktur umstellen
-    status: pending
+    status: completed
 isProject: false
 ---
 

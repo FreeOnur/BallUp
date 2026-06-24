@@ -4,7 +4,7 @@ Design BallerApp UI in **Claude Design** (claude.ai/design) — not Pencil.
 
 ## Prerequisites
 
-- Design system published from `baller_app/DESIGN.md` + `baller-design-knowledge.md`
+- Design system published from `design/DESIGN.md` + `baller-design-knowledge.md`
 - See `.cursor/project/design-pipeline.md` and `docs/agent/dual-agent-setup.md`
 
 ## Rules

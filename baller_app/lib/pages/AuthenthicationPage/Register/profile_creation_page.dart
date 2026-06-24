@@ -1,14 +1,10 @@
-import 'dart:io';
 import 'package:baller_app/auth/auth_service.dart';
-import 'package:baller_app/pages/Home/home_page.dart';
 import 'package:baller_app/pages/Home/main_page.dart';
+import 'package:baller_app/repositories/repository_provider.dart';
 import 'package:baller_app/widgets/profile_creation/avatar.dart';
 import 'package:baller_app/widgets/text_fields/drop_down_field_custom.dart';
 import 'package:baller_app/widgets/text_fields/text_form_field_custom';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileCreationPage extends StatefulWidget {
   const ProfileCreationPage({super.key, this.onProfileComplete});
@@ -20,7 +16,6 @@ class ProfileCreationPage extends StatefulWidget {
 }
 
 class _ProfileCreationPageState extends State<ProfileCreationPage> {
-  File? imageFile;
   final formkey = GlobalKey<FormState>();
   String? imageUrl;
   final authService = AuthService();
@@ -70,6 +65,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
     try {
       await authService.createProfile(
         username: username,
+        avatarURL: imageUrl,
         age: selectedAge,
         location: location,
         gender: selectedGender,
@@ -96,53 +92,17 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
   //6820
   //15102007Gmail#.
 
-  Future pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      setState(() {
-        imageFile = File(image.path);
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    final userId = Supabase.instance.client.auth.currentUser!.id;
-    Supabase.instance.client
-        .from('profiles')
-        .select('avatar_url')
-        .eq('id', userId)
-        .single()
-        .then((data) {
-          setState(() {
-            imageUrl = data['avatar_url'] as String?;
-          });
-        });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  Future uploadImage() async {
-    if (imageFile == null) return;
-
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final path = 'uploads/$fileName';
-
-    await Supabase.instance.client.storage
-        .from('images')
-        .upload(path, imageFile!)
-        .then(
-          (data) => ScaffoldMessenger(
-            child: SnackBar(content: Text("Image uploaded successfully!")),
-          ),
-        );
+    // Prefill avatar if a profile already exists (returning user). A freshly
+    // registered user has no avatar yet -> getMyProfile may return null/404.
+    RepositoryProvider.profiles.getMyProfile().then((profile) {
+      if (!mounted || profile == null) return;
+      setState(() {
+        imageUrl = profile['avatar_url'] as String?;
+      });
+    }).catchError((_) {});
   }
 
   @override
@@ -163,15 +123,12 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
             // Avatar widget soll hier kommen
             Avatar(
               imageUrl: imageUrl,
-              onUpload: (imageUrl) async {
+              onUpload: (uploadedUrl) {
+                // Avatar uploads to B2 (via UploadRepository) and returns the
+                // public URL. Persist it with the profile on "Sign Up".
                 setState(() {
-                  imageUrl = imageUrl;
+                  imageUrl = uploadedUrl;
                 });
-                final userId = Supabase.instance.client.auth.currentUser!.id;
-                await Supabase.instance.client
-                    .from('profiles')
-                    .update({'avatar_url': imageUrl})
-                    .eq('id', userId);
               },
             ),
             Form(

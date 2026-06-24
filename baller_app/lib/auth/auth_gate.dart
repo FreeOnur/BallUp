@@ -4,6 +4,7 @@ import 'package:baller_app/pages/AuthenthicationPage/Register/profile_creation_p
 import 'package:baller_app/pages/Home/main_page.dart';
 import 'package:baller_app/repositories/api_auth_repository.dart';
 import 'package:baller_app/repositories/repository_provider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -95,8 +96,19 @@ class _ApiAuthGateState extends State<_ApiAuthGate> {
     if (userId == null) {
       return _ApiGateState.loggedOut;
     }
-    final hasProfile = await RepositoryProvider.profiles.hasProfile(userId: userId);
-    return hasProfile ? _ApiGateState.home : _ApiGateState.needsProfile;
+    try {
+      final hasProfile =
+          await RepositoryProvider.profiles.hasProfile(userId: userId);
+      return hasProfile ? _ApiGateState.home : _ApiGateState.needsProfile;
+    } on DioException catch (e) {
+      // Stale/expired token (e.g. issued by a different backend) -> drop the
+      // invalid session and send the user back to login instead of hanging.
+      if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
+        await RepositoryProvider.auth.signOut();
+        return _ApiGateState.loggedOut;
+      }
+      rethrow;
+    }
   }
 
   @override
@@ -104,6 +116,23 @@ class _ApiAuthGateState extends State<_ApiAuthGate> {
     return FutureBuilder<_ApiGateState>(
       future: _stateFuture,
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Could not reach the server.'),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: _reload,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
         if (!snapshot.hasData) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),

@@ -14,6 +14,8 @@ Set in Coolify **Environment Variables**: `POSTGRES_*`, `JWT_SECRET`, `B2_*` (bu
 
 DNS: domain panel → A record `api` → server IP (not in Coolify).
 
+Deploy automation: copy `scripts/config/deploy.example.json` → `scripts/config/deploy.json`, then `npm run deploy` (see `docs/deploy/server.md`).
+
 ## Local API
 
 ```bash

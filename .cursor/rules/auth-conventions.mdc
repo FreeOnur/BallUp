@@ -13,10 +13,12 @@ alwaysApply: false
 ## AuthGate (`auth_gate.dart`)
 
 - Root widget from `main.dart` → `MaterialApp(home: AuthGate())`
-- Legacy: `onAuthStateChange` StreamBuilder
-- API: session check via `AuthRepository.hasSession()` then profile via `ProfileRepository`
+- Legacy: `onAuthStateChange` StreamBuilder → `hasProfile()` via `ProfileRepository`
+- API: `_ApiAuthGate` — session via `AuthRepository.hasSession()` then `hasProfile(userId:)`
+- **Profile complete**: non-empty `username` required; register seeds empty row
+- **Stale token**: 401/403 from `/profiles/me` → `signOut()` → login
 - While loading → `CircularProgressIndicator`
-- Profile exists → home; else → profile creation; no session → login
+- No session → `LoginPage(onAuthSuccess:)`; needs profile → `ProfileCreationPage(onProfileComplete:)`; else → `MainPage`
 
 ## AuthService (`auth_service.dart`)
 

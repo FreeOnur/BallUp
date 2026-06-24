@@ -5,21 +5,43 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "baller_app",
+            "name": "baller_app (API mode — emulator)",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define=USE_LEGACY_SUPABASE=false",
+                "--dart-define=API_BASE_URL=http://10.0.2.2:8000"
+            ]
+        },
+        {
+            "name": "baller_app (legacy Supabase)",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define=USE_LEGACY_SUPABASE=true",
+                "--dart-define=SUPABASE_URL=YOUR_PROJECT.supabase.co",
+                "--dart-define=SUPABASE_ANON_KEY=your-anon-key"
+            ]
         },
         {
             "name": "baller_app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "toolArgs": [
+                "--dart-define=USE_LEGACY_SUPABASE=false",
+                "--dart-define=API_BASE_URL=http://10.0.2.2:8000"
+            ]
         },
         {
             "name": "baller_app (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define=USE_LEGACY_SUPABASE=false",
+                "--dart-define=API_BASE_URL=http://10.0.2.2:8000"
+            ]
         }
     ]
 }

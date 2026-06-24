@@ -9,8 +9,9 @@ alwaysApply: true
 - **Flutter**: `baller_app/pubspec.yaml` (SDK `^3.9.0`) · Maps · geolocator
 - **Backend**: `backend/app/main.py` FastAPI + PostGIS (`docker-compose.yml` at repo root)
 - **Entry**: `baller_app/lib/main.dart` → `BadwordFilter` → `AuthGate()`
-- **Data layer**: `baller_app/lib/repositories/` · `baller_app/lib/core/api/` (API mode) · legacy `lib/supabase/court_services.dart`
+- **Data layer**: `baller_app/lib/repositories/` · `upload_repository.dart` · `baller_app/lib/core/api/` (API mode) · legacy `lib/supabase/court_services.dart`
 - **Design**: `baller_app/DESIGN.md` · `baller_app/lib/design_system/` · `baller_app/baller-design-knowledge.md` · `.cursor/project/design-pipeline.md`
+- **Docs (SSOT)**: `docs/` · deploy: `docs/deploy/server.md` · scripts: `docs/scripts/README.md`
 - **CI**: `.github/workflows/pr-quality.yaml` (`peakoss/anti-slop@v0`)
 
 ## Architecture
@@ -21,11 +22,14 @@ alwaysApply: true
 ## Commands
 
 ```bash
-docker compose up -d --build
+docker compose --env-file backend/.env up -d --build
 curl -s http://localhost:8000/health
 cd baller_app && flutter analyze
 cd baller_app && flutter run --dart-define=USE_LEGACY_SUPABASE=false --dart-define=API_BASE_URL=http://10.0.2.2:8000
 cd backend/scripts && .\import-local.ps1
+npm run deploy:check
+npm run deploy:dry
+npm run deploy
 npx playwright test
 caliber refresh --dry-run
 ```
@@ -37,4 +41,5 @@ caliber refresh --dry-run
 ## Caliber
 
 - Pre-commit: `.cursor/rules/caliber-pre-commit.mdc`
+- Session hooks: `.cursor/hooks.json` · shared scripts: `scripts/hooks/`
 - Skill: `.cursor/skills/setup-caliber/SKILL.md`

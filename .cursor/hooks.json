@@ -1,6 +1,11 @@
 {
   "version": 1,
   "hooks": {
+    "sessionStart": [
+      {
+        "command": "sh scripts/hooks/caliber-session-freshness.sh"
+      }
+    ],
     "postToolUse": [
       {
         "command": "npx @rely-ai/caliber learn observe"
@@ -17,6 +22,9 @@
       }
     ],
     "sessionEnd": [
+      {
+        "command": "npx @rely-ai/caliber refresh --quiet"
+      },
       {
         "command": "npx @rely-ai/caliber learn finalize --auto"
       }

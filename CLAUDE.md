@@ -16,7 +16,7 @@ Flutter (`baller_app/pubspec.yaml`, SDK `^3.9.0`) · **legacy** `supabase_flutte
 | **Entry** | `baller_app/lib/main.dart` → `BadwordFilter.loadWords()` (`services/badword_filter.dart`) → optional Supabase init → `AuthGate()` |
 | **Auth** | `baller_app/lib/auth/auth_gate.dart` · `auth_service.dart` |
 | **API client** | `baller_app/lib/core/config/app_config.dart` · `core/api/api_client.dart` · `core/api/token_storage.dart` |
-| **Repositories** | `repository_provider.dart` · `auth_repository.dart` · `api_auth_repository.dart` · `supabase_auth_repository.dart` · `court_repository.dart` · `profile_repository.dart` · `auth_result.dart` |
+| **Repositories** | `repository_provider.dart` · `auth_repository.dart` · `api_auth_repository.dart` · `supabase_auth_repository.dart` · `court_repository.dart` · `profile_repository.dart` · `upload_repository.dart` · `auth_result.dart` |
 | **Backend** | `backend/app/main.py` → `routers/auth.py` · `courts.py` · `profiles.py` · `uploads.py` · `dependencies.py` · `db.py` · `security/jwt.py` · `security/passwords.py` |
 | **Schema** | `backend/migrations/001_initial.sql` (`users`, `profiles`, `courts`, `court_images`, `refresh_tokens`) |
 | **Models** | `baller_app/lib/models/Court.dart` — `factory Court.fromMap` (baseline: `id`, `name`, `lat`, `lng`, `indoor`; extend for `lights`, `has_markings`, `surface`, `hoops`, `address`) |
@@ -24,7 +24,8 @@ Flutter (`baller_app/pubspec.yaml`, SDK `^3.9.0`) · **legacy** `supabase_flutte
 | **Legacy Supabase** | `baller_app/lib/supabase/court_services.dart` — only when `USE_LEGACY_SUPABASE=true` |
 | **Theme** | `baller_app/DESIGN.md` · `baller_app/baller-design-knowledge.md` · `baller_app/lib/design_system/` · `baller_app/lib/theme/app_colors.dart` · `app_spacing.dart` · `app_sizes` |
 | **Edge** | `baller_app/supabase/functions/get-upload-url/index.ts` · `config.toml` → `[functions.get-upload-url]` |
-| **Deploy** | `docker-compose.yml` (repo root, Coolify) · see root `README.md` |
+| **Deploy** | `docker-compose.yml` (repo root, Coolify) · `scripts/deploy/` · `docs/deploy/server.md` |
+| **Ops scripts** | `scripts/index.mjs` · `scripts/config/deploy.json` · `npm run deploy` |
 | **Import** | `backend/scripts/export-from-supabase.md` · local `backend/scripts/courts.sql` (gitignored) via `import-local.ps1` |
 
 ## Commands
@@ -45,15 +46,23 @@ cd baller_app && flutter run --dart-define=USE_LEGACY_SUPABASE=false --dart-defi
 cd baller_app && flutter run --dart-define=USE_LEGACY_SUPABASE=true --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_ANON_KEY=your-anon-key
 ```
 
+Prefer repo-root `.vscode/launch.json` configs (`cwd: baller_app`, pre-set `toolArgs`) over ad-hoc `flutter run`.
+
 ### Backend (local)
 
 ```bash
-docker compose up -d --build
+docker compose --env-file backend/.env up -d --build
 curl -s http://localhost:8000/health
 ```
 
 ```bash
 cd backend/scripts && .\import-local.ps1
+```
+
+```bash
+cp scripts/config/deploy.example.json scripts/config/deploy.json
+npm run deploy:dry
+npm run deploy
 ```
 
 ### Edge + e2e + Caliber
@@ -72,8 +81,10 @@ caliber refresh --dry-run
 
 - **New data/auth work**: `backend/app/routers/` + `baller_app/lib/repositories/*` — not new `Supabase.instance.client` calls
 - **Auth flag**: `--dart-define=USE_LEGACY_SUPABASE` (default `true`); API mode uses `ApiAuthRepository` + `TokenStorage`
+- **Profile gating**: `ProfileRepository.hasProfile()` requires non-empty `username` — register seeds empty row
+- **AuthGate (API)**: 401/403 from `/profiles/me` → `signOut()` (stale JWT when switching `API_BASE_URL`)
 - **Token refresh gap**: `POST /auth/refresh` exists; wire in `api_client.dart` — not per-screen retries
-- **Uploads**: B2 presign via `POST /uploads/presign` (API mode) or legacy edge fn
+- **Uploads**: `RepositoryProvider.uploads` (`upload_repository.dart`) — `POST /uploads/presign` then bare `Dio` PUT (API mode) or legacy Storage
 - **Models**: `Court.fromMap`; snake_case DB keys — align with `001_initial.sql` and repositories
 - **Location**: `LocationService.loadPosition()` only — no raw `Geolocator` in widgets
 - **Secrets**: `--dart-define` / `backend/.env` — never commit keys
@@ -115,3 +126,10 @@ Default: `claude-sonnet-4-6` with high effort. Pin via `/model` or `CALIBER_MODE
 
 [Caliber](https://github.com/caliber-ai-org/ai-setup) keeps Claude/Cursor configs aligned; `caliber refresh` on pre-commit.
 <!-- /caliber:managed:sync -->
+
+## Docs (read first)
+
+@./docs/README.md
+@./docs/agent/context-checklist.md
+@./docs/deploy/server.md
+@./docs/scripts/README.md

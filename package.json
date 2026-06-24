@@ -1,4 +1,10 @@
 {
+  "type": "module",
+  "scripts": {
+    "deploy": "node scripts/deploy/pull-and-redeploy.mjs",
+    "deploy:check": "node scripts/deploy/pull-and-redeploy.mjs --check-only",
+    "deploy:dry": "node scripts/deploy/pull-and-redeploy.mjs --dry-run"
+  },
   "devDependencies": {
     "@playwright/test": "^1.58.2"
   }

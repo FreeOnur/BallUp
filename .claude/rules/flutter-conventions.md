@@ -13,7 +13,7 @@ paths:
 
 ## Data access
 
-- Prefer `RepositoryProvider.courts` / `.profiles` / `.auth` over new `court_services.dart` methods when `USE_LEGACY_SUPABASE=false`.
+- Prefer `RepositoryProvider.courts` / `.profiles` / `.auth` / `.uploads` over new `court_services.dart` methods when `USE_LEGACY_SUPABASE=false`.
 - Legacy reads: `court_services.dart` → `Court.fromMap` on results.
 
 ## Services

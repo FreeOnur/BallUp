@@ -1,6 +1,8 @@
+import 'dart:io';
+
+import 'package:baller_app/repositories/repository_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Avatar extends StatelessWidget {
   const Avatar({super.key, required this.imageUrl, required this.onUpload});
@@ -12,23 +14,18 @@ class Avatar extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         final ImagePicker picker = ImagePicker();
-        XFile? image = await picker.pickImage(source: ImageSource.gallery);
+        final XFile? image = await picker.pickImage(source: ImageSource.gallery);
         if (image == null) return;
-        final imageExtension = image.path.split('.').last.toLowerCase();
-        final imageBytes = await image.readAsBytes();
-        final userId = Supabase.instance.client.auth.currentUser!.id;
-        final imagePath = '/$userId/image';
-        await Supabase.instance.client.storage
-            .from('images')
-            .uploadBinary(imagePath, imageBytes, fileOptions: FileOptions(
-              upsert: true,
-              contentType: 'image/$imageExtension',
-            ));
-        String imageUrl = Supabase.instance.client.storage
-            .from('images')
-            .getPublicUrl(imagePath);
-            imageUrl = Uri.parse(imageUrl).replace(queryParameters: {'t': DateTime.now().millisecondsSinceEpoch.toString()}).toString();
-        onUpload(imageUrl);
+        // Uploads to B2 in API mode (presign + PUT) or Supabase Storage in
+        // legacy mode, returning the public URL.
+        final publicUrl =
+            await RepositoryProvider.uploads.uploadAvatar(File(image.path));
+        final bustedUrl = Uri.parse(publicUrl).replace(
+          queryParameters: {
+            't': DateTime.now().millisecondsSinceEpoch.toString(),
+          },
+        ).toString();
+        onUpload(bustedUrl);
       },
       child: CircleAvatar(
         radius: 60,

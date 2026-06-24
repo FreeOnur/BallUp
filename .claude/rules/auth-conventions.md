@@ -11,9 +11,11 @@ paths:
 ## AuthGate (`auth_gate.dart`)
 
 - Root from `main.dart` → `MaterialApp(home: AuthGate())`.
-- **Legacy**: `StreamBuilder` on `onAuthStateChange` → `profiles` `.maybeSingle()`.
-- **API**: session via `AuthRepository` / `TokenStorage` → profile via `ProfileRepository`.
-- Loading → `CircularProgressIndicator`; no session → login; no profile → creation flow.
+- **Legacy**: `StreamBuilder` on `onAuthStateChange` → `hasProfile()` via `ProfileRepository`.
+- **API**: `_ApiAuthGate` — `AuthRepository.hasSession()` → `hasProfile(userId:)` via `ProfileRepository`.
+- **Profile complete**: non-empty `username` required (`hasProfile()`); register seeds empty row.
+- **Stale token**: API mode 401/403 on `/profiles/me` → `signOut()` → login (not infinite spinner).
+- Loading → `CircularProgressIndicator`; no session → `LoginPage(onAuthSuccess:)`; needs profile → `ProfileCreationPage(onProfileComplete:)`.
 
 ## AuthService
 

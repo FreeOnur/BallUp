@@ -4,6 +4,7 @@ import 'package:baller_app/repositories/auth_repository.dart';
 import 'package:baller_app/repositories/court_repository.dart';
 import 'package:baller_app/repositories/profile_repository.dart';
 import 'package:baller_app/repositories/supabase_auth_repository.dart';
+import 'package:baller_app/repositories/upload_repository.dart';
 
 class RepositoryProvider {
   RepositoryProvider._();
@@ -14,4 +15,5 @@ class RepositoryProvider {
 
   static final ProfileRepository profiles = ProfileRepository();
   static final CourtRepository courts = CourtRepository();
+  static final UploadRepository uploads = UploadRepository();
 }

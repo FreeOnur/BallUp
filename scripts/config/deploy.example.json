@@ -1,0 +1,16 @@
+{
+  "mode": "ssh",
+  "repoUrl": "https://github.com/FreeOnur/BallerApp.git",
+  "branch": "main",
+  "deployPath": "/data/coolify/services/YOUR_SERVICE_ID/BallerApp",
+  "composeFile": "docker-compose.yml",
+  "healthUrl": "https://api.ballup.net/health",
+  "ssh": {
+    "host": "YOUR_VPS_IP_OR_HOST",
+    "user": "root",
+    "keyPath": "~/.ssh/id_ed25519"
+  },
+  "coolify": {
+    "webhookUrl": ""
+  }
+}

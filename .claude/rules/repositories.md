@@ -9,6 +9,7 @@ paths:
 
 - `USE_LEGACY_SUPABASE=true` → `SupabaseAuthRepository` + Supabase queries in domain repos.
 - `USE_LEGACY_SUPABASE=false` → `ApiAuthRepository` + Dio calls to `API_BASE_URL`.
+- `RepositoryProvider.uploads` → `UploadRepository` (B2 presign or legacy Storage).
 
 ## API mode endpoints
 
@@ -18,6 +19,7 @@ paths:
 | `ApiAuthRepository` | logout | `POST /auth/logout` |
 | `ProfileRepository` | profile CRUD | `GET/PUT /profiles/me` |
 | `CourtRepository` | list/create | `GET/POST /courts` |
+| `UploadRepository` | avatar/court image | `POST /uploads/presign` + PUT to `upload_url` |
 
 ## Patterns
 

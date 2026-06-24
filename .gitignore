@@ -120,5 +120,11 @@ app.*.symbols
 # Caliber local state
 .caliber/
 
+# Deploy config (may contain server paths / hostnames)
+scripts/config/deploy.json
+
 # Local court import dump (133MB+ — use import-local.ps1, do not commit)
 backend/scripts/courts.sql
+
+# Local-only compose override (publishes API port to host; prod uses base file)
+docker-compose.override.yml

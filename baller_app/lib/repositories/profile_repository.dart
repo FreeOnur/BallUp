@@ -1,5 +1,6 @@
 import 'package:baller_app/core/api/api_client.dart';
 import 'package:baller_app/core/config/app_config.dart';
+import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileRepository {
@@ -7,25 +8,37 @@ class ProfileRepository {
 
   final ApiClient _apiClient;
 
-  Future<bool> hasProfile({String? userId}) async {
+  /// Returns the current user's profile row, or null if none exists.
+  /// API mode: GET /profiles/me (404 -> null). Legacy: Supabase select.
+  Future<Map<String, dynamic>?> getMyProfile({String? userId}) async {
     if (AppConfig.useLegacySupabase) {
       final user = Supabase.instance.client.auth.currentUser;
-      if (user == null) return false;
+      if (user == null) return null;
       final response = await Supabase.instance.client
           .from('profiles')
           .select()
           .eq('id', user.id)
           .maybeSingle();
-      return response != null;
+      return response == null ? null : Map<String, dynamic>.from(response);
     }
 
-    if (userId == null) return false;
     try {
-      await _apiClient.dio.get('/profiles/me');
-      return true;
-    } catch (_) {
-      return false;
+      final res = await _apiClient.dio.get('/profiles/me');
+      return Map<String, dynamic>.from(res.data as Map);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) return null;
+      rethrow;
     }
+  }
+
+  /// True only when a profile exists AND has a non-empty username.
+  /// The backend seeds an empty profile row on register, so existence
+  /// alone is not enough to consider onboarding complete.
+  Future<bool> hasProfile({String? userId}) async {
+    final profile = await getMyProfile(userId: userId);
+    if (profile == null) return false;
+    final username = profile['username'];
+    return username is String && username.isNotEmpty;
   }
 
   Future<void> upsertProfile({

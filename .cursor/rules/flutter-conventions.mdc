@@ -18,7 +18,7 @@ alwaysApply: false
 
 ## Data access
 
-- Use `RepositoryProvider.courts` / `.profiles` / `.auth` — not new Supabase calls when `USE_LEGACY_SUPABASE=false`.
+- Use `RepositoryProvider.courts` / `.profiles` / `.auth` / `.uploads` — not new Supabase calls when `USE_LEGACY_SUPABASE=false`.
 - Repositories return `Map<String, dynamic>` lists; map to models at call site: `Court.fromMap(e)`.
 
 ## Services (`baller_app/lib/services/`)

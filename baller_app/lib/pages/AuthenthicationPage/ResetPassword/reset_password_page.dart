@@ -1,3 +1,4 @@
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/AuthenthicationPage/Register/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +19,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   bool _isPasswordHidden = true;
   bool _isLoading = false;
   void ResetPassword() async{
+    if (!AppConfig.useLegacySupabase) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password reset is not available in API mode yet.'),
+        ),
+      );
+      return;
+    }
+
     final email = _emailController.text;
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;

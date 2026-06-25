@@ -1,4 +1,5 @@
 import 'package:baller_app/auth/auth_service.dart';
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/AuthenthicationPage/ResetPassword/reset_password_page.dart';
 import 'package:flutter/material.dart';
 
@@ -134,6 +135,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               SizedBox(height: screenHeight * 0.02),
               TextButton(
                 onPressed: () async {
+                  if (!AppConfig.useLegacySupabase) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Password reset is not available in API mode yet.',
+                        ),
+                      ),
+                    );
+                    return;
+                  }
                   Navigator.push(
                     context,
                     MaterialPageRoute(

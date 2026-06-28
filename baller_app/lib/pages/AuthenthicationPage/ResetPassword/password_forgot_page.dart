@@ -1,6 +1,7 @@
+import 'package:baller_app/auth/auth_service.dart';
+import 'package:baller_app/core/config/app_config.dart';
 import 'package:baller_app/pages/AuthenthicationPage/ResetPassword/reset_password_page.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -12,7 +13,60 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _emailController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
-  final supabase = Supabase.instance.client;
+  final _authService = AuthService();
+
+  void _showPasswordResetUnavailable() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Password reset is not available in API mode yet.')),
+    );
+  }
+
+  void _openResetPasswordPage() {
+    if (!AppConfig.useLegacySupabase) {
+      _showPasswordResetUnavailable();
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ResetPasswordPage(),
+      ),
+    );
+  }
+
+  Future<void> _resetPassword() async {
+    if (!_formkey.currentState!.validate()) return;
+
+    try {
+      await _authService.resetPasswordForEmail(_emailController.text);
+    } on UnsupportedError {
+      if (!mounted) return;
+      _showPasswordResetUnavailable();
+      return;
+    }
+
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "Please check your email & spam directory for the token, if it's not in the Mailbox",
+              textAlign: TextAlign.center,
+            ),
+            ElevatedButton(
+              onPressed: _openResetPasswordPage,
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -70,41 +124,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () async {
-                    if (_formkey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Text(
-                                "Please check your email & spam directory for the token, if it's not in the Mailbox",
-                                textAlign: TextAlign.center,
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ResetPasswordPage(),
-                                    ),
-                                  );
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      await supabase.auth.resetPasswordForEmail(
-                        _emailController.text,
-                      );
-                    } else {
-                      null;
-                    }
-                  },
+                  onPressed: _resetPassword,
                   child: Center(
                     child: Text(
                       'Reset Password',
@@ -118,14 +138,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
               SizedBox(height: screenHeight * 0.02),
               TextButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ResetPasswordPage(),
-                    ),
-                  );
-                },
+                onPressed: _openResetPasswordPage,
                 child: Text(
                   'Do you already have a Token? Reset your Password',
                   style: TextStyle(

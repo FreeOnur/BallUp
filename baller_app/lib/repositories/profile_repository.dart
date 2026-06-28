@@ -7,6 +7,17 @@ class ProfileRepository {
 
   final ApiClient _apiClient;
 
+  String? _usernameFromProfile(Map<String, dynamic> profile) {
+    final username = profile['username'];
+    if (username is! String) return null;
+    final normalized = username.trim();
+    return normalized.isEmpty ? null : normalized;
+  }
+
+  bool _isCompleteProfile(Map<String, dynamic> profile) {
+    return _usernameFromProfile(profile) != null;
+  }
+
   Future<bool> hasProfile({String? userId}) async {
     if (AppConfig.useLegacySupabase) {
       final user = Supabase.instance.client.auth.currentUser;
@@ -16,16 +27,45 @@ class ProfileRepository {
           .select()
           .eq('id', user.id)
           .maybeSingle();
-      return response != null;
+      return response != null && _isCompleteProfile(response);
     }
 
     if (userId == null) return false;
     try {
-      await _apiClient.dio.get('/profiles/me');
-      return true;
+      final response = await _apiClient.dio.get('/profiles/me');
+      final profile = response.data as Map<String, dynamic>;
+      return _isCompleteProfile(profile);
     } catch (_) {
       return false;
     }
+  }
+
+  Future<String> getUserName() async {
+    if (AppConfig.useLegacySupabase) {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        throw Exception('No user logged in');
+      }
+
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('username')
+          .eq('id', user.id)
+          .single();
+      final username = _usernameFromProfile(response);
+      if (username == null) {
+        throw Exception('Profile username is missing');
+      }
+      return username;
+    }
+
+    final response = await _apiClient.dio.get('/profiles/me');
+    final profile = response.data as Map<String, dynamic>;
+    final username = _usernameFromProfile(profile);
+    if (username == null) {
+      throw Exception('Profile username is missing');
+    }
+    return username;
   }
 
   Future<void> upsertProfile({

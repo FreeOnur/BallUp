@@ -39,7 +39,7 @@ class _MapPageState extends State<MapPage> {
 
     updateSortedCourts();
 
-    if (mapController != null) {
+    if (mapController != null && userPosition != null) {
       mapController!.animateCamera(
         CameraUpdate.newLatLngZoom(
           LatLng(userPosition!.latitude, userPosition!.longitude),

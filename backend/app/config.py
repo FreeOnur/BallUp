@@ -1,4 +1,12 @@
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+UNSAFE_JWT_SECRETS = {
+    "",
+    "change-me-min-32-chars",
+    "dev-only-change-in-production-min-32-chars",
+}
 
 
 class Settings(BaseSettings):
@@ -16,6 +24,18 @@ class Settings(BaseSettings):
     b2_bucket: str = "courtfinder-image"
     b2_endpoint: str = "https://s3.eu-central-003.backblazeb2.com"
     b2_region: str = "eu-central-003"
+
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "Settings":
+        if self.environment.strip().lower() not in {"prod", "production"}:
+            return self
+
+        secret = self.jwt_secret.strip()
+        if secret in UNSAFE_JWT_SECRETS or len(secret) < 32:
+            raise ValueError(
+                "JWT_SECRET must be a unique secret of at least 32 characters in production."
+            )
+        return self
 
 
 settings = Settings()

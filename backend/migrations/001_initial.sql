@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 );
 
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user ON refresh_tokens(user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_refresh_tokens_token_hash ON refresh_tokens(token_hash);
 
 -- profiles.id matches users.id after cutover (or legacy Supabase user uuid on import)
 CREATE TABLE IF NOT EXISTS profiles (

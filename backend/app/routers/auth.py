@@ -106,10 +106,12 @@ def refresh(body: RefreshRequest) -> TokenResponse:
         cur = conn.cursor()
         cur.execute(
             """
-            SELECT rt.user_id, u.email
-            FROM refresh_tokens rt
-            JOIN users u ON u.id = rt.user_id
-            WHERE rt.token_hash = %s AND rt.expires_at > NOW()
+            DELETE FROM refresh_tokens rt
+            USING users u
+            WHERE rt.user_id = u.id
+              AND rt.token_hash = %s
+              AND rt.expires_at > NOW()
+            RETURNING rt.user_id, u.email
             """,
             (token_hash,),
         )
@@ -119,7 +121,6 @@ def refresh(body: RefreshRequest) -> TokenResponse:
 
         user_id = UUID(str(row["user_id"]))
         email = row["email"]
-        cur.execute("DELETE FROM refresh_tokens WHERE token_hash = %s", (token_hash,))
         refresh_plain = generate_refresh_token()
         new_hash = hash_refresh_token(refresh_plain)
         cur.execute(

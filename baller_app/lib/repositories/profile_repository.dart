@@ -28,6 +28,22 @@ class ProfileRepository {
     }
   }
 
+  Future<Map<String, dynamic>?> getCurrentProfile() async {
+    if (AppConfig.useLegacySupabase) {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) return null;
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select()
+          .eq('id', user.id)
+          .maybeSingle();
+      return response == null ? null : Map<String, dynamic>.from(response);
+    }
+
+    final res = await _apiClient.dio.get('/profiles/me');
+    return Map<String, dynamic>.from(res.data as Map);
+  }
+
   Future<void> upsertProfile({
     required String userId,
     required String username,

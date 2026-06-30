@@ -40,9 +40,9 @@ def upsert_my_profile(
         cur.execute(
             """
             INSERT INTO profiles (id, username, avatar_url, age, location, gender, skill_level)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, COALESCE(%s, ''), %s, %s, %s, %s, %s)
             ON CONFLICT (id) DO UPDATE SET
-                username = COALESCE(EXCLUDED.username, profiles.username),
+                username = COALESCE(%s, profiles.username),
                 avatar_url = COALESCE(EXCLUDED.avatar_url, profiles.avatar_url),
                 age = COALESCE(EXCLUDED.age, profiles.age),
                 location = COALESCE(EXCLUDED.location, profiles.location),
@@ -59,6 +59,7 @@ def upsert_my_profile(
                 body.location,
                 body.gender,
                 body.skill_level,
+                body.username,
             ),
         )
         row = cur.fetchone()

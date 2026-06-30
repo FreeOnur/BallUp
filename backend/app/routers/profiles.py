@@ -53,7 +53,7 @@ def upsert_my_profile(
             """,
             (
                 str(user_id),
-                body.username or "",
+                body.username,
                 body.avatar_url,
                 body.age,
                 body.location,

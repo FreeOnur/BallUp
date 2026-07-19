@@ -1,6 +1,9 @@
+import os
 import unittest
 
 from pydantic import ValidationError
+
+os.environ["ENVIRONMENT"] = "development"
 
 from app.config import Settings
 

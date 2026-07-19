@@ -25,7 +25,7 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def require_secure_production_jwt_secret(self) -> Self:
-        if self.environment.strip().lower() != "production":
+        if self.environment.strip().lower() == "development":
             return self
 
         secret = self.jwt_secret.strip()

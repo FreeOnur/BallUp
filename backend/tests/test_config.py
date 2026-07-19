@@ -1,11 +1,11 @@
 import os
 import unittest
+from unittest.mock import patch
 
 from pydantic import ValidationError
 
-os.environ["ENVIRONMENT"] = "development"
-
-from app.config import Settings
+with patch.dict(os.environ, {"ENVIRONMENT": "development"}):
+    from app.config import Settings
 
 
 class SettingsTest(unittest.TestCase):
@@ -39,6 +39,17 @@ class SettingsTest(unittest.TestCase):
             settings.jwt_secret,
             "x" * Settings.MINIMUM_JWT_SECRET_LENGTH,
         )
+
+    def test_unknown_environment_rejects_development_jwt_secret(self) -> None:
+        with self.assertRaisesRegex(
+            ValidationError,
+            "JWT_SECRET must be at least 32 characters",
+        ):
+            Settings(
+                _env_file=None,
+                environment="prod",
+                jwt_secret=Settings.DEVELOPMENT_JWT_SECRET,
+            )
 
     def test_development_allows_development_jwt_secret(self) -> None:
         settings = Settings(

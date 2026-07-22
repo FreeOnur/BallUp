@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:baller_app/repositories/court_repository.dart';
 import 'package:baller_app/repositories/repository_provider.dart';
 
@@ -29,5 +31,14 @@ class CourtServices {
       hoops: hoops,
       address: address,
     );
+  }
+
+  Future<void> uploadCourtImages({
+    required String courtId,
+    required List<File> files,
+  }) async {
+    for (final file in files) {
+      await _courts.uploadCourtImage(courtId: courtId, file: file);
+    }
   }
 }

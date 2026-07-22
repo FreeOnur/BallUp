@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:baller_app/models/Court.dart';
@@ -12,7 +12,6 @@ import 'package:baller_app/widgets/text_fields/text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateMapWindow extends StatefulWidget {
   const CreateMapWindow({super.key});
@@ -68,20 +67,37 @@ class _CreateMapWindowState extends State<CreateMapWindow> {
         address: address ?? 'Unknown Address',
       );
 
-      // ✅ Upload nach Court-Erstellung
+      var successMessage = 'Court erstellt';
       if (imageFileList.isNotEmpty) {
-        await uploadImages(courtId);
+        try {
+          await courtServices.uploadCourtImages(
+            courtId: courtId,
+            files: imageFileList,
+          );
+          successMessage = 'Court und Bilder erstellt';
+        } catch (_) {
+          log(
+            'Court created, but at least one image upload failed',
+            name: 'CreateMapWindow',
+          );
+          successMessage =
+              'Court erstellt. Bilder konnten nicht hochgeladen werden.';
+        }
       }
 
+      if (!mounted) return;
+      final messenger = ScaffoldMessenger.of(context);
       Navigator.pop(context);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Court + Bilder erstellt ✅')),
-      );
-    } catch (e) {
+      messenger.showSnackBar(SnackBar(content: Text(successMessage)));
+    } catch (_) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
+      ).showSnackBar(
+        const SnackBar(
+          content: Text('Court konnte nicht erstellt werden. Versuch es erneut.'),
+        ),
+      );
     }
   }
 
@@ -97,35 +113,6 @@ class _CreateMapWindowState extends State<CreateMapWindow> {
     if (images != null) {
       setState(() {
         imageFileList = images.map((image) => File(image.path)).toList();
-      });
-    }
-  }
-
-  Future<void> upload(String path, File file) async {
-    await Supabase.instance.client.storage
-        .from('court_images')
-        .upload(path, file)
-        .then((data) => print('Upload successful: $data'));
-  }
-
-  Future<void> uploadImages(String courtId) async {
-    final supabase = Supabase.instance.client;
-
-    for (final file in imageFileList) {
-      final fileExt = file.path.split('.').last;
-      final fileName =
-          '${DateTime.now().millisecondsSinceEpoch}_${courtId}.$fileExt';
-      final storagePath = 'courts/$courtId/$fileName';
-      await supabase.storage.from('court_images').upload(storagePath, file);
-
-      final publicUrl = supabase.storage
-          .from('court_images')
-          .getPublicUrl(storagePath);
-
-      await supabase.from('court_images').insert({
-        'court_id': courtId,
-        'file_path': publicUrl,
-        'created_at': DateTime.now().toIso8601String(),
       });
     }
   }

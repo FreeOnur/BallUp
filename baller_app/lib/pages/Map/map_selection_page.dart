@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+/// Fallback when GPS is unavailable — same region default as [MapPage].
+const LatLng kDefaultMapSelectionTarget = LatLng(47.0, 8.0);
+
+/// Camera target after a location attempt finishes.
+@visibleForTesting
+LatLng mapSelectionTarget(Position? userPosition) {
+  if (userPosition == null) {
+    return kDefaultMapSelectionTarget;
+  }
+  return LatLng(userPosition.latitude, userPosition.longitude);
+}
+
 class MapSelectionPage extends StatefulWidget {
   const MapSelectionPage({super.key});
 
@@ -15,6 +27,7 @@ class _MapSelectionPageState extends State<MapSelectionPage> {
   final LocationService locationService = LocationService();
   GoogleMapController? mapController;
   Position? userPosition;
+  bool _locationLoadComplete = false;
 
   @override
   void initState() {
@@ -24,7 +37,10 @@ class _MapSelectionPageState extends State<MapSelectionPage> {
 
   Future<void> loadPosition() async {
     userPosition = await locationService.loadPosition();
-    setState(() {});
+    if (!mounted) return;
+    setState(() {
+      _locationLoadComplete = true;
+    });
   }
 
   void _moveCameraToUser() {
@@ -43,11 +59,13 @@ class _MapSelectionPageState extends State<MapSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (userPosition == null) {
+    if (!_locationLoadComplete) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
+
+    final initialTarget = mapSelectionTarget(userPosition);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,10 +75,7 @@ class _MapSelectionPageState extends State<MapSelectionPage> {
         children: [
           GoogleMap(
             initialCameraPosition: CameraPosition(
-              target: LatLng(
-                userPosition!.latitude,
-                userPosition!.longitude,
-              ),
+              target: initialTarget,
               zoom: 16,
             ),
             onMapCreated: (controller) {

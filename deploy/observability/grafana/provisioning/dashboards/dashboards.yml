@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+  - name: ballup
+    folder: BallUp
+    type: file
+    disableDeletion: true
+    options:
+      path: /var/lib/grafana/dashboards

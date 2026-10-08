@@ -1,36 +1,89 @@
-# BallerApp
+# BallUp
 
-Pickup basketball — courts, games, community.
+**BallUp** ist eine App für Pickup-Basketball: Courts auf der Karte finden, Mitspieler und Gegner finden,
+Games spielen, Ergebnisse melden und im Ranking aufsteigen – mit Teams, Turnieren, Chat, Community und Training.
 
-**v2 restart (June 2026):** App and API code **removed** from `main`. This repo holds agent setup (`.claude/`, `.cursor/`, `.caliber/`), docs, design tokens, deploy scripts, and exported data. Build phases come next — see [docs/architecture/feature-plan.md](docs/architecture/feature-plan.md).
+- **Android:** Kotlin + Jetpack Compose · **iOS:** Swift + SwiftUI (beide nativ)
+- **Geteilt:** Kotlin Multiplatform für Data + Domain (SQLDelight, Koin, Ktor, generierter OpenAPI-Client)
+- **Backend:** FastAPI als modularer Monolith (REST `/v1`, `/admin/v1`, WebSockets), Redis-Jobs
+- **Betrieb:** Hetzner + Docker Compose, Caddy, Prometheus/Grafana/Loki/Tempo, Uptime Kuma – alles selbst gehostet
 
-## Stack (defined, not built)
+Planung, Stack- und Architektur-Entscheidungen stehen in **Notion** (Technical Planning).
 
-| Layer | Choice |
-|-------|--------|
-| Mobile | Flutter |
-| API | Hono + TypeScript + Drizzle (`api/` — planned) |
-| Database | Postgres + PostGIS (Hetzner) |
-| Auth | Custom JWT + Resend |
-| Images | Backblaze B2 |
+## Repo-Überblick
 
-Decision: [ADR-0012](docs/decisions/0012-hono-postgres-resend-b2-backend.md)
+```
+.
+├── backend/            FastAPI-API (Python, uv) – src/ballup/{core,shared,api,realtime,workers,modules/<modul>}
+├── contracts/          openapi.json – Vertrag zwischen Backend und Apps
+├── mobile/             EIN Gradle-Build für alles Mobile
+│   ├── build-logic/    Convention Plugins (ballup.kmp.*, ballup.android.*)
+│   ├── gradle/         libs.versions.toml (alle Versionen) + Wrapper
+│   ├── shared/         Kotlin Multiplatform: core/* und feature/<feature> (data + domain), umbrella → iOS-Framework "Shared"
+│   ├── androidApp/     app (Start, Navigation, Koin), core/{designsystem,ui}, feature/<feature> (Compose + ViewModels)
+│   └── iosApp/         project.yml (XcodeGen) + BallUp/{App,Core,Features/<Feature>,Resources}
+├── deploy/             compose/, caddy/, observability/, identity/, scripts/ – alles, was auf dem Server läuft
+├── docs/
+│   ├── architecture/   ER-Diagramm (draw.io) und weitere Diagramme
+│   ├── adr/            Architecture Decision Records zu Repo/Build-Entscheidungen
+│   ├── checklists/     Launch-Readiness, Store-Releases, Go-Live, Security, DSGVO, Barrierefreiheit, neues Feature
+│   ├── specs/          Feature-Specs (Vorlage _template.md)
+│   ├── guides/         How-tos fürs Team
+│   ├── runbooks/       Betriebsanleitungen (Deploy, Rollback, Restore, Incident)
+│   ├── postmortems/    Incident-Auswertungen
+│   └── design/         Design-System, Motion-Specs, Screens
+├── .github/            CI (backend, android, ios), Deploy, Dependabot, CODEOWNERS, PR-Template
+└── .devcontainer/      Codespace fürs Backend
+```
 
-## Docs
+Module heißen überall gleich: `auth, me, profiles, home, courts, uploads, games, matchmaking, rankings,
+teams, tournaments, clans, social, chat, community, notifications, training, camera, gamification,
+reports, subscriptions` (+ `telemetry`, `config` im Backend und in `shared/core`).
 
-Start at [docs/README.md](docs/README.md).
+## Setup in 5 Minuten
 
-## Deploy (when compose + api exist)
+### Backend
 
-Copy `scripts/config/deploy.example.json` → `scripts/config/deploy.json`, then `npm run deploy`. See [docs/deploy/server.md](docs/deploy/server.md).
+Voraussetzung: [uv](https://docs.astral.sh/uv/), Docker.
 
-## v1 archive
+```bash
+docker compose -f deploy/compose/compose.dev.yml up -d   # Redis
+cd backend
+cp .env.example .env
+uv sync
+uv run ruff check . && uv run mypy && uv run pytest
+```
 
-- Branch: `archive/v1-flutter-fastapi`
-- Tag: `v1-flutter-fastapi-archive`
-- Data: `backups/` (gitignored) + `%USERPROFILE%/Documents/BallerApp-backups/`
+Oder ohne lokale Installation: **Code → Codespaces → Create codespace** (nutzt `.devcontainer/`).
 
-## Secrets
+### Android
 
-- Env: `api/.env` (local, gitignored) — values from `backups/env/backend.env.v1` ([guide](docs/deploy/env-migration.md))
-- MCP: copy `.cursor/mcp.json.example` → `.cursor/mcp.json` ([rotate exposed tokens](docs/security/rotate-exposed-secrets.md))
+Voraussetzung: Android Studio (aktuelle stabile Version, bringt JDK 21 mit).
+
+1. `mobile/` in Android Studio öffnen und Gradle synchronisieren.
+2. Run-Konfiguration **androidApp.app** starten.
+
+```bash
+cd mobile
+./gradlew :androidApp:app:assembleDebug   # APK bauen
+./gradlew spotlessApply                   # Code formatieren
+./gradlew check                           # Tests + Lint
+```
+
+### iOS (nur macOS)
+
+Voraussetzung: Xcode (aktuelle Version), JDK 21 (z. B. `brew install --cask temurin@21`), XcodeGen.
+
+```bash
+brew install xcodegen
+cd mobile/iosApp
+xcodegen generate
+open BallUp.xcodeproj
+```
+
+In Xcode unter *Signing & Capabilities* dein Team wählen und starten. Der Build ruft Gradle auf und
+baut dabei das Kotlin-Framework `Shared` automatisch.
+
+## Mitarbeiten
+
+Branches, Commits und PRs: siehe [CONTRIBUTING.md](CONTRIBUTING.md).

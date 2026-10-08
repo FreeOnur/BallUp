@@ -1,0 +1,91 @@
+# XcodeGen spec – the .xcodeproj is generated from this file and NOT committed.
+#   brew install xcodegen && cd mobile/iosApp && xcodegen generate && open BallUp.xcodeproj
+name: BallUp
+
+options:
+  bundleIdPrefix: app.ballup
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Set your Apple team locally in Xcode (Signing & Capabilities); never commit it here.
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+
+targets:
+  BallUp:
+    type: application
+    platform: iOS
+    sources:
+      - path: BallUp
+        excludes:
+          - "**/.gitkeep"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.ballup.ios
+        PRODUCT_NAME: BallUp
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: BallUp
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        # Kotlin Multiplatform framework "Shared" (mobile/shared/umbrella)
+        FRAMEWORK_SEARCH_PATHS: $(inherited) $(SRCROOT)/../shared/umbrella/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
+        OTHER_LDFLAGS: $(inherited) -framework Shared
+    preBuildScripts:
+      - name: Build Kotlin framework (Shared)
+        basedOnDependencyAnalysis: false
+        script: |
+          if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
+            echo "Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \"YES\""
+            exit 0
+          fi
+          cd "$SRCROOT/.."
+          ./gradlew :shared:umbrella:embedAndSignAppleFrameworkForXcode
+
+  BallUpTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BallUpTests
+        excludes:
+          - "**/.gitkeep"
+    dependencies:
+      - target: BallUp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.ballup.ios.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+  BallUpUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: BallUpUITests
+        excludes:
+          - "**/.gitkeep"
+    dependencies:
+      - target: BallUp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.ballup.ios.uitests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  BallUp:
+    build:
+      targets:
+        BallUp: all
+    test:
+      targets:
+        - BallUpTests
+        - BallUpUITests

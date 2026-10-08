@@ -1,0 +1,21 @@
+included:
+  - BallUp
+  - BallUpTests
+  - BallUpUITests
+
+opt_in_rules:
+  - closure_spacing
+  - empty_count
+  - explicit_init
+  - first_where
+  - modifier_order
+  - sorted_imports
+  - unused_import
+  - vertical_whitespace_closing_braces
+
+line_length:
+  warning: 120
+  error: 160
+
+identifier_name:
+  min_length: 2

@@ -1,0 +1,29 @@
+{
+	email {$ACME_EMAIL}
+}
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
+# REST (/v1, /admin/v1) and WebSockets
+{$API_DOMAIN} {
+	import security_headers
+	encode zstd gzip
+	reverse_proxy api:8000
+}
+
+{$GRAFANA_DOMAIN} {
+	import security_headers
+	reverse_proxy grafana:3000
+}
+
+{$STATUS_DOMAIN} {
+	import security_headers
+	reverse_proxy uptime-kuma:3001
+}

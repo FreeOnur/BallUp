@@ -1,0 +1,50 @@
+version: 2
+
+updates:
+  - package-ecosystem: uv
+    directory: /backend
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "build(deps)"
+    groups:
+      python:
+        patterns: ["*"]
+
+  - package-ecosystem: gradle
+    directory: /mobile
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "build(deps)"
+    groups:
+      kotlin:
+        patterns: ["org.jetbrains.kotlin*", "com.android.tools.build*", "com.android.*"]
+      androidx:
+        patterns: ["androidx.*"]
+      other:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      actions:
+        patterns: ["*"]
+
+  - package-ecosystem: docker
+    directory: /backend
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "build(deps)"
+
+  - package-ecosystem: docker-compose
+    directory: /deploy/compose
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "build(deps)"

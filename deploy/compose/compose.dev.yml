@@ -1,0 +1,15 @@
+# Local development dependencies. The API itself runs on the host with hot reload:
+#   docker compose -f deploy/compose/compose.dev.yml up -d
+#   cd backend && uv run fastapi dev src/ballup/main.py
+name: ballup-dev
+
+services:
+  redis:
+    image: redis:8.8.3-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5

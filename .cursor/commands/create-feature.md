@@ -20,5 +20,5 @@ Propose a new feature aligned with BallerApp product and architecture.
 
 **Implementation Tasks:** Numbered, small PR-sized steps.
 
-4. Append to `.cursor/project/user_stories.md` (or output for user to paste).
+4. Append a new .md file with the name `##-feature-name ` to the folder `.cursor/project/userStories` (a number instead of the "#"  but the number is how much important that feature is for the application)
 5. Note any security or design implications (tokens, auth, map/location).

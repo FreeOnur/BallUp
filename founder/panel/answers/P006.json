@@ -1,0 +1,13 @@
+{
+  "id": "P006",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "price",
+  "reason": "Mit meinem Lehrlingsgeld zahl ich nicht jeden Monat fünf Euro dafür, dass mir eine KI sagt, wie ich werfen soll. Ich spiel mit meiner Crew zum Spaß, das läuft eh über WhatsApp, die Gratis-App würd ich mir höchstens wegen der Karte anschauen.",
+  "objection": "Noch ein Abo, das ich nach zwei Wochen nicht mehr nutze und dann vergesse zu kündigen. Und ob so eine Wurfanalyse mit dem Handy am Court wirklich was bringt, glaub ich erst, wenn ich's seh.",
+  "would_change_my_mind": "Wenn ich es einen Monat gratis testen könnte und es ohne automatische Verlängerung läuft, und meine Crew es auch nutzt, sodass wir die Ranked-Stats untereinander vergleichen.",
+  "price_too_cheap": 0.99,
+  "price_cheap": 1.99,
+  "price_expensive": 3.49,
+  "price_too_expensive": 4.99
+}

@@ -9,6 +9,7 @@
 
 - [ ] `schemas.py` → `router.py` → `service.py` → `repository.py`, Fehler in `exceptions.py`
 - [ ] Router in `api/v1.py` (bzw. `api/admin_v1.py`) registriert
+- [ ] Datenbank-Änderungen nach [Datenbank-Regeln](../guides/database-rules.md): ER-Diagramm, Migration, Indizes, Constraints
 - [ ] Unit-Tests für Service, Integrationstests für Router
 - [ ] `contracts/openapi.json` aktualisiert
 

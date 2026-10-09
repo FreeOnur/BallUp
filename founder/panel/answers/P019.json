@@ -1,0 +1,13 @@
+{
+  "id": "P019",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "trust",
+  "reason": "Wurfanalyse und Trainingspläne sind eigentlich genau mein Ding, aber bei einer neuen App ohne Bewertungen glaub ich nicht, dass eine Handykamera-KI mir mehr bringt als die Drill-Videos, die ich gratis auf YouTube schau. Und ab November spiel ich eh kaum draußen, dann zahl ich für nichts.",
+  "objection": "Noch ein Abo, das ich vergesse zu kündigen, und das ich den halben Winter gar nicht nutze. Dazu weiß ich nicht, ob die KI-Analyse wirklich was taugt oder nur nette Grafiken ausspuckt.",
+  "would_change_my_mind": "Eine kostenlose Testphase, in der ich eine echte Analyse meines eigenen Wurfs sehe, die mir was Konkretes zeigt, plus Abo jederzeit pausierbar über den Winter.",
+  "price_too_cheap": 1,
+  "price_cheap": 2.99,
+  "price_expensive": 7.99,
+  "price_too_expensive": 12
+}

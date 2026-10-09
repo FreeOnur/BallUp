@@ -1,0 +1,13 @@
+{
+  "id": "P007",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "need",
+  "reason": "Ich geh zum Court, wenn ich Zeit hab, und spiel einfach. Die Karte und wie voll es gerade ist, nehm ich vielleicht gratis mit, aber Trainingspläne und Wurfanalyse brauch ich nach der Arbeit echt nicht.",
+  "objection": "Noch ein Abo, das ich nach zwei Wochen nicht mehr nutze und dann monatelang vergesse zu kündigen. Ich trainier nicht nach Plan, ich spiel nur.",
+  "would_change_my_mind": "Ein Einmalkauf oder ein Monat zum Testen, der von selbst endet und nicht automatisch weiterläuft.",
+  "price_too_cheap": 0.99,
+  "price_cheap": 1.99,
+  "price_expensive": 3.99,
+  "price_too_expensive": 5.99
+}

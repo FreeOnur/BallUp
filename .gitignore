@@ -22,6 +22,7 @@ desktop.ini
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+.mcp.json
 
 # ---------- Python / backend ----------
 __pycache__/

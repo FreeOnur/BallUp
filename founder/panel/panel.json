@@ -1,0 +1,98 @@
+{
+ "n": 20,
+ "seed": 2026,
+ "customer": {
+  "business": "BallUp (Pickup-Basketball-App, Gratis-App + BallUp Premium 4,99 €/Monat)",
+  "target": "Deutschsprachige Hobby-Streetballer in Vorarlberg (Österreich), 18 bis 34, die regelmäßig draußen spielen, plus Leute, die unterwegs Courts und Mitspieler suchen",
+  "where": "Vorarlberg, Österreich (Dornbirn, Bregenz, Feldkirch)",
+  "age": [
+   18,
+   34
+  ],
+  "segments": [
+   {
+    "name": "Schüler/in oder Lehrling (Einkommen in Euro pro Jahr)",
+    "share": 0.25,
+    "income": [
+     3000,
+     14000
+    ]
+   },
+   {
+    "name": "Student/in (Einkommen in Euro pro Jahr)",
+    "share": 0.25,
+    "income": [
+     6000,
+     15000
+    ]
+   },
+   {
+    "name": "Berufstätig, spielt nach der Arbeit (Einkommen in Euro pro Jahr)",
+    "share": 0.35,
+    "income": [
+     28000,
+     55000
+    ]
+   },
+   {
+    "name": "Viel unterwegs: Reisen, Pendeln, Auslandssemester (Einkommen in Euro pro Jahr)",
+    "share": 0.15,
+    "income": [
+     20000,
+     60000
+    ]
+   }
+  ],
+  "behaviours": [
+   {
+    "name": "Spontan-Spieler",
+    "share": 0.25,
+    "how": "Geht zum Court, wenn gerade Zeit ist, und schaut vorher nirgends nach."
+   },
+   {
+    "name": "Feste Crew",
+    "share": 0.2,
+    "how": "Spielt fast immer mit denselben Leuten, verabredet wird in einer WhatsApp-Gruppe."
+   },
+   {
+    "name": "Ehrgeiziger Grinder",
+    "share": 0.15,
+    "how": "Wirft oft allein, schaut Drill-Videos auf YouTube und will messbar besser werden."
+   },
+   {
+    "name": "Zahlt nie für Apps",
+    "share": 0.15,
+    "how": "Nutzt grundsätzlich nur Gratis-Versionen und klickt Abo-Angebote weg."
+   },
+   {
+    "name": "Fitness-App-Nutzer",
+    "share": 0.1,
+    "how": "Probiert neue Sport-Apps aus und hat schon einmal für ein Fitness- oder Lauf-Abo bezahlt."
+   },
+   {
+    "name": "Court-Sucher auf Reisen",
+    "share": 0.15,
+    "how": "Sucht in fremden Städten über Google Maps nach Courts und fragt vor Ort, wer mitspielt."
+   }
+  ],
+  "objections": [
+   "Bei uns spielt eh kaum wer, die App ist am Anfang sicher leer",
+   "4,99 im Monat für eine Basketball-App? Ich zahl schon Spotify und Netflix",
+   "KI-Wurfanalyse mit dem Handy, funktioniert das wirklich oder ist das Spielerei?",
+   "Ich spiel zum Spaß, einen Trainingsplan brauch ich nicht",
+   "Die Courts kenn ich eh, und meine Leute sind in der WhatsApp-Gruppe",
+   "Im Winter spiel ich draußen fast gar nicht",
+   "Noch ein Abo, das ich dann vergesse zu kündigen",
+   "Beim Ranking wird doch eh geschummelt"
+  ],
+  "habits": [
+   "im Sommer spielst du zwei- bis dreimal pro Woche am Court beim Schulzentrum",
+   "du schaust jeden Tag NBA-Highlights auf TikTok oder YouTube",
+   "von November bis März spielst du kaum draußen",
+   "ein paar Wochenenden im Jahr bist du in Zürich, München oder Wien",
+   "deine Crew verabredet sich in einer WhatsApp-Gruppe",
+   "du hattest schon einmal ein Abo für eine Fitness- oder Lauf-App"
+  ]
+ },
+ "pitch": "BallUp, eine neue App für Pickup-Basketball. Startet zuerst in Vorarlberg, damit dort von Anfang an genug Spieler sind.\nGratis, und das bleibt so: Courts auf einer Karte finden, sehen, wie viel dort gerade los ist, Mitspieler finden und 1v1 oder 2v2 spielen, unranked oder ranked mit Ranking-System.\nBallUp Premium kostet 4,99 € im Monat: ein KI-Trainer mit persönlichen Trainingsplänen, KI-Wurfanalyse per Handykamera und erweiterte Statistiken aus deinen eigenen Ranked-Spielen.\nKaufen heißt hier: BallUp Premium abonnieren. Die Gratis-App nur zu nutzen zählt nicht als Kauf. Alle Preise sind Euro pro Monat."
+}

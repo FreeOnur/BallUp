@@ -1,6 +1,6 @@
 # 0002 – `deploy/` statt `infra/`
 
-- **Status:** Akzeptiert
+- **Status:** Akzeptiert, teilweise ersetzt: `identity/` durch [0010](0010-eigene-authentifizierung.md), Loki/Alloy durch [0016](0016-observability-ohne-loki.md)
 - **Datum:** 2026-10-08
 
 ## Kontext

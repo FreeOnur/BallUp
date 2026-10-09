@@ -2,10 +2,17 @@
 #   docker compose -f compose.yml -f compose.observability.yml up -d
 name: ballup
 
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "50m"
+    max-file: "10"
+
 services:
   caddy:
     image: caddy:2.11.7-alpine
     restart: unless-stopped
+    logging: *default-logging
     ports:
       - "80:80"
       - "443:443"
@@ -25,6 +32,7 @@ services:
   api:
     image: ${BALLUP_API_IMAGE:?set BALLUP_API_IMAGE in .env}
     restart: unless-stopped
+    logging: *default-logging
     env_file: .env
     expose:
       - "8000"
@@ -35,6 +43,7 @@ services:
   redis:
     image: redis:8.8.3-alpine
     restart: unless-stopped
+    logging: *default-logging
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data

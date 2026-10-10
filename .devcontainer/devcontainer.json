@@ -1,0 +1,36 @@
+{
+  "name": "BallUp Backend",
+  "image": "mcr.microsoft.com/devcontainers/python:3.14-trixie",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "containerEnv": {
+    "UV_LINK_MODE": "copy"
+  },
+  "postCreateCommand": "curl -LsSf https://astral.sh/uv/0.12.24/install.sh | sh && cd backend && ~/.local/bin/uv sync",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": { "label": "BallUp API" }
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "ms-python.python",
+        "ms-python.mypy-type-checker",
+        "tamasfe.even-better-toml",
+        "ms-azuretools.vscode-containers"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/backend/.venv/bin/python",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  }
+}

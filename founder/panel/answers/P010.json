@@ -1,0 +1,13 @@
+{
+  "id": "P010",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "need",
+  "reason": "Ich spiel nur ein paar Wochenenden im Jahr auf Reisen, da brauch ich keinen KI-Trainer und keine Ranked-Statistiken. Wenn überhaupt, nutz ich die Gratis-Karte, um in Zürich oder Wien einen Court zu finden, und das Premium-Abo lass ich weg.",
+  "objection": "Mit 10.000 im Jahr zahl ich kein Monatsabo für etwas, das ich vielleicht viermal im Jahr brauche, und die App startet ja eh erst in Vorarlberg, also ist in den Städten, wo ich unterwegs bin, wahrscheinlich noch niemand drauf.",
+  "would_change_my_mind": "Ein Tages- oder Wochenpass statt Abo, und wenn die App in Zürich, München und Wien wirklich schon Leute hat.",
+  "price_too_cheap": 0.99,
+  "price_cheap": 1.99,
+  "price_expensive": 3.49,
+  "price_too_expensive": 4.99
+}

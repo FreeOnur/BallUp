@@ -1,0 +1,71 @@
+name: ios-ci
+
+on:
+  pull_request:
+    paths:
+      - "mobile/iosApp/**"
+      - "mobile/shared/**"
+      - "mobile/build-logic/**"
+      - "mobile/gradle/**"
+      - "mobile/*.gradle.kts"
+      - "mobile/gradle.properties"
+      - "contracts/**"
+      - ".github/workflows/ios-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "mobile/iosApp/**"
+      - "mobile/shared/**"
+      - "mobile/build-logic/**"
+      - "mobile/gradle/**"
+      - "mobile/*.gradle.kts"
+      - "mobile/gradle.properties"
+      - "contracts/**"
+      - ".github/workflows/ios-ci.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Shared tests + iOS app build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Shared module tests (iOS simulator)
+        working-directory: mobile
+        run: ./gradlew iosSimulatorArm64Test
+
+      - name: Build Kotlin framework (Shared)
+        # Built explicitly so the Xcode build phase finds it even when Gradle restores tasks from cache
+        working-directory: mobile
+        run: ./gradlew :shared:umbrella:linkDebugFrameworkIosSimulatorArm64
+
+      - name: Generate Xcode project
+        working-directory: mobile/iosApp
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Build app (simulator, unsigned)
+        working-directory: mobile/iosApp
+        run: |
+          xcodebuild build \
+            -project BallUp.xcodeproj \
+            -scheme BallUp \
+            -configuration Debug \
+            -destination "generic/platform=iOS Simulator" \
+            ARCHS=arm64 \
+            CODE_SIGNING_ALLOWED=NO

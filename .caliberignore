@@ -1,7 +1,0 @@
-.dart_tool/
-build/
-android/.gradle/
-**/*.dill
-**/executionHistory.bin
-node_modules/
-.caliber/cache/

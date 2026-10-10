@@ -1,0 +1,13 @@
+{
+  "id": "P008",
+  "buys": false,
+  "purchases_first_month": 0,
+  "reason_code": "price",
+  "reason": "Ich zahl schon Spotify und Netflix, für noch ein Abo neben dem Studium ist kein Geld da. Ich geh zum Court beim Schulzentrum, wenn ich Zeit hab, und spiel einfach. Einen KI-Trainingsplan brauch ich dafür nicht, die Gratis-App mit Karte und Mitspielern reicht mir völlig.",
+  "objection": "4,99 jeden Monat für Zeug wie Trainingspläne und Statistiken, die ich wahrscheinlich nach zwei Wochen nicht mehr anschau, weil ich eh nur spontan zock und nicht trainiere.",
+  "would_change_my_mind": "Ein Studentenpreis um die 1-2 Euro oder ein Sommer-Abo, das ich nur in den Monaten zahl, in denen ich wirklich draußen spiel.",
+  "price_too_cheap": 0.5,
+  "price_cheap": 1,
+  "price_expensive": 2.5,
+  "price_too_expensive": 4
+}

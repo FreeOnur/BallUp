@@ -1,0 +1,105 @@
+[project]
+name = "ballup"
+version = "0.1.0"
+description = "BallUp API – modular monolith for the BallUp pickup basketball app"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.143.0",
+    "httpx>=0.28.1",
+    "opentelemetry-api>=1.45.1",
+    "opentelemetry-exporter-otlp>=1.45.1",
+    "opentelemetry-instrumentation-fastapi>=0.66b1",
+    "opentelemetry-sdk>=1.45.1",
+    "prometheus-client>=0.26.0",
+    "pydantic-settings>=2.15.0",
+    "pyjwt[crypto]>=2.15.1",
+    "redis>=8.1.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.10",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "B",        # bugbear
+    "UP",       # pyupgrade
+    "SIM",      # simplify
+    "C4",       # comprehensions
+    "PTH",      # use pathlib
+    "RUF",      # ruff-specific
+    "ASYNC",    # async pitfalls
+    "S",        # bandit (security)
+    "N",        # naming
+    "FAST",     # FastAPI-specific
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "fastapi.Body",
+    "fastapi.Cookie",
+    "fastapi.Depends",
+    "fastapi.File",
+    "fastapi.Form",
+    "fastapi.Header",
+    "fastapi.Path",
+    "fastapi.Query",
+    "fastapi.Security",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ballup"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.14"
+mypy_path = "src"
+packages = ["ballup"]
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib"]
+markers = [
+    "integration: tests that need running services (database, redis, identity provider)",
+]
+
+[tool.coverage.run]
+source = ["ballup"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 70
+show_missing = true
+skip_empty = true

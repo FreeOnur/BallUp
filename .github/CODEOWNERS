@@ -1,0 +1,10 @@
+# Every PR needs a review from the owner of the touched area.
+*                   @FreeOnur
+
+/backend/           @FreeOnur
+/contracts/         @FreeOnur
+/mobile/shared/     @FreeOnur
+/mobile/androidApp/ @FreeOnur
+/mobile/iosApp/     @FreeOnur
+/deploy/            @FreeOnur
+/.github/           @FreeOnur

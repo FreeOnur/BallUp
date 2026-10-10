@@ -1,0 +1,50 @@
+# Production stack on the Hetzner server.
+#   docker compose -f compose.yml -f compose.observability.yml up -d
+name: ballup
+
+services:
+  caddy:
+    image: caddy:2.11.7-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
+      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in .env}
+      GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN in .env}
+      STATUS_DOMAIN: ${STATUS_DOMAIN:?set STATUS_DOMAIN in .env}
+    volumes:
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
+  api:
+    image: ${BALLUP_API_IMAGE:?set BALLUP_API_IMAGE in .env}
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - "8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  redis:
+    image: redis:8.8.3-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  caddy_data:
+  caddy_config:
+  redis_data:

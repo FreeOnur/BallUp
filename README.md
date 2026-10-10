@@ -1,31 +1,89 @@
-# BallerApp
+# BallUp
 
-Pickup basketball — courts, games, community.
+**BallUp** ist eine App für Pickup-Basketball: Courts auf der Karte finden, Mitspieler und Gegner finden,
+Games spielen, Ergebnisse melden und im Ranking aufsteigen – mit Teams, Turnieren, Chat, Community und Training.
 
-## Deploy (Coolify)
+- **Android:** Kotlin + Jetpack Compose · **iOS:** Swift + SwiftUI (beide nativ)
+- **Geteilt:** Kotlin Multiplatform für Data + Domain (SQLDelight, Koin, Ktor, generierter OpenAPI-Client)
+- **Backend:** FastAPI als modularer Monolith (REST `/v1`, `/admin/v1`, WebSockets), Redis-Jobs
+- **Betrieb:** Hetzner + Docker Compose, Caddy, Prometheus/Grafana/Loki/Tempo, Uptime Kuma – alles selbst gehostet
 
-| Setting | Value |
-|---------|--------|
-| Base Directory | empty (repo root) |
-| Docker Compose | `docker-compose.yml` |
-| Domain | `api.ballup.net` → service `api` → port `8000` → HTTPS |
+Planung, Stack- und Architektur-Entscheidungen stehen in **Notion** (Technical Planning).
 
-Set in Coolify **Environment Variables**: `POSTGRES_*`, `JWT_SECRET`, `B2_*` (bucket `courtfinder-image`, EU endpoint from Backblaze bucket settings).
+## Repo-Überblick
 
-DNS: domain panel → A record `api` → server IP (not in Coolify).
-
-## Local API
-
-```bash
-docker compose up -d --build
-curl http://localhost:8000/health
+```
+.
+├── backend/            FastAPI-API (Python, uv) – src/ballup/{core,shared,api,realtime,workers,modules/<modul>}
+├── contracts/          openapi.json – Vertrag zwischen Backend und Apps
+├── mobile/             EIN Gradle-Build für alles Mobile
+│   ├── build-logic/    Convention Plugins (ballup.kmp.*, ballup.android.*)
+│   ├── gradle/         libs.versions.toml (alle Versionen) + Wrapper
+│   ├── shared/         Kotlin Multiplatform: core/* und feature/<feature> (data + domain), umbrella → iOS-Framework "Shared"
+│   ├── androidApp/     app (Start, Navigation, Koin), core/{designsystem,ui}, feature/<feature> (Compose + ViewModels)
+│   └── iosApp/         project.yml (XcodeGen) + BallUp/{App,Core,Features/<Feature>,Resources}
+├── deploy/             compose/, caddy/, observability/, identity/, scripts/ – alles, was auf dem Server läuft
+├── docs/
+│   ├── architecture/   ER-Diagramm (draw.io) und weitere Diagramme
+│   ├── adr/            Architecture Decision Records zu Repo/Build-Entscheidungen
+│   ├── checklists/     Launch-Readiness, Store-Releases, Go-Live, Security, DSGVO, Barrierefreiheit, neues Feature
+│   ├── specs/          Feature-Specs (Vorlage _template.md)
+│   ├── guides/         How-tos fürs Team
+│   ├── runbooks/       Betriebsanleitungen (Deploy, Rollback, Restore, Incident)
+│   ├── postmortems/    Incident-Auswertungen
+│   └── design/         Design-System, Motion-Specs, Screens
+├── .github/            CI (backend, android, ios), Deploy, Dependabot, CODEOWNERS, PR-Template
+└── .devcontainer/      Codespace fürs Backend
 ```
 
-## Flutter (own server)
+Module heißen überall gleich: `auth, me, profiles, home, courts, uploads, games, matchmaking, rankings,
+teams, tournaments, clans, social, chat, community, notifications, training, camera, gamification,
+reports, subscriptions` (+ `telemetry`, `config` im Backend und in `shared/core`).
+
+## Setup in 5 Minuten
+
+### Backend
+
+Voraussetzung: [uv](https://docs.astral.sh/uv/), Docker.
 
 ```bash
-cd baller_app
-flutter run --dart-define=USE_LEGACY_SUPABASE=false --dart-define=API_BASE_URL=https://api.ballup.net
+docker compose -f deploy/compose/compose.dev.yml up -d   # Redis
+cd backend
+cp .env.example .env
+uv sync
+uv run ruff check . && uv run mypy && uv run pytest
 ```
 
-Data migration: `backend/scripts/export-from-supabase.md` · local `backend/scripts/courts.sql` (gitignored, 133MB+) via `backend/scripts/import-local.ps1`
+Oder ohne lokale Installation: **Code → Codespaces → Create codespace** (nutzt `.devcontainer/`).
+
+### Android
+
+Voraussetzung: Android Studio (aktuelle stabile Version, bringt JDK 21 mit).
+
+1. `mobile/` in Android Studio öffnen und Gradle synchronisieren.
+2. Run-Konfiguration **androidApp.app** starten.
+
+```bash
+cd mobile
+./gradlew :androidApp:app:assembleDebug   # APK bauen
+./gradlew spotlessApply                   # Code formatieren
+./gradlew check                           # Tests + Lint
+```
+
+### iOS (nur macOS)
+
+Voraussetzung: Xcode (aktuelle Version), JDK 21 (z. B. `brew install --cask temurin@21`), XcodeGen.
+
+```bash
+brew install xcodegen
+cd mobile/iosApp
+xcodegen generate
+open BallUp.xcodeproj
+```
+
+In Xcode unter *Signing & Capabilities* dein Team wählen und starten. Der Build ruft Gradle auf und
+baut dabei das Kotlin-Framework `Shared` automatisch.
+
+## Mitarbeiten
+
+Branches, Commits und PRs: siehe [CONTRIBUTING.md](CONTRIBUTING.md).

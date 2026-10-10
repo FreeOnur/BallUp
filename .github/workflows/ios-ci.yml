@@ -48,6 +48,11 @@ jobs:
         working-directory: mobile
         run: ./gradlew iosSimulatorArm64Test
 
+      - name: Build Kotlin framework (Shared)
+        # Built explicitly so the Xcode build phase finds it even when Gradle restores tasks from cache
+        working-directory: mobile
+        run: ./gradlew :shared:umbrella:linkDebugFrameworkIosSimulatorArm64
+
       - name: Generate Xcode project
         working-directory: mobile/iosApp
         run: |

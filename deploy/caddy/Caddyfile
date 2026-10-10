@@ -23,7 +23,19 @@
 	reverse_proxy grafana:3000
 }
 
+# Only the public status page (slug "ballup"). The Uptime Kuma admin UI and its first-run setup are not
+# reachable from the internet – use an SSH tunnel to 127.0.0.1:3001 on the server instead.
 {$STATUS_DOMAIN} {
 	import security_headers
-	reverse_proxy uptime-kuma:3001
+
+	@status_page path /status/* /api/status-page/* /api/badge/* /assets/* /upload/* /icon.svg /favicon.ico /apple-touch-icon*.png /manifest.json
+	handle @status_page {
+		reverse_proxy uptime-kuma:3001
+	}
+	handle / {
+		redir * /status/ballup
+	}
+	handle {
+		respond 404
+	}
 }

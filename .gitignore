@@ -75,3 +75,6 @@ deploy/**/data/
 # ---------- Logs ----------
 *.log
 npm-debug.log*
+
+# ---------- Node (deploy scripts) ----------
+node_modules/

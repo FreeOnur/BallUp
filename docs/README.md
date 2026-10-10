@@ -20,6 +20,11 @@
 - [Incident](checklists/incident.md)
 - [Neues Feature](checklists/new-feature.md)
 
+## Anleitungen
+
+- [Runbook: Backend deployen und zurückrollen](runbooks/deploy.md)
+- [Guide: Mac mini einrichten (iOS-Entwicklung)](guides/mac-mini-setup.md)
+
 ## Weitere Ordner
 
 - [specs/](specs/) – Feature-Specs

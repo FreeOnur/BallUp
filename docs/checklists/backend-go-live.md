@@ -29,6 +29,6 @@
 ## Observability
 
 - [ ] Prometheus scrapt die API, Grafana-Dashboards für Requests, Fehler, Latenz, Jobs
-- [ ] Logs der Container kommen in Loki an, Traces in Tempo
-- [ ] Uptime-Kuma-Checks für API-Health und Identity-Provider, Benachrichtigung aufs Handy
+- [ ] Container loggen strukturiertes JSON, Docker-Log-Rotation aktiv (ADR 0016); Traces kommen in Tempo an
+- [ ] Uptime-Kuma-Checks für API-Health, Benachrichtigung aufs Handy
 - [ ] Alerts: API down, 5xx-Rate, Disk > 80 %, Zertifikat läuft ab

@@ -49,12 +49,15 @@ jobs:
         run: uv run mypy
 
       - name: Pytest
-        # Exit code 5 = no tests collected (allowed until the first tests exist)
+        # Skipped until the first tests exist (exit code 5 = no tests collected).
+        # Once tests exist, the coverage threshold in pyproject.toml applies.
         run: |
           set +e
-          uv run pytest --cov --cov-report=term-missing
+          uv run pytest --collect-only -q > /dev/null
           code=$?
-          if [ "$code" -ne 0 ] && [ "$code" -ne 5 ]; then exit "$code"; fi
+          set -e
+          if [ "$code" -eq 5 ]; then echo "No tests collected yet, skipping"; exit 0; fi
+          uv run pytest --cov --cov-report=term-missing
 
   docker:
     name: Docker image builds

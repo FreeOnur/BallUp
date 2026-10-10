@@ -84,7 +84,23 @@ open BallUp.xcodeproj
 ```
 
 In Xcode unter *Signing & Capabilities* dein Team wählen und starten. Der Build ruft Gradle auf und
-baut dabei das Kotlin-Framework `Shared` automatisch.
+baut dabei das Kotlin-Framework `Shared` automatisch. Ausführliche Einrichtung:
+[Mac mini einrichten](docs/guides/mac-mini-setup.md).
+
+## Deployen
+
+Per Skript vom eigenen Rechner (wie SDX Eye, [ADR 0018](docs/adr/0018-deployment-per-skript.md)) –
+braucht Docker, Node, Git und den SSH-Schlüssel `~/.ssh/ballup_deploy`:
+
+```bash
+npm run deploy:api            # API bauen, zu Docker Hub pushen, auf dem Server neu starten
+npm run deploy                # ganzer Stack
+npm run rollback -- <sha>     # auf ein früheres Image zurück
+npm run status                # Container, Version, Health
+npm run logs:api              # Logs live
+```
+
+Details und Fehlerbehebung: [Runbook Deploy](docs/runbooks/deploy.md).
 
 ## Mitarbeiten
 

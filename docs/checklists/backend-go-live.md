@@ -16,9 +16,10 @@
 
 ## CI/CD
 
-- [ ] GitHub Environment `production` mit Required Reviewers
-- [ ] Variable `DOCKERHUB_USERNAME`, Secrets `DOCKERHUB_TOKEN`, `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`
-- [ ] Erster Deploy über `backend-deploy.yml` erfolgreich, Rollback getestet (vorheriges `sha-…`-Image)
+- [ ] `main` per Ruleset geschützt (nur über PR, kein Force-Push), CI grün vor dem Merge
+- [ ] Docker-Hub-Repository `onurballup/ballup-api` privat, Server per `docker login` (Read-only-Token) angemeldet
+- [ ] Erster Deploy mit `npm run deploy` erfolgreich, Rollback mit `npm run rollback -- <sha>` getestet ([Runbook](../runbooks/deploy.md))
+- [ ] Firewall: nur 22, 80, 443 offen (`ufw`), SSH nur mit Schlüssel
 
 ## Daten
 

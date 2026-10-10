@@ -1,0 +1,17 @@
+{
+  "name": "ballup",
+  "private": true,
+  "description": "Deploy and server commands for BallUp. No dependencies – only Node, Docker, Git (Bash) and SSH are needed.",
+  "scripts": {
+    "deploy": "node deploy/scripts/run.mjs deploy all",
+    "deploy:api": "node deploy/scripts/run.mjs deploy api",
+    "push:api": "node deploy/scripts/run.mjs push",
+    "sync": "node deploy/scripts/run.mjs sync",
+    "rollback": "node deploy/scripts/run.mjs rollback",
+    "install:server": "node deploy/scripts/run.mjs install",
+    "status": "node deploy/scripts/run.mjs status",
+    "logs": "node deploy/scripts/run.mjs logs",
+    "logs:api": "node deploy/scripts/run.mjs logs api",
+    "ssh": "node deploy/scripts/run.mjs ssh"
+  }
+}

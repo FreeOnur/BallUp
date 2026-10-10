@@ -3,6 +3,7 @@
   "private": true,
   "description": "Deploy and server commands for BallUp. No dependencies – only Node, Docker, Git (Bash) and SSH are needed.",
   "scripts": {
+    "help": "node deploy/scripts/help.mjs",
     "deploy": "node deploy/scripts/run.mjs deploy all",
     "deploy:api": "node deploy/scripts/run.mjs deploy api",
     "push:api": "node deploy/scripts/run.mjs push",
@@ -12,6 +13,27 @@
     "status": "node deploy/scripts/run.mjs status",
     "logs": "node deploy/scripts/run.mjs logs",
     "logs:api": "node deploy/scripts/run.mjs logs api",
-    "ssh": "node deploy/scripts/run.mjs ssh"
+    "ssh": "node deploy/scripts/run.mjs ssh",
+    "tunnel:status": "node deploy/scripts/run.mjs tunnel status"
+  },
+  "scriptsHelp": {
+    "Deployen": {
+      "deploy:api": "API bauen, zu Docker Hub pushen, auf dem Server neu starten",
+      "deploy": "wie deploy:api, aber der ganze Stack (Caddy, Redis, Grafana, Prometheus, Tempo, Uptime Kuma)",
+      "rollback": "API auf ein früheres Image zurück: npm run rollback -- <sha>",
+      "push:api": "nur Image bauen und pushen, nichts auf dem Server ändern",
+      "sync": "nur Deploy-Dateien (Compose, Caddyfile, …) auf den Server kopieren"
+    },
+    "Server": {
+      "status": "Container, deployte Version und Health der API",
+      "logs": "Logs aller Container live (Strg+C beendet)",
+      "logs:api": "Logs nur der API live",
+      "ssh": "Shell auf dem Server im Compose-Ordner (z. B. nano .env)",
+      "tunnel:status": "Uptime-Kuma-Admin sicher öffnen: http://localhost:3001",
+      "install:server": "Ersteinrichtung: Dateien kopieren, .env aus .env.example anlegen"
+    },
+    "Hilfe": {
+      "help": "diese Übersicht"
+    }
   }
 }

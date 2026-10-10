@@ -22,6 +22,14 @@ Server: `deploy@46.224.171.6`, Dateien unter `/opt/ballup/deploy`, Konfiguration
 | `npm run ssh` | Shell auf dem Server im Compose-Ordner, z. B. um `.env` zu bearbeiten |
 | `npm run sync` | nur Deploy-Dateien kopieren (z. B. nach Änderung an Caddyfile), danach `npm run deploy` |
 | `npm run install:server` | Ersteinrichtung: Dateien kopieren, `.env` aus `.env.example` anlegen |
+| `npm run tunnel:status` | Uptime-Kuma-Admin über SSH-Tunnel auf `http://localhost:3001` (nicht öffentlich erreichbar) |
+| `npm run help` | alle Befehle mit Erklärung |
+
+## Erster Start von Uptime Kuma
+
+Die Statusseite ist öffentlich (`https://<STATUS_DOMAIN>/status/ballup`), die Admin-Oberfläche nicht.
+Nach dem ersten `npm run deploy`: `npm run tunnel:status`, `http://localhost:3001` öffnen, Admin-Konto anlegen,
+Monitor für `http://api:8000/health` einrichten und eine Statusseite mit dem Slug **`ballup`** erstellen.
 
 ## Schritte
 

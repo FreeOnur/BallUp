@@ -5,7 +5,7 @@
 - [ ] Apple-Developer-Programm, Team-ID lokal in Xcode gesetzt (nicht in `project.yml` committen)
 - [ ] App-ID `app.ballup.ios` mit Capabilities: Push, Associated Domains, Sign in with Apple (falls Social Login)
 - [ ] App in App Store Connect angelegt
-- [ ] Apple-App-Site-Association (`/.well-known/apple-app-site-association`) für Universal Links auf `ballup.app`
+- [ ] Apple-App-Site-Association (`/.well-known/apple-app-site-association`) für Universal Links auf `ballup.eu`
 - [ ] App-Datenschutz-Angaben („Nutzungslabels“) passend zur Datenschutzerklärung
 - [ ] Privacy Manifest (`PrivacyInfo.xcprivacy`) mit genutzten Required-Reason-APIs
 - [ ] Altersfreigabe, Kategorie, Preis/Verfügbarkeit

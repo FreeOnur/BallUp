@@ -10,7 +10,7 @@
 
 ## DNS & TLS
 
-- [ ] `api.`, `grafana.`, `status.ballup.app` zeigen auf den Server
+- [ ] `api.`, `grafana.`, `status.ballup.eu` zeigen auf den Server
 - [ ] Caddy hat Zertifikate geholt (HTTPS funktioniert, HTTP leitet um)
 - [ ] Grafana nur mit starkem Passwort, Sign-up aus; optional per IP/SSO einschränken
 

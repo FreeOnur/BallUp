@@ -20,6 +20,10 @@
 - [Incident](checklists/incident.md)
 - [Neues Feature](checklists/new-feature.md)
 
+## Business
+
+- [Kosten](costs.md) – einmalig, laufend, pro Nutzer (inkl. KI), Abo-Rechnung, Messung, Geschäftskonto
+
 ## Anleitungen
 
 - [Runbook: Backend deployen und zurückrollen](runbooks/deploy.md)

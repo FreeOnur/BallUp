@@ -34,6 +34,10 @@ case "${SERVICE}" in
   all)
     dc pull
     dc up -d --remove-orphans
+    # Sync publishes new directories, so bind-mounted files keep their old inode
+    # inside the running container. These processes also read config only at
+    # start. Recreate them or a Caddyfile / observability change never goes live.
+    dc up -d --force-recreate --no-deps caddy prometheus tempo grafana
     ;;
   *)
     echo "usage: pull.sh [api|all] [image]"

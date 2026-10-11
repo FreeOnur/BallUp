@@ -27,7 +27,7 @@
 
 | Posten | Kosten / Monat (netto) | Ab wann | Status |
 |---|---|---|---|
-| Hetzner Cloud Server (2 vCPU, 4 GB, Falkenstein) | ca. 4–6 € – genauen Betrag aus der Hetzner-Rechnung eintragen | jetzt | ✅ läuft |
+| Hetzner Cloud Server (2 vCPU, 4 GB, Falkenstein) | **3,90 €** (Abbuchung laut Nexus Finanz) | jetzt | ✅ läuft |
 | Hetzner Server-Backups (Snapshot, optional) | +20 % des Serverpreises | jetzt empfohlen | offen |
 | Hetzner Object Storage (Medien, ADR 0013) | 6,49 € inkl. 1 TB Speicher + 1 TB Traffic | ab erstem Upload-Feature | offen |
 | Hetzner Storage Box BX11 (DB-Backups) | ca. 3,20 € (1 TB) | ab Datenbank in Produktion | offen |
@@ -97,7 +97,7 @@ Gratis-Nutzer ohne KI-Training, **Alarm, wenn ein Nutzer > 1 € im Monat verurs
 
 | Monat | Server | Object Storage | Storage Box | KI | E-Mail | Sonstiges | Summe | Premium-Abos |
 |---|---|---|---|---|---|---|---|---|
-| 2026-10 | | – | – | – | – | Domain | | 0 |
+| 2026-10 | 3,90 € | – | – | – | – | Domain | | 0 |
 
 ## 8. Geschäftskonto
 

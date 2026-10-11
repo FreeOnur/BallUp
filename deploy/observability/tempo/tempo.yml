@@ -20,9 +20,7 @@ storage:
     local:
       path: /var/tempo/blocks
 
-compactor:
-  compaction:
-    block_retention: 336h
+# Tempo 3: the compactor block is gone; traces are kept 14 days (block_retention default 336h).
 
 usage_report:
   reporting_enabled: false

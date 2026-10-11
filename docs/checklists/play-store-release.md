@@ -7,7 +7,7 @@
 - [ ] Play App Signing aktiv; Upload-Key sicher abgelegt (nie im Repo)
 - [ ] Datensicherheits-Formular („Data safety“) ausgefüllt, passend zur Datenschutzerklärung
 - [ ] Inhaltsbewertung (IARC), Zielgruppe, Werbe-Angabe
-- [ ] Digital Asset Links (`/.well-known/assetlinks.json`) für App Links auf `ballup.app`
+- [ ] Digital Asset Links (`/.well-known/assetlinks.json`) für App Links auf `ballup.eu`
 - [ ] Geschlossener Test mit genügend Testern über die von Google geforderte Dauer (Pflicht für neue Konten)
 
 ## Pro Release

@@ -17,6 +17,7 @@ GoogleService-Info.plist
 Thumbs.db
 desktop.ini
 *.swp
+*.dtmp
 .idea/
 *.iml
 .vscode/*
@@ -74,3 +75,6 @@ deploy/**/data/
 # ---------- Logs ----------
 *.log
 npm-debug.log*
+
+# ---------- Node (deploy scripts) ----------
+node_modules/

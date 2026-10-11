@@ -1,6 +1,6 @@
 # 0007 – Aufbau eines Backend-Moduls
 
-- **Status:** Akzeptiert
+- **Status:** Ersetzt durch [0009](0009-backend-konventionen.md)
 - **Datum:** 2026-10-08
 
 ## Kontext

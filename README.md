@@ -5,10 +5,12 @@ Games spielen, Ergebnisse melden und im Ranking aufsteigen – mit Teams, Turnie
 
 - **Android:** Kotlin + Jetpack Compose · **iOS:** Swift + SwiftUI (beide nativ)
 - **Geteilt:** Kotlin Multiplatform für Data + Domain (SQLDelight, Koin, Ktor, generierter OpenAPI-Client)
-- **Backend:** FastAPI als modularer Monolith (REST `/v1`, `/admin/v1`, WebSockets), Redis-Jobs
-- **Betrieb:** Hetzner + Docker Compose, Caddy, Prometheus/Grafana/Loki/Tempo, Uptime Kuma – alles selbst gehostet
+- **Backend:** FastAPI als modularer Monolith (REST `/v1`, `/admin/v1`, WebSockets), PostgreSQL + PostGIS, Redis-Jobs, eigene Auth (Google/Apple/Passwort)
+- **Betrieb:** Hetzner + Docker Compose, Caddy, Prometheus/Grafana/Tempo, Uptime Kuma – alles selbst gehostet; Logs als JSON mit Docker-Log-Rotation
+- **Dienste:** Mapbox (Karte), Hetzner Object Storage (Medien), Resend (E-Mail), Mistral (KI-Trainer)
 
-Planung, Stack- und Architektur-Entscheidungen stehen in **Notion** (Technical Planning).
+Planung steht in **Notion** (Technical Planning), die Entscheidungen dazu in [`docs/adr/`](docs/adr/).
+Überblick über die Doku: [`docs/README.md`](docs/README.md).
 
 ## Repo-Überblick
 
@@ -22,11 +24,11 @@ Planung, Stack- und Architektur-Entscheidungen stehen in **Notion** (Technical P
 │   ├── shared/         Kotlin Multiplatform: core/* und feature/<feature> (data + domain), umbrella → iOS-Framework "Shared"
 │   ├── androidApp/     app (Start, Navigation, Koin), core/{designsystem,ui}, feature/<feature> (Compose + ViewModels)
 │   └── iosApp/         project.yml (XcodeGen) + BallUp/{App,Core,Features/<Feature>,Resources}
-├── deploy/             compose/, caddy/, observability/, identity/, scripts/ – alles, was auf dem Server läuft
+├── deploy/             compose/, caddy/, observability/, scripts/ – alles, was auf dem Server läuft
 ├── docs/
 │   ├── architecture/   ER-Diagramm (draw.io) und weitere Diagramme
-│   ├── adr/            Architecture Decision Records zu Repo/Build-Entscheidungen
-│   ├── checklists/     Launch-Readiness, Store-Releases, Go-Live, Security, DSGVO, Barrierefreiheit, neues Feature
+│   ├── adr/            Architecture Decision Records (Repo, Build, Stack, Architektur)
+│   ├── checklists/     Launch-Readiness, Release, Store-Releases, Go-Live, Security/MASVS, DSGVO, Incident, neues Feature
 │   ├── specs/          Feature-Specs (Vorlage _template.md)
 │   ├── guides/         How-tos fürs Team
 │   ├── runbooks/       Betriebsanleitungen (Deploy, Rollback, Restore, Incident)
@@ -82,7 +84,23 @@ open BallUp.xcodeproj
 ```
 
 In Xcode unter *Signing & Capabilities* dein Team wählen und starten. Der Build ruft Gradle auf und
-baut dabei das Kotlin-Framework `Shared` automatisch.
+baut dabei das Kotlin-Framework `Shared` automatisch. Ausführliche Einrichtung:
+[Mac mini einrichten](docs/guides/mac-mini-setup.md).
+
+## Deployen
+
+Per Skript vom eigenen Rechner (wie SDX Eye, [ADR 0018](docs/adr/0018-deployment-per-skript.md)) –
+braucht Docker, Node, Git und den SSH-Schlüssel `~/.ssh/ballup_deploy`:
+
+```bash
+npm run deploy:api            # API bauen, zu Docker Hub pushen, auf dem Server neu starten
+npm run deploy                # ganzer Stack
+npm run rollback -- <sha>     # auf ein früheres Image zurück
+npm run status                # Container, Version, Health
+npm run logs:api              # Logs live
+```
+
+Details und Fehlerbehebung: [Runbook Deploy](docs/runbooks/deploy.md).
 
 ## Mitarbeiten
 

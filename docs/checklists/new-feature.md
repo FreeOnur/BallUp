@@ -7,7 +7,7 @@
 
 ## Backend (`backend/src/ballup/modules/<modul>/`)
 
-- [ ] `schemas.py` → `router.py` → `service.py` → `repository.py`, Fehler in `exceptions.py`
+- [ ] `schemas.py` (Base/In/Update/Out/Model) → `router.py` mit `response_model=` → `service.py`, Fehler in `exceptions.py` (ADR 0009)
 - [ ] Router in `api/v1.py` (bzw. `api/admin_v1.py`) registriert
 - [ ] Datenbank-Änderungen nach [Datenbank-Regeln](../guides/database-rules.md): ER-Diagramm, Migration, Indizes, Constraints
 - [ ] Unit-Tests für Service, Integrationstests für Router

@@ -9,5 +9,5 @@
 - [ ] Recht auf Löschung: Account-Löschung in der App, inkl. Uploads und Chat-Nachrichten (oder Anonymisierung)
 - [ ] Mindestalter festgelegt und im Onboarding abgefragt; Regeln für Minderjährige geprüft
 - [ ] Logs und Traces ohne personenbezogene Daten im Klartext (keine Tokens, E-Mails, exakten Standorte)
-- [ ] Aufbewahrungsfristen technisch umgesetzt (Retention in Loki/Tempo/Backups)
+- [ ] Aufbewahrungsfristen technisch umgesetzt (Docker-Log-Rotation, Retention in Tempo/Prometheus/Backups)
 - [ ] Meldeprozess für Datenpannen (72 Stunden) im Incident-Runbook beschrieben

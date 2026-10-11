@@ -4,14 +4,14 @@
 > Datenschutz und Skalierung. Jede Regel hat eine Nummer (z. B. **DB-12**), damit man sie im PR-Review
 > zitieren kann. Grundlage ist das ER-Diagramm in `docs/architecture/BallUp_ER-Diagramm.drawio`.
 
-**Stand:** 2026-10-09 · **Annahme:** PostgreSQL 18 + PostGIS als Hauptdatenbank, Redis für flüchtige Daten.
-Die endgültige Stack-Entscheidung steht in Notion (Technical Planning → Stack). Wenn sich dort etwas ändert,
-diese Datei anpassen.
+**Stand:** 2026-10-10 · PostgreSQL 18 + PostGIS als Hauptdatenbank, Redis für flüchtige Daten und Jobs
+([ADR 0008](../adr/0008-postgresql-postgis-und-redis.md)), Backend-Konventionen nach
+[ADR 0009](../adr/0009-backend-konventionen.md). Ändert sich eine dieser Entscheidungen, diese Datei anpassen.
 
 ## Voraussetzungen
 
 - Das ER-Diagramm ist aktuell. **Erst das Diagramm ändern, dann die Migration schreiben.**
-- Datenbankzugriff passiert nur in `backend/src/ballup/modules/<modul>/repository.py` (ADR 0007).
+- Datenbankzugriff passiert nur im `service.py` des Moduls, dem die Tabelle gehört (ADR 0009, kein Repository-Layer).
 
 ---
 
@@ -89,7 +89,7 @@ diese Datei anpassen.
 | **DB-20** | **Jede Tabelle hat `created_at` und `updated_at`** (`timestamptz NOT NULL DEFAULT now()`). `updated_at` setzt ein gemeinsamer Trigger bei jedem `UPDATE`. Das darf nicht im Code vergessen werden können. |
 | **DB-21** | **Soft Delete (`deleted_at`) nur, wo man es wirklich braucht**: courts, games, teams, clans, messages, court_photos. Überall sonst wird echt gelöscht. |
 | **DB-22** | Bei Soft Delete gelten Unique-Regeln nur für nicht gelöschte Zeilen: `CREATE UNIQUE INDEX … ON clans (name) WHERE deleted_at IS NULL`. Sonst kann niemand den Namen eines gelöschten Clans wieder nehmen. |
-| **DB-23** | Jede Abfrage auf Soft-Delete-Tabellen filtert `deleted_at IS NULL`. Das passiert zentral im Repository, nicht in jeder Query neu. |
+| **DB-23** | Jede Abfrage auf Soft-Delete-Tabellen filtert `deleted_at IS NULL`. Das passiert zentral im `BaseService`, nicht in jeder Query neu. |
 
 ---
 
@@ -124,7 +124,7 @@ diese Datei anpassen.
 
 | Regel | |
 |---|---|
-| **DB-35** | SQL steht **nur in `repository.py`**. Router und Services kennen keine Tabellen. |
+| **DB-35** | Datenbankzugriff steht **nur in `service.py`**. Router kennen keine Tabellen und rufen nur den Service auf. |
 | **DB-36** | **Nur parametrisierte Queries**, nie Strings mit User-Eingaben zusammenbauen (SQL-Injection). |
 | **DB-37** | **Kein `SELECT *`.** Nur die Spalten holen, die gebraucht werden. |
 | **DB-38** | **Listen immer mit Cursor-Pagination** (`WHERE (created_at, id) < (:cursor_ts, :cursor_id) ORDER BY created_at DESC, id DESC LIMIT 50`), nie mit `OFFSET`. `OFFSET 10000` liest 10.000 Zeilen, nur um sie wegzuwerfen. Helfer liegt in `shared/`. |
@@ -140,7 +140,7 @@ diese Datei anpassen.
 
 | Regel | |
 |---|---|
-| **DB-44** | **Transaktionen startet der Service**, nicht das Repository. Alles, was zusammen gelingen muss, steht in einer Transaktion: z. B. Ergebnis bestätigen + ELO für alle Spieler + `rating_changes` schreiben. |
+| **DB-44** | **Transaktionen startet der Service**, nie der Router. Alles, was zusammen gelingen muss, steht in einer Transaktion: z. B. Ergebnis bestätigen + ELO für alle Spieler + `rating_changes` schreiben. |
 | **DB-45** | **Transaktionen kurz halten.** Darin keine HTTP-Aufrufe, keine Push-Nachrichten, keine Uploads. Solche Dinge laufen nach dem Commit als Job (Redis-Worker). |
 | **DB-46** | **Konkurrierende Updates absichern.** Wenn zwei Requests gleichzeitig dieselbe Zeile ändern können (z. B. zwei Spieler joinen gleichzeitig das letzte Spot im Game), die Zeile mit `SELECT … FOR UPDATE` sperren oder atomar zählen (`UPDATE … SET x = x + 1 WHERE x < max`). |
 | **DB-47** | Schreibende Endpunkte, die die App bei schlechtem Netz wiederholt (Game erstellen, Ergebnis melden), sind **idempotent**: Die App schickt einen Idempotency-Key mit, der Server führt denselben Key nur einmal aus. Helfer liegt in `shared/`. |
@@ -191,7 +191,7 @@ Heute (ein Server) reichen die Regeln oben. Damit wir später nicht umbauen müs
 
 | Regel | |
 |---|---|
-| **DB-65** | **Lesen und Schreiben im Repository trennen** (eigene Methoden bzw. eigene Session für reine Lese-Abfragen). Später zeigen die Lese-Abfragen dann auf Lese-Kopien, ohne dass Services sich ändern. |
+| **DB-65** | **Lesen und Schreiben im Service trennen** (eigene Methoden bzw. eigene Session für reine Lese-Abfragen). Später zeigen die Lese-Abfragen dann auf Lese-Kopien, ohne dass Router sich ändern. |
 | **DB-66** | **Große, wachsende Tabellen von Anfang an mit Zeit-Spalte und UUIDv7** anlegen: `messages`, `notifications`, `rating_changes`, `crash_reports`. Die kann man später nach Monat partitionieren und alte Monate günstig archivieren. |
 | **DB-67** | **Chat so bauen, dass er umziehen kann**: `messages` werden nur über `conversation_id` + Zeit abgefragt, ohne Joins auf andere Module. Dann lässt sich die Tabelle bei Bedarf allein nach ScyllaDB/Cassandra verschieben. |
 | **DB-68** | **Monitoring ab Tag 1**: `pg_stat_statements` an, langsame Abfragen (> 200 ms) loggen, Dashboards in Grafana für Verbindungen, Cache-Trefferquote, Replikations-Verzögerung und Autovacuum. |

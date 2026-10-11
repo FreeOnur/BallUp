@@ -2,7 +2,7 @@
 
 ## API
 
-- [ ] Jeder Endpunkt prüft das OIDC-Token (Issuer, Audience, Ablauf, Signatur via JWKS)
+- [ ] Jeder geschützte Endpunkt prüft unser Access-JWT (Signatur, Ablauf, Audience); Google-/Apple-ID-Tokens werden beim Login serverseitig über JWKS geprüft (ADR 0010)
 - [ ] Autorisierung pro Ressource (nicht nur „eingeloggt“): Owner-/Rollenprüfung in `dependencies.py`
 - [ ] `/admin/v1/...` nur mit Admin-Rolle, Admin-Aktionen werden geloggt (Audit)
 - [ ] Rate Limits für Login-nahe, Upload- und Chat-Endpunkte

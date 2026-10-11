@@ -3,9 +3,16 @@
 #   cd backend && uv run fastapi dev src/ballup/main.py
 name: ballup-dev
 
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "50m"
+    max-file: "10"
+
 services:
   redis:
     image: redis:8.8.3-alpine
+    logging: *default-logging
     ports:
       - "6379:6379"
     healthcheck:

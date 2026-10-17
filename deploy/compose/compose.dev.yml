@@ -11,7 +11,7 @@ x-logging: &default-logging
 
 services:
   redis:
-    image: redis:8.8.3-alpine
+    image: redis:8.10.2-alpine
     logging: *default-logging
     ports:
       - "6379:6379"

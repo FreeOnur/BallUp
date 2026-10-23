@@ -16,7 +16,8 @@ Planung steht in **Notion** (Technical Planning), die Entscheidungen dazu in [`d
 
 ```
 .
-├── backend/            FastAPI-API (Python, uv) – src/ballup/{core,shared,api,realtime,workers,modules/<modul>}
+├── backend/            FastAPI-API (Python, uv)
+│   └── src/ballup/     core/, shared/, api/, realtime/, workers/, dann ein Ordner pro Fachbereich
 ├── contracts/          openapi.json – Vertrag zwischen Backend und Apps
 ├── mobile/             EIN Gradle-Build für alles Mobile
 │   ├── build-logic/    Convention Plugins (ballup.kmp.*, ballup.android.*)
@@ -38,9 +39,22 @@ Planung steht in **Notion** (Technical Planning), die Entscheidungen dazu in [`d
 └── .devcontainer/      Codespace fürs Backend
 ```
 
-Module heißen überall gleich: `auth, me, profiles, home, courts, uploads, games, matchmaking, rankings,
-teams, tournaments, clans, social, chat, community, notifications, training, camera, gamification,
-reports, subscriptions` (+ `telemetry`, `config` im Backend und in `shared/core`).
+Ein Fachbereich, ein Ordner, überall derselbe Name. Im Backend steht der Ordner im Singular
+direkt unter `backend/src/ballup/` (ADR 0009). Tabellen bleiben Plural (`courts`, `games`).
+
+| Bereich | Backend | Mobile |
+|---|---|---|
+| Account, Profil, Start | `auth`, `me`, `profile`, `home` | `auth`, `me`, `profiles`, `home` |
+| Karte und Spiele | `court`, `upload`, `game`, `matchmaking`, `ranking` | `courts`, `uploads`, `games`, `matchmaking`, `rankings` |
+| Mannschaften | `team`, `tournament`, `clan` | `teams`, `tournaments`, `clans` |
+| Soziales | `social`, `chat`, `community`, `notification` | `social`, `chat`, `community`, `notifications` |
+| Training und Kamera | `training`, `camera`, `gamification` | gleiche Namen |
+| Moderation und Abo | `report`, `subscription` | `reports`, `subscriptions` |
+| Nur Backend und Shared-Core | `telemetry`, `config` | `shared/core/telemetry`, `shared/core/config`, keine Screens |
+
+Jeder Backend-Ordner hat `router.py`, `schemas.py`, `models.py`, `service.py`, `dependencies.py`,
+`exceptions.py`, `constants.py`. Die Datenbank spricht nur der Service an. `court`, `profile`,
+`chat`, `community` und `report` haben zusätzlich `admin_router.py`.
 
 ## Setup in 5 Minuten
 

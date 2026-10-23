@@ -1,0 +1,29 @@
+name: deploy-scripts
+
+on:
+  pull_request:
+    paths:
+      - "deploy/scripts/**"
+      - ".github/workflows/deploy-scripts.yml"
+  push:
+    branches: [main]
+    paths:
+      - "deploy/scripts/**"
+      - ".github/workflows/deploy-scripts.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Sync and reload regressions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Run deploy script tests
+        run: bash deploy/scripts/tests/test_sync_and_reload.sh

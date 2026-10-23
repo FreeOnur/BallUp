@@ -10,6 +10,24 @@ x-logging: &default-logging
     max-file: "10"
 
 services:
+  postgres:
+    image: postgis/postgis:18-3.6
+    logging: *default-logging
+    environment:
+      POSTGRES_DB: ballup
+      POSTGRES_USER: ballup
+      POSTGRES_PASSWORD: ballup
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ballup -d ballup"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
   redis:
     image: redis:8.10.2-alpine
     logging: *default-logging
@@ -20,3 +38,6 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+
+volumes:
+  postgres_data:

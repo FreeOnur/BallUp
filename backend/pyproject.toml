@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "BallUp API – modular monolith for the BallUp pickup basketball app"
 requires-python = ">=3.14"
 dependencies = [
+    "alembic>=1.20.1",
+    "asyncpg>=0.32.0",
     "fastapi>=0.143.0",
+    "geoalchemy2>=0.20.0",
     "httpx>=0.28.1",
     "opentelemetry-api>=1.45.1",
     "opentelemetry-exporter-otlp>=1.45.1",
@@ -93,7 +96,7 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = ["-ra", "--strict-markers", "--strict-config", "--import-mode=importlib"]
 markers = [
-    "integration: tests that need running services (database, redis, identity provider)",
+    "integration: tests that need running services (database, redis)",
 ]
 
 [tool.coverage.run]

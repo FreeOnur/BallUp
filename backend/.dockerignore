@@ -6,7 +6,6 @@
 .coverage
 htmlcov/
 tests/
-migrations/
 .env
 .env.*
 !.env.example

@@ -27,6 +27,8 @@ RUN groupadd --system --gid 10001 ballup \
  && useradd --system --uid 10001 --gid ballup --no-create-home --shell /usr/sbin/nologin ballup
 
 COPY --from=builder --chown=ballup:ballup /app/.venv /app/.venv
+COPY --chown=ballup:ballup alembic.ini /app/alembic.ini
+COPY --chown=ballup:ballup migrations /app/migrations
 
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \

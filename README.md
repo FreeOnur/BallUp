@@ -63,11 +63,13 @@ Jeder Backend-Ordner hat `router.py`, `schemas.py`, `models.py`, `service.py`, `
 Voraussetzung: [uv](https://docs.astral.sh/uv/), Docker.
 
 ```bash
-docker compose -f deploy/compose/compose.dev.yml up -d   # Redis
+docker compose -f deploy/compose/compose.dev.yml up -d   # Postgres + Redis
 cd backend
 cp .env.example .env
 uv sync
+uv run alembic upgrade head
 uv run ruff check . && uv run mypy && uv run pytest
+uv run python scripts/export_openapi.py   # schreibt contracts/openapi.json, auch wenn /docs in Produktion aus ist
 ```
 
 Oder ohne lokale Installation: **Code → Codespaces → Create codespace** (nutzt `.devcontainer/`).

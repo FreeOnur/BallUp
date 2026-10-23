@@ -7,7 +7,7 @@ plugins {
 sqldelight {
     databases {
         create("BallUpDatabase") {
-            packageName = "app.ballup.shared.core.database"
+            packageName = "eu.ballup.shared.core.database"
             schemaOutputDirectory = file("src/commonMain/sqldelight/databases")
             verifyMigrations = true
         }

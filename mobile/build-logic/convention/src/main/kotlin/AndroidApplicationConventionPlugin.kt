@@ -1,10 +1,10 @@
-import app.ballup.buildlogic.assignBallupGroup
-import app.ballup.buildlogic.configureKotlinJvmTarget
-import app.ballup.buildlogic.intVersion
-import app.ballup.buildlogic.javaVersion
-import app.ballup.buildlogic.lib
-import app.ballup.buildlogic.libs
 import com.android.build.api.dsl.ApplicationExtension
+import eu.ballup.buildlogic.assignBallupGroup
+import eu.ballup.buildlogic.configureKotlinJvmTarget
+import eu.ballup.buildlogic.intVersion
+import eu.ballup.buildlogic.javaVersion
+import eu.ballup.buildlogic.lib
+import eu.ballup.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

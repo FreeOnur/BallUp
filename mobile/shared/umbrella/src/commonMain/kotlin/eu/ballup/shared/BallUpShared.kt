@@ -1,4 +1,4 @@
-package app.ballup.shared
+package eu.ballup.shared
 
 /**
  * Entry point of the iOS framework `Shared`.

@@ -34,7 +34,7 @@ val exported = listOf(
     projects.shared.feature.subscriptions,
 )
 
-group = "app.ballup.shared"
+group = "eu.ballup.shared"
 
 kotlin {
     listOf(iosArm64(), iosSimulatorArm64()).forEach { target ->

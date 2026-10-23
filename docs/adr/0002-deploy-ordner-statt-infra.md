@@ -18,8 +18,8 @@ Der Ordner heißt `deploy/` und enthält:
 - `identity/` – Identity-Provider (Zitadel oder Keycloak, noch offen)
 - `scripts/` – Backup und Deploy-Hilfen
 
-Der Server hat einen Checkout des Repos unter `/opt/ballup`; `backend-deploy.yml` macht dort `git pull`
-und `docker compose pull && up -d`.
+Deploy läuft per Skript vom eigenen Rechner ([0018](0018-deployment-per-skript.md)): `npm run deploy:api`
+oder `npm run deploy`. Es gibt kein `backend-deploy.yml` und keinen `git pull` auf dem Server.
 
 ## Konsequenzen
 

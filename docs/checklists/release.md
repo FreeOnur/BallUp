@@ -14,7 +14,7 @@ Für jedes App-Update und jedes Backend-Deployment.
 
 ## Release
 - [ ] Backup direkt vor dem Deployment
-- [ ] Backend: Deployment über GitHub Actions (Environment `production`, Freigabe nötig)
+- [ ] Backend: `npm run deploy:api` (oder `npm run deploy`, wenn Caddy oder Compose geändert wurde), danach `npm run status`. Zurückrollen: `npm run rollback -- <sha>` ([ADR 0018](../adr/0018-deployment-per-skript.md))
 - [ ] App: Staged Rollout 5 % → 20 % → 100 %
 
 ## Nach dem Release (erste 24 h)

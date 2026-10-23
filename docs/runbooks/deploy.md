@@ -15,7 +15,7 @@ Server: `deploy@46.224.171.6`, Dateien unter `/opt/ballup/deploy`, Konfiguration
 | Befehl | Was passiert |
 |---|---|
 | `npm run deploy:api` | Image bauen + pushen, Deploy-Dateien kopieren, nur API neu starten |
-| `npm run deploy` | wie oben, aber der ganze Stack (Caddy, Redis, Grafana, Prometheus, Tempo, Uptime Kuma) |
+| `npm run deploy` | wie oben, aber der ganze Stack (Caddy, Postgres, Redis, Grafana, Prometheus, Tempo, Uptime Kuma) |
 | `npm run rollback -- <sha>` | API auf ein früheres Image zurücksetzen, ohne Build |
 | `npm run status` | Container, deployte Version, Health der API |
 | `npm run logs` / `npm run logs:api` | Logs live verfolgen (Strg+C beendet) |
@@ -30,6 +30,22 @@ Server: `deploy@46.224.171.6`, Dateien unter `/opt/ballup/deploy`, Konfiguration
 Die Statusseite ist öffentlich (`https://<STATUS_DOMAIN>/status/ballup`), die Admin-Oberfläche nicht.
 Nach dem ersten `npm run deploy`: `npm run tunnel:status`, `http://localhost:3001` öffnen, Admin-Konto anlegen,
 Monitor für `http://api:8000/health` einrichten und eine Statusseite mit dem Slug **`ballup`** erstellen.
+
+## Postgres
+
+In `/opt/ballup/deploy/compose/.env` müssen `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
+und `BALLUP_DATABASE_URL` stehen. Das Passwort in der URL ist dasselbe wie `POSTGRES_PASSWORD`.
+Der Host in der URL ist `postgres`, der Datenbank-Container hat keinen offenen Port.
+
+Die Migration läuft noch nicht automatisch beim Deploy. Nach `npm run deploy`, sobald `api` healthy ist:
+
+```bash
+npm run ssh
+docker compose exec api alembic upgrade head
+```
+
+`alembic.ini` und `migrations/` liegen im API-Image. Der Befehl legt nur die PostGIS-Extension
+und die Funktion `set_updated_at()` an, keine Tabellen.
 
 ## Schritte
 

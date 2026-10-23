@@ -78,3 +78,6 @@ npm-debug.log*
 
 # ---------- Node (deploy scripts) ----------
 node_modules/
+
+# ---------- Founder research (lives in Google Drive, not in this repo) ----------
+founder/

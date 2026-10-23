@@ -4,7 +4,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "app.ballup.buildlogic"
+group = "eu.ballup.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

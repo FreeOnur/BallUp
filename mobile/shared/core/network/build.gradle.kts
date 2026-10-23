@@ -11,7 +11,7 @@ openApiGenerate {
     library = "multiplatform"
     inputSpec = rootProject.layout.projectDirectory.file("../contracts/openapi.json")
     outputDir = layout.buildDirectory.dir("generated/openapi")
-    packageName = "app.ballup.shared.core.network.generated"
+    packageName = "eu.ballup.shared.core.network.generated"
     configOptions.put("dateLibrary", "kotlinx-datetime")
     configOptions.put("enumPropertyNaming", "UPPERCASE")
 }

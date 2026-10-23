@@ -1,4 +1,4 @@
-package app.ballup
+package eu.ballup
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

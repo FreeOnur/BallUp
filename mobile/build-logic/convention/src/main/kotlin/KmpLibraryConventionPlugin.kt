@@ -1,9 +1,9 @@
-import app.ballup.buildlogic.assignBallupGroup
-import app.ballup.buildlogic.ballupNamespace
-import app.ballup.buildlogic.intVersion
-import app.ballup.buildlogic.lib
-import app.ballup.buildlogic.libs
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
+import eu.ballup.buildlogic.assignBallupGroup
+import eu.ballup.buildlogic.ballupNamespace
+import eu.ballup.buildlogic.intVersion
+import eu.ballup.buildlogic.lib
+import eu.ballup.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware

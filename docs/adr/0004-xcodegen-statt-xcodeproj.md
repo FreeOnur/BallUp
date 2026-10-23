@@ -13,7 +13,7 @@ Das Repo wurde unter Windows aufgesetzt, wo kein Xcode verfügbar ist.
 - `mobile/iosApp/project.yml` (XcodeGen) beschreibt Targets, Bundle-IDs, Build-Settings und die
   Einbindung des KMP-Frameworks `Shared`.
 - `*.xcodeproj/` steht in `.gitignore`. Lokal und in CI: `xcodegen generate`.
-- Bundle-ID `app.ballup.ios`, Deployment Target iOS 18 (siehe 0006).
+- Bundle-ID `eu.ballup.ios`, Deployment Target iOS 18 (siehe 0006).
 
 ## Alternativen
 

@@ -1,5 +1,5 @@
-import app.ballup.buildlogic.lib
-import app.ballup.buildlogic.libs
+import eu.ballup.buildlogic.lib
+import eu.ballup.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies

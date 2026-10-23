@@ -3,7 +3,7 @@
 ## Einmalig
 
 - [ ] Google-Play-Developer-Konto, Zahlungsprofil, Verifizierung abgeschlossen
-- [ ] App angelegt, Package `app.ballup`
+- [ ] App angelegt, Package `eu.ballup`
 - [ ] Play App Signing aktiv; Upload-Key sicher abgelegt (nie im Repo)
 - [ ] Datensicherheits-Formular („Data safety“) ausgefüllt, passend zur Datenschutzerklärung
 - [ ] Inhaltsbewertung (IARC), Zielgruppe, Werbe-Angabe

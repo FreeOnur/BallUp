@@ -1,4 +1,4 @@
-package app.ballup.buildlogic
+package eu.ballup.buildlogic
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -17,13 +17,13 @@ fun VersionCatalog.intVersion(alias: String): Int = findVersion(alias).get().req
 fun VersionCatalog.lib(alias: String) = findLibrary(alias).get()
 
 /**
- * `:androidApp:feature:courts` -> `app.ballup.feature.courts`
- * `:shared:core:model`         -> `app.ballup.shared.core.model`
+ * `:androidApp:feature:courts` -> `eu.ballup.feature.courts`
+ * `:shared:core:model`         -> `eu.ballup.shared.core.model`
  */
 fun Project.ballupNamespace(): String {
     val segments = path.removePrefix(":").split(":")
     val relevant = if (segments.first() == "androidApp") segments.drop(1) else segments
-    return (listOf("app", "ballup") + relevant)
+    return (listOf("eu", "ballup") + relevant)
         .joinToString(".") { it.replace("-", "").lowercase() }
 }
 
@@ -33,9 +33,9 @@ fun Project.ballupNamespace(): String {
  */
 fun Project.assignBallupGroup() {
     group = when (path.removePrefix(":").substringBefore(":")) {
-        "androidApp" -> "app.ballup.android"
-        "shared" -> "app.ballup.shared"
-        else -> "app.ballup"
+        "androidApp" -> "eu.ballup.android"
+        "shared" -> "eu.ballup.shared"
+        else -> "eu.ballup"
     }
 }
 

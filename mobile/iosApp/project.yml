@@ -3,7 +3,7 @@
 name: BallUp
 
 options:
-  bundleIdPrefix: app.ballup
+  bundleIdPrefix: eu.ballup
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
@@ -29,7 +29,7 @@ targets:
           - "**/.gitkeep"
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.ballup.ios
+        PRODUCT_BUNDLE_IDENTIFIER: eu.ballup.ios
         PRODUCT_NAME: BallUp
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: BallUp
@@ -63,7 +63,7 @@ targets:
       - target: BallUp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.ballup.ios.tests
+        PRODUCT_BUNDLE_IDENTIFIER: eu.ballup.ios.tests
         GENERATE_INFOPLIST_FILE: YES
 
   BallUpUITests:
@@ -77,7 +77,7 @@ targets:
       - target: BallUp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.ballup.ios.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: eu.ballup.ios.uitests
         GENERATE_INFOPLIST_FILE: YES
 
 schemes:

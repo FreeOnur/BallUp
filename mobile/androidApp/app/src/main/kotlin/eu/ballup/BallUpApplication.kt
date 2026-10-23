@@ -1,4 +1,4 @@
-package app.ballup
+package eu.ballup
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext

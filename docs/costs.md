@@ -68,12 +68,12 @@ Gratis-Nutzer ohne KI-Training, **Alarm, wenn ein Nutzer > 1 € im Monat verurs
 
 | Posten | Betrag |
 |---|---|
-| Abo-Preis (brutto) | 8,00 € / Monat |
-| − 20 % USt (AT, führt der Store ab) | ≈ 6,67 € |
-| − 15 % Store-Gebühr (Small Business Program Apple / Google) | **≈ 5,67 € pro Abo** |
+| Abo-Preis (brutto) | 4,99 € / Monat |
+| − 20 % USt (AT, führt der Store ab) | ≈ 4,16 € |
+| − 15 % Store-Gebühr (Small Business Program Apple / Google) | **≈ 3,53 € pro Abo** |
 | − KI-Kosten | ≈ 0,02–0,05 € |
 
-**Break-even Stufe 0:** 25–40 € Fixkosten ÷ 5,67 € ≈ **5–7 Premium-Abos**.
+**Break-even Stufe 0:** 25–40 € Fixkosten ÷ 3,53 € ≈ **8–12 Premium-Abos**.
 
 ## 5. Stufen (Notion „Skalierung & Backups“)
 

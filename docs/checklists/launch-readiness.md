@@ -50,7 +50,7 @@ Unterlisten: [Backend Go-Live](backend-go-live.md) · [Security (MASVS)](securit
 ## Stores
 - [ ] Apple Developer Program + Google Play Konto aktiv
 - [ ] Store-Einträge: Name, Beschreibung DE/EN, Screenshots, Altersfreigabe, Datenschutz-Angaben
-- [ ] In-App-Abo (8 €) in beiden Stores angelegt und getestet
+- [ ] In-App-Abo (4,99 €/Monat) in beiden Stores angelegt und getestet
 - [ ] Staged Rollout eingestellt (5 % → 20 % → 100 %)
 
 ## Marketing

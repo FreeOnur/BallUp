@@ -29,20 +29,20 @@
 | Modul | Tabellen |
 |---|---|
 | `auth` | users, refresh_tokens |
-| `profiles` | profiles |
-| `notifications` | notifications, push_tokens |
+| `profile` | profiles |
+| `notification` | notifications, push_tokens |
 | `telemetry` | crash_reports |
-| `subscriptions` | subscriptions |
+| `subscription` | subscriptions |
 | `training` | training_plans, training_sessions |
 | `social` | friendships, blocks |
 | `chat` | conversations, conversation_members, messages |
-| `courts` | courts, court_photos, court_approvals, court_active_users, court_reviews, court_issues |
-| `games` | games, game_invites, game_participants, game_results, result_confirmations |
-| `rankings` | rating_changes |
-| `teams` | teams, team_members |
-| `tournaments` | tournaments, tournament_registrations, tournament_matches, match_advancements |
-| `clans` | clans, clan_members, clan_media |
-| `reports` | reports |
+| `court` | courts, court_photos, court_approvals, court_active_users, court_reviews, court_issues |
+| `game` | games, game_invites, game_participants, game_results, result_confirmations |
+| `ranking` | rating_changes |
+| `team` | teams, team_members |
+| `tournament` | tournaments, tournament_registrations, tournament_matches, match_advancements |
+| `clan` | clans, clan_members, clan_media |
+| `report` | reports |
 
 ---
 

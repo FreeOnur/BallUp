@@ -50,5 +50,7 @@ eine schlankere Struktur ohne Repository-Layer bewährt, mit klaren Schema- und 
 ## Konsequenzen
 
 - Positiv: Gleiche Konventionen wie SDX Eye, weniger Dateien pro Modul, sichere Antworten durch `response_model`.
-- Negativ / Aufwand: Das bestehende Gerüst unter `backend/src/ballup/modules/<modul>/` (Plural, mit
-  `repository.py`) wird in einem eigenen PR auf die neue Struktur umgestellt.
+- Die Umstellung ist erledigt: Fachordner liegen unter `backend/src/ballup/<bereich>/` im Singular,
+  ohne `modules/` und ohne `repository.py`. Der Service spricht mit der Session. Basisklassen stehen
+  in `core/` (`BaseSchema`, `IdMixin`, `TimestampMixin`, `SoftDeleteMixin`, `BaseService`),
+  HTTP-Fehler in `ballup.exceptions`.

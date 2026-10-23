@@ -5,7 +5,7 @@
 - [ ] Spec in `docs/specs/` (aus `_template.md`) oder Notion-Aufgabe mit Akzeptanzkriterien
 - [ ] API-Entwurf abgestimmt; neue Entscheidungen → ADR
 
-## Backend (`backend/src/ballup/modules/<modul>/`)
+## Backend (`backend/src/ballup/<bereich>/`)
 
 - [ ] `schemas.py` (Base/In/Update/Out/Model) → `router.py` mit `response_model=` → `service.py`, Fehler in `exceptions.py` (ADR 0009)
 - [ ] Router in `api/v1.py` (bzw. `api/admin_v1.py`) registriert

@@ -31,17 +31,17 @@ Die Statusseite ist öffentlich (`https://<STATUS_DOMAIN>/status/ballup`), die A
 Nach dem ersten `npm run deploy`: `npm run tunnel:status`, `http://localhost:3001` öffnen, Admin-Konto anlegen,
 Monitor für `http://api:8000/health` einrichten und eine Statusseite mit dem Slug **`ballup`** erstellen.
 
-## Postgres
+## Datenbank
 
 In `/opt/ballup/deploy/compose/.env` müssen `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
-und `BALLUP_DATABASE_URL` stehen. Das Passwort in der URL ist dasselbe wie `POSTGRES_PASSWORD`.
-Der Host in der URL ist `postgres`, der Datenbank-Container hat keinen offenen Port.
+und `BALLUP_DATABASE_URL` stehen. Das Passwort mit `openssl rand -hex 32` erzeugen und denselben
+Wert in die URL setzen. Der Host in der URL ist `postgres`, der Datenbank-Container hat keinen offenen Port.
 
-Die Migration läuft noch nicht automatisch beim Deploy. Nach `npm run deploy`, sobald `api` healthy ist:
+Die Migration läuft noch nicht automatisch beim Deploy. Nach `npm run deploy`, sobald Postgres healthy ist:
 
 ```bash
 npm run ssh
-docker compose exec api alembic upgrade head
+docker compose run --rm api alembic upgrade head
 ```
 
 `alembic.ini` und `migrations/` liegen im API-Image. Der Befehl legt nur die PostGIS-Extension

@@ -21,7 +21,7 @@ composeBom = "2026.09.00"
 
 # Multiplatform
 coroutines = "1.11.0"
-serialization = "1.11.0"
+serialization = "1.12.0"
 datetime = "0.8.0"
 koinBom = "4.2.2"
 ktor = "3.6.0"

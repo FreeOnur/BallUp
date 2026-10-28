@@ -10,6 +10,8 @@ Games spielen, Ergebnisse melden und im Ranking aufsteigen – mit Teams, Turnie
 - **Dienste:** Mapbox (Karte), Hetzner Object Storage (Medien), Resend (E-Mail), Mistral (KI-Trainer)
 
 Planung steht in **Notion** (Technical Planning), die Entscheidungen dazu in [`docs/adr/`](docs/adr/).
+Aktueller Stand: [`docs/status.md`](docs/status.md).
+Ein neues Stück Funktion wird ein Schnitt: [`docs/guides/ai-project-process.md`](docs/guides/ai-project-process.md).
 Überblick über die Doku: [`docs/README.md`](docs/README.md).
 
 ## Repo-Überblick
@@ -30,7 +32,7 @@ Planung steht in **Notion** (Technical Planning), die Entscheidungen dazu in [`d
 │   ├── architecture/   ER-Diagramm (draw.io) und weitere Diagramme
 │   ├── adr/            Architecture Decision Records (Repo, Build, Stack, Architektur)
 │   ├── checklists/     Launch-Readiness, Release, Store-Releases, Go-Live, Security/MASVS, DSGVO, Incident, neues Feature
-│   ├── specs/          Feature-Specs (Vorlage _template.md)
+│   ├── specs/          eine Spec pro Schnitt (Vorlage _template.md)
 │   ├── guides/         How-tos fürs Team
 │   ├── runbooks/       Betriebsanleitungen (Deploy, Rollback, Restore, Incident)
 │   ├── postmortems/    Incident-Auswertungen

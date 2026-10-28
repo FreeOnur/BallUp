@@ -35,6 +35,12 @@ chore(deps): bump ktor to 3.6.0
 4. Mindestens ein Review (siehe `.github/CODEOWNERS`), CI muss grün sein.
 5. **Squash and merge**, Branch danach löschen.
 
+## Neues Feature
+
+Erst der Schnitt, dann der Code: [Features schneiden und bauen](docs/guides/ai-project-process.md).
+Die Spec liegt in `docs/specs/`, die Umsetzung folgt der [Checkliste Neues Feature](docs/checklists/new-feature.md).
+Aktueller Stand für Menschen und Agenten: [docs/status.md](docs/status.md). Nach dem Merge eine Zeile in [docs/changelog/CHANGELOG.md](docs/changelog/CHANGELOG.md) und den Stand anpassen, wenn er sich verschiebt.
+
 ## Regeln
 
 - Keine Secrets im Repo – nur `.env.example`. Echte Werte in `.env` (ignoriert) oder GitHub Secrets.

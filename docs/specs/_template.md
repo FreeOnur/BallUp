@@ -6,7 +6,9 @@
 
 ## Ziel
 
-Welches Nutzerproblem lösen wir? Woran messen wir Erfolg?
+Welches Nutzerproblem lösen wir?
+
+- [ ] Erfolg: …
 
 ## User Stories & Akzeptanzkriterien
 
@@ -25,6 +27,8 @@ Welches Nutzerproblem lösen wir? Woran messen wir Erfolg?
 
 ## API
 
+Was andere Module von diesem Schnitt aufrufen, und was dieser Schnitt von anderen braucht.
+
 | Methode | Pfad | Zweck |
 |---|---|---|
 | `GET` | `/v1/...` | |
@@ -32,5 +36,19 @@ Welches Nutzerproblem lösen wir? Woran messen wir Erfolg?
 ## Daten
 
 Neue Tabellen/Felder (Server + lokale SQLDelight-DB), Bezug zum ER-Diagramm.
+
+## Abhängigkeiten
+
+Welche Fachbereiche oder ADRs müssen vorher stehen?
+
+## Technische Entscheidungen
+
+Nur das, was noch kein ADR ist. Eine neue Repo-, Build- oder Code-Entscheidung wird ein ADR, nicht ein zweiter Text hier.
+
+## Aufgaben
+
+Eine Aufgabe, ein PR. Dateipfad und Test gehören in die Zeile. Ablauf: [Features schneiden und bauen](../guides/ai-project-process.md).
+
+- [ ] …
 
 ## Offene Fragen

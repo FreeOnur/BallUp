@@ -2,7 +2,8 @@
 
 ## Vorher
 
-- [ ] Spec in `docs/specs/` (aus `_template.md`) oder Notion-Aufgabe mit Akzeptanzkriterien
+- [ ] Spec in `docs/specs/` (aus `_template.md`), Aufgaben darin klein genug für je einen PR. Ablauf: [Features schneiden und bauen](../guides/ai-project-process.md)
+- [ ] [Security-Regeln](../security/rules.md) für den Schnitt geprüft (Secrets, Zugriff, Logs)
 - [ ] API-Entwurf abgestimmt; neue Entscheidungen → ADR
 
 ## Backend (`backend/src/ballup/<bereich>/`)

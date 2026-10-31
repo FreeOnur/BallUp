@@ -30,7 +30,7 @@ services:
       - tempo_data:/var/tempo
 
   grafana:
-    image: grafana/grafana:13.2.4
+    image: grafana/grafana:13.3.0
     restart: unless-stopped
     logging: *default-logging
     environment:

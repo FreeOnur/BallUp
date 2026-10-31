@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- build: resolve dependencies and install the project into /app/.venv ----
-FROM python:3.14-slim-trixie AS builder
+FROM python:3.15-slim-trixie AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.12.24 /uv /uvx /bin/
 
 ENV UV_COMPILE_BYTECODE=1 \
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev --no-editable
 
 # ---- runtime: only the virtualenv, no build tools, non-root ----
-FROM python:3.14-slim-trixie AS runtime
+FROM python:3.15-slim-trixie AS runtime
 
 RUN groupadd --system --gid 10001 ballup \
  && useradd --system --uid 10001 --gid ballup --no-create-home --shell /usr/sbin/nologin ballup

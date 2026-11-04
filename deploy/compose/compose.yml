@@ -22,8 +22,10 @@ services:
       API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in .env}
       GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN in .env}
       STATUS_DOMAIN: ${STATUS_DOMAIN:?set STATUS_DOMAIN in .env}
+      SITE_DOMAIN: ${SITE_DOMAIN:-ballup.eu}
     volumes:
       - ../caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../site:/srv/site:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

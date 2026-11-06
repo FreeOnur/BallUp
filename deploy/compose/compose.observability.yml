@@ -8,9 +8,16 @@ x-logging: &default-logging
     max-size: "50m"
     max-file: "10"
 
+# Keine Rechte-Ausweitung im Container (setuid usw.). Speicherlimits pro Dienst stehen beim Dienst.
+x-hardening: &hardening
+  security_opt:
+    - no-new-privileges:true
+
 services:
   prometheus:
     image: prom/prometheus:v3.15.1
+    <<: *hardening
+    mem_limit: 512m
     restart: unless-stopped
     logging: *default-logging
     command:
@@ -22,6 +29,8 @@ services:
 
   tempo:
     image: grafana/tempo:3.1.1
+    <<: *hardening
+    mem_limit: 512m
     restart: unless-stopped
     logging: *default-logging
     command: ["-config.file=/etc/tempo/tempo.yml"]
@@ -31,6 +40,8 @@ services:
 
   grafana:
     image: grafana/grafana:13.3.0
+    <<: *hardening
+    mem_limit: 384m
     restart: unless-stopped
     logging: *default-logging
     environment:
@@ -48,6 +59,8 @@ services:
 
   uptime-kuma:
     image: louislam/uptime-kuma:2.5.9
+    <<: *hardening
+    mem_limit: 384m
     restart: unless-stopped
     logging: *default-logging
     # Admin UI only on the server's loopback (reach it via SSH tunnel); the public status page goes through Caddy.

@@ -8,9 +8,16 @@ x-logging: &default-logging
     max-size: "50m"
     max-file: "10"
 
+# Keine Rechte-Ausweitung im Container (setuid usw.). Speicherlimits pro Dienst stehen beim Dienst.
+x-hardening: &hardening
+  security_opt:
+    - no-new-privileges:true
+
 services:
   caddy:
     image: caddy:2.11.7-alpine
+    <<: *hardening
+    mem_limit: 256m
     restart: unless-stopped
     logging: *default-logging
     ports:
@@ -33,6 +40,8 @@ services:
 
   api:
     image: ${BALLUP_API_IMAGE:?set BALLUP_API_IMAGE in .env}
+    <<: *hardening
+    mem_limit: 512m
     restart: unless-stopped
     logging: *default-logging
     env_file: .env
@@ -52,6 +61,8 @@ services:
 
   postgres:
     image: postgis/postgis:18-3.6
+    <<: *hardening
+    mem_limit: 1g
     restart: unless-stopped
     logging: *default-logging
     environment:
@@ -69,6 +80,8 @@ services:
 
   redis:
     image: redis:8.10.2-alpine
+    <<: *hardening
+    mem_limit: 256m
     restart: unless-stopped
     logging: *default-logging
     command: ["redis-server", "--appendonly", "yes"]

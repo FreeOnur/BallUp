@@ -4,6 +4,10 @@ Was sich am Produkt und am Gerüst geändert hat, neueste Zeile oben. Ein Eintra
 
 Dependabot-Bumps und reine Formatierung stehen hier nicht. Die stehen in `git log`. Keine Secrets, keine Roh-Logs, keine Tokens.
 
+## 2026-11-06
+
+- Container gehärtet: `no-new-privileges` und ein Speicherlimit für jeden Dienst in `compose.yml` und `compose.observability.yml`. Die API nimmt höchstens 10 MB pro Request an (Caddy).
+
 ## 2026-11-04
 
 - `ballup.eu` mit HTTPS: Platzhalterseite und `/.well-known/` für Android App Links und iOS Universal Links (`deploy/site/`). `www.ballup.eu` leitet auf `ballup.eu` um.

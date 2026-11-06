@@ -31,6 +31,10 @@ www.{$SITE_DOMAIN} {
 {$API_DOMAIN} {
 	import security_headers
 	encode zstd gzip
+	# Medien gehen per Presigned URL direkt in den Object Storage, die API braucht keine großen Bodies.
+	request_body {
+		max_size 10MB
+	}
 	reverse_proxy api:8000
 }
 

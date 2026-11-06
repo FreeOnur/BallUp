@@ -101,6 +101,7 @@ test_sync_publishes_files_and_keeps_env() {
   assert "sync does not leave the previous Caddyfile" test ! -e "${remote}/caddy.prev"
   assert "sync keeps the server .env" grep -qx 'GRAFANA_ADMIN_PASSWORD=keep-me' "${remote}/compose/.env"
   assert "sync installs compose.yml" test -f "${remote}/compose/compose.yml"
+  assert "sync publishes the root-domain site" test -f "${remote}/site/index.html"
   assert "sync installs pull.sh and marks it executable" test -x "${remote}/scripts/server/pull.sh"
   assert "sync removes the staging dir" test ! -e "${remote}/.sync-staging"
   rm -rf "${tmp}"

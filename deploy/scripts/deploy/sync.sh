@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copies the server-side files (compose, Caddy, observability, server scripts) to the server.
+# Copies the server-side files (compose, Caddy, site, observability, server scripts) to the server.
 # The server has no git checkout; deploy/compose/.env on the server is never touched.
 #   sync.sh
 set -euo pipefail
@@ -37,6 +37,7 @@ install_file() {
   mv -f "\${dest}.new" "\$dest"
 }
 publish .sync-staging/caddy caddy
+publish .sync-staging/site site
 publish .sync-staging/observability observability
 publish .sync-staging/scripts/server scripts/server
 install_file .sync-staging/compose/compose.yml compose/compose.yml
@@ -52,6 +53,7 @@ tar -C "${REPO_ROOT}/deploy" -cf - \
   compose/compose.observability.yml \
   compose/.env.example \
   caddy \
+  site \
   observability \
   scripts/server \
   | remote "${remote_cmd}"

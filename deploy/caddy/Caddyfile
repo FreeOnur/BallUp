@@ -11,6 +11,22 @@
 	}
 }
 
+# Root domain: placeholder page and /.well-known/ for Android App Links and iOS Universal Links.
+{$SITE_DOMAIN} {
+	import security_headers
+	encode zstd gzip
+	root * /srv/site
+	@aasa path /.well-known/apple-app-site-association
+	header @aasa Content-Type application/json
+	file_server {
+		hide README.md
+	}
+}
+
+www.{$SITE_DOMAIN} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}
+
 # REST (/v1, /admin/v1) and WebSockets
 {$API_DOMAIN} {
 	import security_headers

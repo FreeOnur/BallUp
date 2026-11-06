@@ -1,10 +1,14 @@
 version: 2
 
+# Einmal im Monat (am 1.), pro Bereich ein gesammelter PR.
+# Sicherheitsupdates kommen weiterhin sofort als eigene PRs.
+
 updates:
   - package-ecosystem: uv
     directory: /backend
     schedule:
-      interval: weekly
+      interval: monthly
+      timezone: Europe/Vienna
     commit-message:
       prefix: "build(deps)"
     groups:
@@ -14,21 +18,19 @@ updates:
   - package-ecosystem: gradle
     directory: /mobile
     schedule:
-      interval: weekly
+      interval: monthly
+      timezone: Europe/Vienna
     commit-message:
       prefix: "build(deps)"
     groups:
-      kotlin:
-        patterns: ["org.jetbrains.kotlin*", "com.android.tools.build*", "com.android.*"]
-      androidx:
-        patterns: ["androidx.*"]
-      other:
+      mobile:
         patterns: ["*"]
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+      timezone: Europe/Vienna
     commit-message:
       prefix: "ci(deps)"
     groups:
@@ -38,13 +40,26 @@ updates:
   - package-ecosystem: docker
     directory: /backend
     schedule:
-      interval: weekly
+      interval: monthly
+      timezone: Europe/Vienna
     commit-message:
       prefix: "build(deps)"
+    groups:
+      backend-image:
+        patterns: ["*"]
+    ignore:
+      # Neue Python-Version (z. B. 3.14 -> 3.15) machen wir bewusst von Hand,
+      # wenn alle Bibliotheken sie unterstützen. Patches kommen weiter automatisch.
+      - dependency-name: python
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
 
   - package-ecosystem: docker-compose
     directory: /deploy/compose
     schedule:
-      interval: weekly
+      interval: monthly
+      timezone: Europe/Vienna
     commit-message:
       prefix: "build(deps)"
+    groups:
+      server-images:
+        patterns: ["*"]

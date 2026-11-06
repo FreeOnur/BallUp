@@ -1,8 +1,8 @@
 [versions]
 # Build
-agp = "9.5.0"
+agp = "9.5.1"
 kotlin = "2.4.21"
-spotless = "8.10.4"
+spotless = "8.11.0"
 ktlint = "1.8.0"
 
 # Android SDK
@@ -24,9 +24,9 @@ coroutines = "1.11.0"
 serialization = "1.12.0"
 datetime = "0.8.0"
 koinBom = "4.2.2"
-ktor = "3.6.0"
+ktor = "3.6.1"
 sqldelight = "2.4.1"
-openapiGenerator = "7.26.0"
+openapiGenerator = "7.27.0"
 
 # Testing
 turbine = "1.2.1"

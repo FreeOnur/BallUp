@@ -93,6 +93,6 @@ ls -la --time-style=long-iso /var/backups/ballup 2>/dev/null | tail -n 5 || echo
 cat <<'EOF'
 
 Fertig. Testlauf:
-  sudo systemctl start ballup-db-backup.service && journalctl -u ballup-db-backup -n 20 --no-pager
+  sudo systemctl start ballup-db-backup.service && sudo journalctl -u ballup-db-backup -n 20 --no-pager
   sudo /usr/local/sbin/ballup-db-backup --fehlertest   # muss einen ntfy-Alarm schicken
 EOF

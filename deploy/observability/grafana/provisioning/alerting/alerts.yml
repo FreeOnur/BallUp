@@ -1,0 +1,90 @@
+# Grafana-Alarme aufs Handy über die ntfy-App.
+# NTFY_URL kommt aus deploy/compose/.env (siehe compose.observability.yml).
+# Achtung: Grafana ersetzt in Provisioning-Dateien Dollarzeichen + Name durch eine Umgebungsvariable.
+# Ein echtes Dollarzeichen (z. B. in Vorlagen) deshalb doppelt schreiben.
+# Zertifikats-Ablauf und "API nicht erreichbar" prüft Uptime Kuma von außen, nicht Grafana.
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: handy
+    receivers:
+      - uid: ballup-ntfy
+        type: webhook
+        settings:
+          # ntfy formatiert Grafana-Alarme mit seiner eingebauten Vorlage lesbar.
+          url: ${NTFY_URL}?template=grafana
+          httpMethod: POST
+
+policies:
+  - orgId: 1
+    receiver: handy
+    group_by: ["grafana_folder", "alertname"]
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 12h
+
+groups:
+  - orgId: 1
+    name: server
+    folder: BallUp
+    interval: 1m
+    rules:
+      - uid: ballup-disk-80
+        title: Platte über 80 %
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              expr: max(100 * (1 - node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}))
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [80]
+        for: 10m
+        # Fehlen die Werte (node-exporter oder Prometheus aus), soll das auch auffallen.
+        noDataState: Alerting
+        execErrState: Error
+        annotations:
+          summary: Die Server-Platte ist zu über 80 % voll. Alte Images, Logs und Backups prüfen.
+
+      - uid: ballup-ram-85
+        title: RAM über 85 %
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              expr: max(100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [85]
+        for: 10m
+        noDataState: Alerting
+        execErrState: Error
+        annotations:
+          summary: Der Server nutzt seit 10 Minuten über 85 % RAM. docker stats ansehen.

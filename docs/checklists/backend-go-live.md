@@ -4,15 +4,16 @@
 
 - [ ] Ubuntu aktuell, automatische Sicherheitsupdates (`unattended-upgrades`)
 - [ ] SSH nur mit Key, Root-Login und Passwort-Login aus, eigener Deploy-User
+- [ ] SSH nur über Tailscale, Port 22 in der Hetzner-Firewall zu, `sudo` nur mit Passwort ([Runbook](../runbooks/server-zugang.md))
 - [ ] Firewall: nur 22, 80, 443 offen (Hetzner Cloud Firewall + `ufw`)
 - [ ] Docker + Compose-Plugin installiert, Repo unter `/opt/ballup` geklont
 - [ ] `deploy/compose/.env` angelegt (aus `.env.example`), Rechte `600`
 
 ## DNS & TLS
 
-- [ ] `api.`, `grafana.`, `status.ballup.eu` zeigen auf den Server
+- [ ] `ballup.eu`, `api.`, `status.ballup.eu` zeigen auf den Server
 - [ ] Caddy hat Zertifikate geholt (HTTPS funktioniert, HTTP leitet um)
-- [ ] Grafana nur mit starkem Passwort, Sign-up aus; optional per IP/SSO einschränken
+- [ ] Grafana nur per SSH-Tunnel (`npm run tunnel:grafana`), starkes Passwort, Sign-up aus
 
 ## CI/CD
 

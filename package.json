@@ -14,7 +14,8 @@
     "logs": "node deploy/scripts/run.mjs logs",
     "logs:api": "node deploy/scripts/run.mjs logs api",
     "ssh": "node deploy/scripts/run.mjs ssh",
-    "tunnel:status": "node deploy/scripts/run.mjs tunnel status"
+    "tunnel:status": "node deploy/scripts/run.mjs tunnel status",
+    "tunnel:grafana": "node deploy/scripts/run.mjs tunnel grafana"
   },
   "scriptsHelp": {
     "Deployen": {
@@ -30,6 +31,7 @@
       "logs:api": "Logs nur der API live",
       "ssh": "Shell auf dem Server im Compose-Ordner (z. B. nano .env)",
       "tunnel:status": "Uptime-Kuma-Admin sicher öffnen: http://localhost:3001",
+      "tunnel:grafana": "Grafana sicher öffnen: http://localhost:3000",
       "install:server": "Ersteinrichtung: Dateien kopieren, .env aus .env.example anlegen"
     },
     "Hilfe": {

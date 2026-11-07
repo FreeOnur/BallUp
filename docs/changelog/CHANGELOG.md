@@ -4,6 +4,13 @@ Was sich am Produkt und am Gerüst geändert hat, neueste Zeile oben. Ein Eintra
 
 Dependabot-Bumps und reine Formatierung stehen hier nicht. Die stehen in `git log`. Keine Secrets, keine Roh-Logs, keine Tokens.
 
+## 2026-11-07
+
+- Alarme aufs Handy über ntfy: Grafana meldet Platte über 80 % und RAM über 85 % (neuer Dienst node-exporter), Uptime Kuma meldet Ausfälle und ablaufende Zertifikate.
+- Grafana ist nicht mehr öffentlich (`grafana.ballup.eu` entfällt), nur noch per `npm run tunnel:grafana`.
+- Jeder Deploy löscht ungenutzte Docker-Images, die älter als 7 Tage sind.
+- `deploy/scripts/server/harden.sh` und Runbook `server-zugang.md`: Tailscale, `sudo` mit Passwort, alter Umzugs-Schlüssel entfernt. Die Server-Adresse der Deploy-Skripte ist über `BALLUP_HOST` einstellbar.
+
 ## 2026-11-06
 
 - Container gehärtet: `no-new-privileges` und ein Speicherlimit für jeden Dienst in `compose.yml` und `compose.observability.yml`. Die API nimmt höchstens 10 MB pro Request an (Caddy).

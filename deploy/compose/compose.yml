@@ -27,7 +27,6 @@ services:
     environment:
       ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL in .env}
       API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in .env}
-      GRAFANA_DOMAIN: ${GRAFANA_DOMAIN:?set GRAFANA_DOMAIN in .env}
       STATUS_DOMAIN: ${STATUS_DOMAIN:?set STATUS_DOMAIN in .env}
       SITE_DOMAIN: ${SITE_DOMAIN:-ballup.eu}
     volumes:

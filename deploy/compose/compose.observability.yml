@@ -27,6 +27,19 @@ services:
       - ../observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
 
+  # Host-Metriken (Platte, RAM, CPU) für die Grafana-Alarme. Kein Port nach außen, nur Prometheus fragt ab.
+  node-exporter:
+    image: prom/node-exporter:v1.12.1
+    <<: *hardening
+    mem_limit: 64m
+    restart: unless-stopped
+    logging: *default-logging
+    command:
+      - --path.rootfs=/host
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+
   tempo:
     image: grafana/tempo:3.1.1
     <<: *hardening
@@ -44,7 +57,13 @@ services:
     mem_limit: 384m
     restart: unless-stopped
     logging: *default-logging
+    # Nicht öffentlich: nur auf dem Loopback des Servers, öffnen mit npm run tunnel:grafana.
+    ports:
+      - "127.0.0.1:3000:3000"
     environment:
+      GF_SERVER_ROOT_URL: http://localhost:3000
+      # ntfy-Thema für Alarme aufs Handy (provisioning/alerting/alerts.yml), legt harden.sh an.
+      NTFY_URL: ${NTFY_URL:?set NTFY_URL in .env (sudo bash scripts/server/harden.sh)}
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?set GRAFANA_ADMIN_PASSWORD in .env}
       GF_USERS_ALLOW_SIGN_UP: "false"

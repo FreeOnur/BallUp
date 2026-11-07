@@ -8,14 +8,14 @@
 - **Braucht:** Docker (läuft), Node, Git (unter Windows: Git for Windows), SSH-Schlüssel `~/.ssh/ballup_deploy`,
   `docker login -u onurballup` auf dem eigenen Rechner. Hintergrund: [ADR 0018](../adr/0018-deployment-per-skript.md)
 
-Server: `deploy@46.224.171.6`, Dateien unter `/opt/ballup/deploy`, Konfiguration in `/opt/ballup/deploy/compose/.env`.
+Server: `deploy@46.224.171.6` (nach der Umstellung auf Tailscale `deploy@ballup-server`, siehe [Server-Zugang](server-zugang.md)), Dateien unter `/opt/ballup/deploy`, Konfiguration in `/opt/ballup/deploy/compose/.env`.
 
 ## Befehle (im Repo-Root)
 
 | Befehl | Was passiert |
 |---|---|
 | `npm run deploy:api` | Image bauen + pushen, Deploy-Dateien kopieren, nur API neu starten |
-| `npm run deploy` | wie oben, aber der ganze Stack (Caddy, Postgres, Redis, Grafana, Prometheus, Tempo, Uptime Kuma) |
+| `npm run deploy` | wie oben, aber der ganze Stack (Caddy, Postgres, Redis, Grafana, Prometheus, node-exporter, Tempo, Uptime Kuma) |
 | `npm run rollback -- <sha>` | API auf ein früheres Image zurücksetzen, ohne Build |
 | `npm run status` | Container, deployte Version, Health der API |
 | `npm run logs` / `npm run logs:api` | Logs live verfolgen (Strg+C beendet) |
@@ -23,6 +23,7 @@ Server: `deploy@46.224.171.6`, Dateien unter `/opt/ballup/deploy`, Konfiguration
 | `npm run sync` | nur Deploy-Dateien kopieren (z. B. nach Änderung an Caddyfile), danach `npm run deploy` |
 | `npm run install:server` | Ersteinrichtung: Dateien kopieren, `.env` aus `.env.example` anlegen |
 | `npm run tunnel:status` | Uptime-Kuma-Admin über SSH-Tunnel auf `http://localhost:3001` (nicht öffentlich erreichbar) |
+| `npm run tunnel:grafana` | Grafana über SSH-Tunnel auf `http://localhost:3000` (nicht öffentlich erreichbar) |
 | `npm run help` | alle Befehle mit Erklärung |
 
 ## Erster Start von Uptime Kuma
@@ -30,6 +31,10 @@ Server: `deploy@46.224.171.6`, Dateien unter `/opt/ballup/deploy`, Konfiguration
 Die Statusseite ist öffentlich (`https://<STATUS_DOMAIN>/status/ballup`), die Admin-Oberfläche nicht.
 Nach dem ersten `npm run deploy`: `npm run tunnel:status`, `http://localhost:3001` öffnen, Admin-Konto anlegen,
 Monitor für `http://api:8000/health` einrichten und eine Statusseite mit dem Slug **`ballup`** erstellen.
+Alarme aufs Handy: [Server-Zugang, Schritt 3](server-zugang.md#3-uptime-kuma-alarme-aufs-handy).
+
+Alte Images räumt jeder Deploy selbst auf: Was kein Container nutzt und älter als 7 Tage ist, wird gelöscht.
+Ein Rollback lädt das Image wieder von Docker Hub.
 
 ## Datenbank
 

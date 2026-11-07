@@ -45,7 +45,9 @@ case "${SERVICE}" in
     ;;
 esac
 
-docker image prune -f >/dev/null 2>&1 || true
+# Alte Images löschen, die kein Container nutzt und die älter als 7 Tage sind. Für ein Rollback lädt
+# rollback.sh das Image wieder von Docker Hub, lokal muss es nicht liegen bleiben.
+docker image prune -af --filter "until=168h" >/dev/null 2>&1 || true
 
 echo "waiting for api health check..."
 cid="$(dc ps -q api)"

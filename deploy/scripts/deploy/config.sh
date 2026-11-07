@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Shared settings for the deploy scripts. Every value can be overridden via environment variable.
 
-BALLUP_SERVER="${BALLUP_SERVER:-deploy@46.224.171.6}"
+# Server-Adresse. Nach der Umstellung auf Tailscale der Tailscale-Name (ballup-server), siehe
+# docs/runbooks/server-zugang.md. Für einen einzelnen Aufruf: BALLUP_HOST=46.224.171.6 npm run status
+BALLUP_HOST="${BALLUP_HOST:-46.224.171.6}"
+BALLUP_SERVER="${BALLUP_SERVER:-deploy@${BALLUP_HOST}}"
 BALLUP_SSH_KEY="${BALLUP_SSH_KEY:-${HOME}/.ssh/ballup_deploy}"
 BALLUP_REMOTE_DIR="${BALLUP_REMOTE_DIR:-/opt/ballup}"
 BALLUP_IMAGE_REPO="${BALLUP_IMAGE_REPO:-docker.io/onurballup/ballup-api}"

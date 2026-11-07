@@ -37,7 +37,7 @@ alarm() {
       -H "Title: BallUp DB-Backup fehlgeschlagen" \
       -H "Priority: high" \
       -H "Tags: rotating_light" \
-      -d "$(hostname): ${reason}. Details: journalctl -u ballup-db-backup" \
+      -d "$(hostname): ${reason}. Details: sudo journalctl -u ballup-db-backup" \
       "${NTFY_URL}" >/dev/null || log "WARNUNG: ntfy-Alarm konnte nicht gesendet werden"
   else
     log "WARNUNG: NTFY_URL fehlt in ${ENV_FILE}, kein Alarm aufs Handy"

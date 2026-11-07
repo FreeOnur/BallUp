@@ -45,7 +45,11 @@ Bleibt der Push 25 Stunden aus (Server aus, Timer kaputt, Skript hängt), meldet
 
 ### Einrichten oder aktualisieren
 
-1. **Uptime Kuma** (`npm run tunnel:status`, `http://localhost:3001`): Neuer Monitor → Typ **Push**,
+1. **Uptime Kuma** (`npm run tunnel:status`, `http://localhost:3001`). Beim allerersten Öffnen: Datenbank **SQLite**,
+   Admin-Konto anlegen (Passwort in Bitwarden „BallUp Uptime Kuma Admin“). Ist Port 3001 auf dem eigenen Rechner schon belegt
+   (z. B. ein lokales Kuma), den Tunnel auf einen anderen Port legen:
+   `ssh -N -L 3002:127.0.0.1:3001 -i ~/.ssh/ballup_deploy deploy@ballup-server`, dann `http://localhost:3002`.
+   Neuer Monitor → Typ **Push**,
    Name `DB-Backup nachts`, Intervall **90000** Sekunden (25 h), Wiederholungen 0, ntfy-Benachrichtigung an. Speichern.
 2. Die angezeigte Push-URL kopieren und den Teil vor `/api/push/` durch `http://127.0.0.1:3001` ersetzen
    (Kuma ist nur lokal erreichbar). Ergebnis: `http://127.0.0.1:3001/api/push/<token>?status=up&msg=OK&ping=`.
@@ -57,7 +61,7 @@ Bleibt der Push 25 Stunden aus (Server aus, Timer kaputt, Skript hängt), meldet
 6. Testlauf:
    ```bash
    sudo systemctl start ballup-db-backup.service
-   journalctl -u ballup-db-backup -n 20 --no-pager      # "ok: ..." und "Push an Uptime Kuma gesendet"
+   sudo journalctl -u ballup-db-backup -n 20 --no-pager      # "ok: ..." und "Push an Uptime Kuma gesendet"
    sudo /usr/local/sbin/ballup-db-backup --fehlertest    # ntfy-Alarm muss aufs Handy kommen
    ```
    In Uptime Kuma ist der Monitor jetzt grün.
@@ -154,14 +158,14 @@ Die Datei enthält alle Nutzerdaten: verschlüsselt ablegen (Bitwarden-Anhang, v
 
 ## Wenn es schiefgeht
 
-- **ntfy „DB-Backup fehlgeschlagen“:** `journalctl -u ballup-db-backup -n 50 --no-pager` lesen.
+- **ntfy „DB-Backup fehlgeschlagen“:** `sudo journalctl -u ballup-db-backup -n 50 --no-pager` lesen.
   - *pg_dump fehlgeschlagen:* läuft `postgres`? `npm run status`, sonst `npm run deploy`. Danach `sudo systemctl start ballup-db-backup.service`.
   - *Dump nur … Bytes:* Wurden wirklich so viele Daten gelöscht? Wenn ja und gewollt:
     `sudo mv /var/backups/ballup/<datei>.dump.verdacht /var/backups/ballup/<datei>.dump`, dann ist das der neue Vergleichswert.
     Wenn nein: Weg C mit dem letzten guten Dump.
   - *keine Tabelle alembic_version:* `POSTGRES_DB` in der `.env` zeigt auf die falsche Datenbank.
 - **Uptime Kuma meldet „DB-Backup nachts“ down, aber kein ntfy vom Skript:** Timer läuft nicht oder `BACKUP_PUSH_URL` stimmt nicht.
-  `systemctl list-timers ballup-db-backup.timer`, `journalctl -u ballup-db-backup -n 20`, Push-URL mit
+  `systemctl list-timers ballup-db-backup.timer`, `sudo journalctl -u ballup-db-backup -n 20`, Push-URL mit
   `curl -fsS "<url>"` auf dem Server testen.
 - **pg_restore bricht beim Restore-Test ab:** den Dump vom Vortag testen. Geht der, ist nur ein Dump kaputt. Gehen alle nicht: Notfall, Weg A
   mit Hetzner-Backup und sofort nachsehen, was am Backup-Skript nicht stimmt.

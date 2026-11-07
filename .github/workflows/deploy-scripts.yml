@@ -27,3 +27,6 @@ jobs:
 
       - name: Run deploy script tests
         run: bash deploy/scripts/tests/test_sync_and_reload.sh
+
+      - name: Shellcheck backup scripts
+        run: shellcheck -x deploy/scripts/server/backup-db.sh deploy/scripts/server/restore-test-db.sh deploy/scripts/server/install-backup.sh

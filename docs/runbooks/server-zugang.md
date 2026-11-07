@@ -66,8 +66,15 @@ ssh -i ~/.ssh/privat_server onur@ballup-server
 1. Die Skripte nutzen seit dem 07.11.2026 standardmäßig `ballup-server` (`BALLUP_HOST` in
    `deploy/scripts/deploy/config.sh`). ServerDeck ebenfalls auf `ballup-server` umstellen.
    In der Tailscale-Admin-Seite bei `ballup-server` **Disable key expiry**, sonst fliegt der Server nach 180 Tagen raus.
-2. Hetzner Console → **Firewalls** → `ballup-firewall` → Regel für **TCP 22** löschen.
-3. Prüfen: `ssh onur@46.224.171.6` läuft ins Leere (Timeout), `npm run status` geht weiter.
+2. Hetzner Console → **Firewalls** → `ballup-firewall` → Regel für **TCP 22** löschen. Unter **Ressourcen** prüfen,
+   dass die Firewall dem Server `ballup` wirklich zugewiesen ist. Sonst greift sie nicht.
+3. Zweite Sperre auf dem Server (ufw), SSH nur noch über Tailscale. Über `ssh ballup` verbunden bleiben, offene Sitzungen bleiben bestehen:
+   ```bash
+   sudo ufw allow in on tailscale0 to any port 22 proto tcp comment 'SSH nur über Tailscale'
+   sudo ufw delete allow OpenSSH
+   sudo ufw status numbered      # verbleibende Regeln "22/tcp ... Anywhere" mit sudo ufw delete <nummer> löschen
+   ```
+4. Prüfen: In einem **neuen** Terminal geht `ssh ballup` noch. `ssh onur@46.224.171.6` läuft ins Leere (Timeout), `npm run status` geht weiter.
 
 ## Prüfen, ob es geklappt hat
 

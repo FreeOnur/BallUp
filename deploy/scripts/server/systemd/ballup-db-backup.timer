@@ -1,0 +1,13 @@
+# Installiert von deploy/scripts/server/install-backup.sh nach /etc/systemd/system/.
+# Der Server läuft auf UTC, deshalb die Zeitzone im Kalender: immer 03:30 Wiener Zeit.
+# Persistent=true holt einen verpassten Lauf nach (z. B. wenn der Server um 03:30 aus war).
+[Unit]
+Description=BallUp Datenbank-Backup jede Nacht um 03:30 (Europe/Vienna)
+
+[Timer]
+OnCalendar=*-*-* 03:30:00 Europe/Vienna
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

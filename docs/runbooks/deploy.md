@@ -5,10 +5,10 @@
 
 - **Wann nutzen:** neue Backend-Version live bringen, Konfiguration auf dem Server ändern, zurückrollen
 - **Dauer:** ca. 3–5 Minuten
-- **Braucht:** Docker (läuft), Node, Git (unter Windows: Git for Windows), SSH-Schlüssel `~/.ssh/ballup_deploy`,
+- **Braucht:** Docker (läuft), Node, Git (unter Windows: Git for Windows), Tailscale (angemeldet), SSH-Schlüssel `~/.ssh/ballup_deploy`,
   `docker login -u onurballup` auf dem eigenen Rechner. Hintergrund: [ADR 0018](../adr/0018-deployment-per-skript.md)
 
-Server: `deploy@46.224.171.6` (nach der Umstellung auf Tailscale `deploy@ballup-server`, siehe [Server-Zugang](server-zugang.md)), Dateien unter `/opt/ballup/deploy`, Konfiguration in `/opt/ballup/deploy/compose/.env`.
+Server: `deploy@ballup-server` über Tailscale (öffentliche IP `46.224.171.6`, Port 22 dort zu, siehe [Server-Zugang](server-zugang.md)), Dateien unter `/opt/ballup/deploy`, Konfiguration in `/opt/ballup/deploy/compose/.env`.
 
 ## Befehle (im Repo-Root)
 

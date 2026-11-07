@@ -30,7 +30,7 @@
 ### 2. Härtungs-Skript auf dem Server
 
 1. Im Repo-Root `npm run sync` (kopiert das Skript auf den Server, startet nichts neu).
-2. Als `onur` auf den Server (ServerDeck oder `ssh -i ~/.ssh/privat_server onur@46.224.171.6`).
+2. Als `onur` auf den Server (ServerDeck oder `ssh -i ~/.ssh/privat_server onur@ballup-server`, vor der Umstellung `onur@46.224.171.6`).
 3. `sudo bash /opt/ballup/deploy/scripts/server/harden.sh`
 4. Das Skript:
    - entfernt den alten Umzugs-Schlüssel,
@@ -63,8 +63,9 @@ BALLUP_HOST=ballup-server npm run status
 ssh -i ~/.ssh/privat_server onur@ballup-server
 ```
 
-1. In `deploy/scripts/deploy/config.sh` den Standard von `BALLUP_HOST` auf `ballup-server` stellen (PR).
-   ServerDeck ebenfalls auf `ballup-server` umstellen.
+1. Die Skripte nutzen seit dem 07.11.2026 standardmäßig `ballup-server` (`BALLUP_HOST` in
+   `deploy/scripts/deploy/config.sh`). ServerDeck ebenfalls auf `ballup-server` umstellen.
+   In der Tailscale-Admin-Seite bei `ballup-server` **Disable key expiry**, sonst fliegt der Server nach 180 Tagen raus.
 2. Hetzner Console → **Firewalls** → `ballup-firewall` → Regel für **TCP 22** löschen.
 3. Prüfen: `ssh onur@46.224.171.6` läuft ins Leere (Timeout), `npm run status` geht weiter.
 
@@ -77,6 +78,8 @@ ssh -i ~/.ssh/privat_server onur@ballup-server
 
 ## Wenn es schiefgeht
 
+- **`Could not resolve hostname ballup-server`:** Tailscale auf dem eigenen Rechner ist aus oder abgemeldet.
+  Tailscale-Symbol in der Taskleiste → Connected mit dem BallUp-Konto.
 - **Tailscale geht nicht und Port 22 ist zu:** Hetzner Console → Server → **Konsole** (`>_`), als `onur`
   mit dem Passwort aus Bitwarden anmelden (oder `root` mit dem Root-Passwort). `sudo tailscale up` neu.
   Notfalls in der Firewall die Regel TCP 22 kurz wieder anlegen und danach wieder löschen.

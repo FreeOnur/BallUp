@@ -1,0 +1,12 @@
+# Installiert von deploy/scripts/server/install-backup.sh nach /etc/systemd/system/.
+[Unit]
+Description=BallUp Datenbank-Backup (pg_dump, geprüft)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/ballup-db-backup
+TimeoutStartSec=30min
+Nice=10
+IOSchedulingClass=idle

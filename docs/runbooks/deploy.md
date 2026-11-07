@@ -52,6 +52,13 @@ docker compose run --rm api alembic upgrade head
 `alembic.ini` und `migrations/` liegen im API-Image. Der Befehl legt nur die PostGIS-Extension
 und die Funktion `set_updated_at()` an, keine Tabellen.
 
+## Vor großen Änderungen: Hetzner-Snapshot
+
+Vor allem, was mehr als ein normaler API-Deploy ist (Postgres- oder Compose-Umbau, Ubuntu-Upgrade, Firewall/SSH, Docker-Update):
+Hetzner Console → Server → **Snapshots** → Snapshot anlegen (`vor-<änderung>-<datum>`). Zurück geht es dann mit
+[Restore, Weg A](restore.md#weg-a-hetzner-backup-oder-snapshot-zurückspielen-ca-30-min). Danach den Snapshot wieder löschen.
+Backup und Restore der Datenbank: [restore.md](restore.md).
+
 ## Schritte
 
 1. Auf dem Stand sein, der live gehen soll (in der Regel `main` nach dem Merge), `git status` sauber.

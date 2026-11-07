@@ -30,6 +30,7 @@ Zuerst [`status.md`](status.md). Dort steht, was gebaut ist und was nicht.
 ## Anleitungen
 
 - [Runbook: Backend deployen und zurückrollen](runbooks/deploy.md)
+- [Runbook: Datenbank-Backup und Wiederherstellung](runbooks/restore.md)
 - [Guide: Mac mini einrichten (iOS-Entwicklung)](guides/mac-mini-setup.md)
 - [Guide: Features schneiden und bauen](guides/ai-project-process.md)
 - [Changelog](changelog/CHANGELOG.md) – gemergte Änderungen, die den Stand verschieben

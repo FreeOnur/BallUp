@@ -6,6 +6,7 @@ Dependabot-Bumps und reine Formatierung stehen hier nicht. Die stehen in `git lo
 
 ## 2026-11-07
 
+- Geprüftes DB-Backup: `deploy/scripts/server/backup-db.sh` testet jeden Dump (`pg_restore --list`, Größe gegen den Vortag), meldet Erfolg per Push an Uptime Kuma und Fehler per ntfy. Der Timer läuft um 03:30 Wiener Zeit statt UTC. Neu: `install-backup.sh`, `restore-test-db.sh` für den monatlichen Restore-Test, `BACKUP_PUSH_URL` in `.env.example`, Runbook `restore.md` (RPO 24 h, RTO 4 h). Vor großen Server-Änderungen ein Hetzner-Snapshot (`deploy.md`). `server-zugang.md`: SSH auch in ufw nur noch über Tailscale.
 - Deploy-Skripte gehen über Tailscale (`ballup-server`), Port 22 ist von außen zu. Grafana darf 512 MB nutzen. `harden.sh` begrenzt das System-Journal auf 300 MB und zeigt die größten Ordner.
 
 - Alarme aufs Handy über ntfy: Grafana meldet Platte über 80 % und RAM über 85 % (neuer Dienst node-exporter), Uptime Kuma meldet Ausfälle und ablaufende Zertifikate.

@@ -54,7 +54,7 @@ services:
   grafana:
     image: grafana/grafana:13.3.0
     <<: *hardening
-    mem_limit: 384m
+    mem_limit: 512m
     restart: unless-stopped
     logging: *default-logging
     # Nicht öffentlich: nur auf dem Loopback des Servers, öffnen mit npm run tunnel:grafana.

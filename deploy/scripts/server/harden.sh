@@ -13,7 +13,7 @@ fi
 ENV_FILE=/opt/ballup/deploy/compose/.env
 step() { printf '\n== %s\n' "$1"; }
 
-step "1/5 Alten Umzugs-Schlüssel entfernen"
+step "1/6 Alten Umzugs-Schlüssel entfernen"
 for f in /root/.ssh/authorized_keys /home/onur/.ssh/authorized_keys /home/deploy/.ssh/authorized_keys; do
   [[ -f ${f} ]] || continue
   if grep -q 'claude-server-umzug' "${f}"; then
@@ -23,7 +23,7 @@ for f in /root/.ssh/authorized_keys /home/onur/.ssh/authorized_keys /home/deploy
 done
 echo "fertig"
 
-step "2/5 Alarme aufs Handy (ntfy)"
+step "2/6 Alarme aufs Handy (ntfy)"
 if [[ ! -f ${ENV_FILE} ]]; then
   echo "FEHLER: ${ENV_FILE} fehlt"
   exit 1
@@ -42,7 +42,7 @@ if curl -fsS -H "Title: BallUp" -d "Test: Alarme vom Server kommen an." "${ntfy_
   echo "Testnachricht geschickt"
 fi
 
-step "3/5 Tailscale"
+step "3/6 Tailscale"
 if ! command -v tailscale >/dev/null 2>&1; then
   curl -fsSL https://tailscale.com/install.sh | sh
 fi
@@ -54,7 +54,7 @@ else
 fi
 echo "Tailscale-Adresse: $(tailscale ip -4)"
 
-step "4/5 sudo nur noch mit Passwort"
+step "4/6 sudo nur noch mit Passwort"
 mapfile -t nopasswd_files < <(grep -lE '^[[:space:]]*onur[[:space:]].*NOPASSWD' /etc/sudoers.d/* 2>/dev/null || true)
 if grep -qE '^[[:space:]]*onur[[:space:]].*NOPASSWD' /etc/sudoers; then
   echo "NOPASSWD für onur steht in /etc/sudoers. Bitte mit 'sudo visudo' von Hand entfernen."
@@ -79,10 +79,27 @@ else
   done
 fi
 
-step "5/5 Speicher und Platte"
+step "5/6 System-Logs begrenzen"
+journald_conf=/etc/systemd/journald.conf.d/ballup.conf
+if [[ -f ${journald_conf} ]]; then
+  echo "schon begrenzt"
+else
+  mkdir -p "$(dirname "${journald_conf}")"
+  printf '[Journal]\nSystemMaxUse=300M\nMaxRetentionSec=1month\n' > "${journald_conf}"
+  systemctl restart systemd-journald
+  journalctl --vacuum-size=300M >/dev/null
+  echo "Journal auf 300 MB und 1 Monat begrenzt"
+fi
+
+step "6/6 Speicher und Platte"
 docker stats --no-stream --format 'table {{.Name}}\t{{.MemUsage}}\t{{.CPUPerc}}'
 echo
 free -h
 df -h /
+echo
+echo "Größte Ordner auf der Platte:"
+du -xh --max-depth=2 / 2>/dev/null | sort -h | tail -12
+echo
+docker system df
 
 printf '\nFertig. Als Nächstes: docs/runbooks/server-zugang.md, Abschnitt "Port 22 schließen".\n'

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Shared settings for the deploy scripts. Every value can be overridden via environment variable.
 
-# Server-Adresse. Nach der Umstellung auf Tailscale der Tailscale-Name (ballup-server), siehe
-# docs/runbooks/server-zugang.md. Für einen einzelnen Aufruf: BALLUP_HOST=46.224.171.6 npm run status
-BALLUP_HOST="${BALLUP_HOST:-46.224.171.6}"
+# Server-Adresse: Tailscale-Name, Port 22 ist von außen zu (docs/runbooks/server-zugang.md).
+# Der Rechner muss im Tailscale-Netz angemeldet sein. Notfall über die öffentliche IP geht nur,
+# wenn die Firewall-Regel für Port 22 kurz wieder angelegt ist: BALLUP_HOST=46.224.171.6 npm run status
+BALLUP_HOST="${BALLUP_HOST:-ballup-server}"
 BALLUP_SERVER="${BALLUP_SERVER:-deploy@${BALLUP_HOST}}"
 BALLUP_SSH_KEY="${BALLUP_SSH_KEY:-${HOME}/.ssh/ballup_deploy}"
 BALLUP_REMOTE_DIR="${BALLUP_REMOTE_DIR:-/opt/ballup}"

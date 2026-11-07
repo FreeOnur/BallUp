@@ -6,6 +6,8 @@ Dependabot-Bumps und reine Formatierung stehen hier nicht. Die stehen in `git lo
 
 ## 2026-11-07
 
+- Deploy-Skripte gehen über Tailscale (`ballup-server`), Port 22 ist von außen zu. Grafana darf 512 MB nutzen. `harden.sh` begrenzt das System-Journal auf 300 MB und zeigt die größten Ordner.
+
 - Alarme aufs Handy über ntfy: Grafana meldet Platte über 80 % und RAM über 85 % (neuer Dienst node-exporter), Uptime Kuma meldet Ausfälle und ablaufende Zertifikate.
 - Grafana ist nicht mehr öffentlich (`grafana.ballup.eu` entfällt), nur noch per `npm run tunnel:grafana`.
 - Jeder Deploy löscht ungenutzte Docker-Images, die älter als 7 Tage sind.

@@ -23,6 +23,12 @@ Zuerst [`status.md`](status.md). Dort steht, was gebaut ist und was nicht.
 - [Incident](checklists/incident.md)
 - [Neues Feature](checklists/new-feature.md)
 
+## Team (KI-Agents)
+
+- [Das KI-Entwicklungsteam](team/agents.md) – Rollen, Abläufe, wie Onur informiert wird
+- [Lagebericht](team/lagebericht.md) · [Entscheidungs-Log](team/entscheidungen-log.md) · [Onur-Profil](team/onur-profil.md)
+- [Design-System](design/design-system.md) · [Rechtsquellen](legal/quellen.md)
+
 ## Business
 
 - [Kosten](costs.md) – einmalig, laufend, pro Nutzer (inkl. KI), Abo-Rechnung, Messung, Geschäftskonto

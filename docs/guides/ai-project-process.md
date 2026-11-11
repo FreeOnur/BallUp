@@ -25,3 +25,18 @@ Ein Schnitt ist ein durchgängiges Stück Funktion: Backend, Shared, Android und
 5. Lief dabei ein Test oder ein Log-Fenster: kurze Auswertung nach [`docs/reviews/_template.md`](../reviews/_template.md). Security-Signale (fehlgeschlagene Logins, `403` auf Admin, Rate-Limits) nach [`docs/security/reviews/_template.md`](../security/reviews/_template.md). Die [Security-Regeln](../security/rules.md) gelten bei jedem Schnitt.
 
 Eine zweite Datei `docs/specs/<bereich>.tasks.md` nur, wenn die Aufgabenliste die Spec unlesbar macht. Dieselbe Vorlage, nur der Abschnitt „Aufgaben“.
+
+## Mit dem Agent-Team
+
+Die Phasen oben laufen mit dem KI-Team aus `.claude/agents/` ab ([Übersicht](../team/agents.md), [ADR 0020](../adr/0020-ki-entwicklungsteam.md)):
+
+| Phase | Wer |
+|---|---|
+| 3 Schnitte planen, 4 Spec, 5 Aufgaben | **planner** |
+| 7 Umsetzen | **builder** (eigener Worktree, PR < 400 Zeilen) |
+| Prüfen | **tester**, **reviewer**, **security** parallel, Funde max. 2 Runden |
+| Doku, CHANGELOG, status.md | **dokumentierer** |
+| Merge oder Frage an Onur | **entscheider** |
+| Bericht an Onur | **updater** |
+
+Starten: Skill `feature-bauen #<issue>` für eine Story, `swarm` für mehrere, `naechster-schritt` wenn unklar ist, was dran ist. Regeln, die immer gelten: zuerst `docs/status.md` lesen, PRs unter 400 Zeilen, keine Secrets, neue Repo-Entscheidung = ADR, Angriffstests nur gegen die eigene App, Ergebnisse in `docs/` und auf GitHub.

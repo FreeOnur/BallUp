@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from ballup.core.app_version import AppVersionMiddleware
 from ballup.core.config import get_settings
 
 
@@ -16,6 +17,12 @@ def create_app() -> FastAPI:
         docs_url="/docs" if docs_enabled else None,
         redoc_url="/redoc" if docs_enabled else None,
         openapi_url="/openapi.json" if docs_enabled else None,
+    )
+
+    app.add_middleware(
+        AppVersionMiddleware,
+        min_ios=settings.min_app_version_ios,
+        min_android=settings.min_app_version_android,
     )
 
     @app.get("/health", response_model=HealthOut, tags=["system"])

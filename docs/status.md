@@ -2,7 +2,7 @@
 
 Zuerst diese Datei lesen. Sie ersetzt kein ADR und keinen Code. Sie sagt, wo das Projekt gerade steht, damit nicht das ganze Repo neu gelesen werden muss.
 
-Stand: 2026-10-28. Nach jeder Änderung, die den Stand verschiebt, diese Datei anpassen. Einzelne Commits stehen in [`changelog/CHANGELOG.md`](changelog/CHANGELOG.md), die volle Historie in `git log`.
+Stand: 2026-11-12. Nach jeder Änderung, die den Stand verschiebt, diese Datei anpassen. Einzelne Commits stehen in [`changelog/CHANGELOG.md`](changelog/CHANGELOG.md), die volle Historie in `git log`.
 
 ## Produkt
 
@@ -17,6 +17,7 @@ Notion (Technical Planning) hält Produkt und Stack. Entscheidungen zum Repo ste
 - `/docs` ist aus, wenn `BALLUP_ENV=production` ist. Vertrag über `backend/scripts/export_openapi.py`.
 - Deploy per `npm run deploy` / `deploy:api` (ADR 0018). Logs: JSON auf stdout, Docker-Rotation, kein Loki (ADR 0016).
 - Mobile-Pakete und Bundle-IDs sind `eu.ballup` (ADR 0019).
+- Force-Update-Middleware im Backend: `426` bei zu alter App-Version, Mindestversion je Plattform per Umgebungsvariable. Spec [`specs/app-version.md`](specs/app-version.md). Update-Hinweis in den Apps (M1–M3) fehlt noch.
 
 ## Was noch nicht steht
 

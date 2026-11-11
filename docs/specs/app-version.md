@@ -1,7 +1,7 @@
 # Feature-Spec: Force-Update für zu alte App-Versionen
 
 - **Modul:** `core` (Backend); später Mobile `shared/core/network` + Update-Hinweis in beiden Apps
-- **Status:** Bereit (Backend), Mobile später
+- **Status:** In Arbeit (Backend B1 umgesetzt, Mobile M1–M3 offen)
 - **Notion:** [API-Design](https://www.notion.so/39d7fa3ccbe18025b22ad5c44bc3cb47) · Issue #160 · Epic #191
 
 ## Ziel

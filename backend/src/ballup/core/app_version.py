@@ -38,6 +38,14 @@ def parse_app_version(value: str) -> AppVersion | None:
 
 
 class AppVersionMiddleware:
+    """Reject requests whose ``X-App-Version`` is below the platform minimum.
+
+    The values are validated twice: the ``Settings`` validator aborts the app start on an
+    invalid minimum, the check in the constructor is only a second safeguard (Starlette builds
+    the middleware stack lazily, so it would raise on the first request, not at startup).
+    The logged values are safe: the version matches a strict regex, the platform is a known key.
+    """
+
     def __init__(self, app: ASGIApp, min_ios: str = "", min_android: str = "") -> None:
         self.app = app
         minimums: dict[str, AppVersion] = {}
@@ -71,12 +79,10 @@ class AppVersionMiddleware:
         minimum = self.minimums.get(platform)
         if minimum is not None and version < minimum:
             logger.warning(
-                "app_version_rejected",
-                extra={
-                    "platform": platform,
-                    "app_version": raw_version,
-                    "min_version": ".".join(str(part) for part in minimum),
-                },
+                "app_version_rejected platform=%s app_version=%s min_version=%s",
+                platform,
+                raw_version,
+                ".".join(str(part) for part in minimum),
             )
             await _send_error(send, 426, "app_version_too_old", TOO_OLD_MESSAGE)
             return

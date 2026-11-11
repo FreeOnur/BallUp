@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -130,20 +132,40 @@ def test_exempt_paths_match_spec() -> None:
     assert {"/health", "/docs", "/docs/oauth2-redirect", "/redoc", "/openapi.json"} == EXEMPT_PATHS
 
 
+@pytest.mark.usefixtures("fresh_settings")
 def test_app_factory_wires_middleware_from_settings(monkeypatch) -> None:
-    from ballup.core.config import get_settings
     from ballup.main import create_app
 
     monkeypatch.setenv("BALLUP_MIN_APP_VERSION_IOS", "1.2.0")
-    get_settings.cache_clear()
     client = TestClient(create_app())
 
     assert client.get("/health", headers=headers("1.1.9")).status_code == 200
     assert client.get("/nope", headers=headers("1.1.9")).status_code == 426
     assert client.get("/nope", headers=headers("1.2.0")).status_code == 404
-    get_settings.cache_clear()
 
 
 def test_middleware_rejects_invalid_min_version() -> None:
     with pytest.raises(ValueError, match="Invalid minimum app version"):
         AppVersionMiddleware(FastAPI(), min_ios="1.2")
+
+
+def test_rejection_is_logged_with_platform_and_versions(caplog: pytest.LogCaptureFixture) -> None:
+    with caplog.at_level(logging.WARNING, logger="ballup.core.app_version"):
+        make_client(ios="1.2.0").get("/v1/ping", headers=headers("1.1.9"))
+
+    assert "app_version_rejected platform=ios app_version=1.1.9 min_version=1.2.0" in caplog.text
+
+
+@pytest.mark.parametrize("method", ["HEAD", "OPTIONS"])
+def test_old_version_is_blocked_for_head_and_options(method: str) -> None:
+    response = make_client(ios="1.2.0").request(method, "/v1/ping", headers=headers("1.0.0"))
+
+    assert response.status_code == 426
+
+
+@pytest.mark.parametrize("path", ["/health/", "/Health"])
+def test_exempt_paths_are_matched_exactly(path: str) -> None:
+    """Path variants are not exempt (exact comparison, as in the spec), so old apps get 426."""
+    response = make_client(ios="1.2.0").get(path, headers=headers("1.0.0"))
+
+    assert response.status_code == 426

@@ -48,10 +48,10 @@ Co-Founder von BallUp (mit Maurice Vonbrül). Entscheidet über Produkt, Design,
 - Umfang im Zweifel kleiner. Was nicht im Auftrag steht (Refactoring, Extra-Feature): erst fragen.
 - Kostet etwas Geld: nie. Gratis-Dienst für BallUp: Frage (selbst hosten zuerst, Kostengrenze noch offen).
 
-## Lücken (Fragen an Onur, beim ersten Lagebericht gestellt)
+## Antworten auf die Lücken (12.11.2026, #201)
 
-- [ ] Darf **Maurice** Fragen mit Label `frage-an-onur` stellvertretend beantworten?
-- [ ] Reicht die **GitHub-Benachrichtigung** als Kanal, oder zusätzlich E-Mail/anderer Kanal?
-- [ ] Gibt es eine **Kostengrenze pro Monat**, unter der Agents ohne Frage einen Gratis-Dienst einbinden dürfen (z. B. 0 € = nur Gratis)?
-- [ ] Sprache für **Code-Kommentare und Commit-Texte**: Englisch (wie bisher bei Commits) oder Deutsch?
-- [ ] Darf der entscheider an **Wochenenden/in Prüfungszeiten** mergen, oder lieber sammeln?
+- **Maurice** darf Fragen mit Label `frage-an-onur` stellvertretend beantworten.
+- **Kanal:** GitHub-Benachrichtigung reicht.
+- **Kosten:** keine Grenze, jeder Dienst wird vorher gefragt, auch gratis.
+- **Sprache:** Code-Kommentare und Commits Englisch, Doku Deutsch.
+- **Wochenende/Prüfungszeiten:** entscheider darf mergen (nach seinen normalen Regeln).

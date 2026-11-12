@@ -55,7 +55,7 @@ Zwei Schnitte gelten als abhängig, wenn sie dieselbe Datei, dieselbe Tabelle od
 
 ## Antworten von Onur weitergeben
 
-Onur antwortet in Issues mit Label `frage-an-onur`. Hat er geantwortet:
+Onur (oder stellvertretend Maurice) antwortet in Issues mit Label `frage-an-onur`. Hat einer geantwortet:
 1. Antwort in `docs/team/entscheidungen-log.md` eintragen (mit „entschieden von Onur“).
 2. An den Agent geben, der gefragt hat (Task mit der Antwort als Kontext).
 3. Issue mit Kommentar „Übernommen in …“ schließen, `state_reason: completed`.

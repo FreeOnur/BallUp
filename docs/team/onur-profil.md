@@ -23,7 +23,13 @@ Co-Founder von BallUp (mit Maurice Vonbrül). Entscheidet über Produkt, Design,
 | Design | Will einen eigenen, „tuffen“ Look, nichts, was nach KI oder Baukasten aussieht. Verwirft „zu brav“, „zu glatt“. 2000er Streetball/Hip-Hop/Graffiti. Entscheidet Design **selbst** | DEC-002, DEC-005, DEC-009, DEC-013, DEC-014 |
 | Jugendschutz | Ernst: 14–17 ohne Swipe, ohne DMs von Fremden, ohne genauen Standort | Notion Security |
 | Arbeitsweise | Gibt große Aufträge und viel Freiheit („entscheide alles selber“), will aber informiert werden und Probleme ehrlich hören. Kurze Antworten, wenig Fachchinesisch | Aufträge Nov 2026 |
+| Antworten | Antwortet sehr knapp, oft nur „ok los“. Liest lange Texte ungern | Auftrag 12.11.2026 |
 | Freigaben | Docs und kleine Sachen dürfen ohne ihn auf `main`. Bei Wichtigem will er gefragt werden, gern gesammelt | Auftrag 11.11.2026 |
+| Freigaben | Folgt guten Empfehlungen ohne Rückfrage (#202: vorgelegt mit Empfehlung A, er hat selbst gemergt). Will, dass das Team offene Aufgaben ohne Einzelfreigabe abarbeitet („lass alles machen“) | Auftrag 12.11.2026 |
+| Prozess | Agent-Regeln anpassen, Review-Threads auflösen: sollen Agents selbst machen, nicht ihm vorlegen („keine Zeit dafür“) | Auftrag 12.11.2026 |
+| Umfang | Nur das Nötigste, kleinste einfache Lösung (50 statt 250 Zeilen). Nichts Ungefragtes, Extras erst kurz fragen | Auftrag 12.11.2026, `CLAUDE.md` |
+| Kosten | Fleißarbeit mit billigem Modell, Aufwendiges mit dem stärksten Modell und geplant. Wenig Token: kurzes Sitzungs-Log statt alles neu lesen | Auftrag 12.11.2026 |
+| Nebenprojekte | Dort „entscheide alles selber“, auch Design: clean und stark, Humor ja, Insider-Humor nein. Nur Gratis-Lösungen. Will damit Geld verdienen (Spenden). Gilt nicht für BallUp | Auftrag 12.11.2026 |
 
 ## Wie er Infos haben will
 
@@ -36,6 +42,11 @@ Co-Founder von BallUp (mit Maurice Vonbrül). Entscheidet über Produkt, Design,
 - Zwischen zwei sicheren Lösungen: die einfachere, auch wenn sie etwas mehr kostet.
 - Neue externe Dienste: nur, wenn es keinen selbst gehosteten Weg mit vertretbarem Aufwand gibt. Sonst Frage an Onur.
 - Alles Visuelle: nie selbst festlegen (designer fragt).
+- Doku, Prozess, Agent-Regeln, Review-Threads, kleine Fixes: selbst machen, im Log oder Sitzungs-Log melden, nicht fragen.
+- Sein Vertrauen („lass alles machen“, #202) lockert **keine** „nie“- oder „vorlegen“-Regel aus `entscheider.md`. Vorlegen bleibt Pflicht, nur kürzer.
+- Fragen an ihn: eine Zeile Frage, eine Empfehlung, so gestellt, dass „ok“ eindeutig ist.
+- Umfang im Zweifel kleiner. Was nicht im Auftrag steht (Refactoring, Extra-Feature): erst fragen.
+- Kostet etwas Geld: nie. Gratis-Dienst für BallUp: Frage (selbst hosten zuerst, Kostengrenze noch offen).
 
 ## Lücken (Fragen an Onur, beim ersten Lagebericht gestellt)
 

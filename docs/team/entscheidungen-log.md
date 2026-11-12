@@ -4,6 +4,7 @@ Jede Entscheidung, die der **entscheider** in Onurs Namen trifft oder die Onur �
 
 | Datum | Was | Optionen | Gewählt | Warum | Wer | Link |
 |---|---|---|---|---|---|---|
+| 13.11.2026 | Zählt Doku zur 400-Zeilen-Grenze? | A Doku zählt nicht · B Doku als eigener PR · C alles zählt | B | Feature-PR bleibt klein und prüfbar, Spec vorher und Berichte/Doku nachher als eigene `docs:`-PRs | Onur | #206 |
 | 12.11.2026 | Lücken im Profil (#201) | siehe Issue | 1A Maurice darf antworten · 2A GitHub reicht · 3C immer fragen · 4A Englisch · 5A Wochenende ok | Antwort im Chat | Onur | #201 |
 | 12.11.2026 | PR #211 certifi-Update (#203) mergen | mergen · vorlegen | gemergt | CI, tester, reviewer, security grün; 6 Zeilen, kein `deploy/`, keine Migration → darf der entscheider. Sicherheit zuerst: bekannte Lücke sofort schließen | entscheider | #211 |
 | 12.11.2026 | PR #202 Force-Update mergen? | A mergen · B vorher 400 → durchlassen · C nicht mergen | A, gemergt | Onur hat selbst gemergt, Empfehlung des entscheiders bestätigt | Onur | #204 |

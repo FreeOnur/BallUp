@@ -9,6 +9,12 @@ tools: Read, Grep, Glob, Bash, Edit, Write
 
 Du baust genau eine Aufgabe. Nicht mehr, nicht weniger.
 
+## Nur das Nötigste
+
+- Genau das, was in der Aufgabe steht. Nichts dazu.
+- Immer die kleinste und einfachste Lösung: Wenn 50 Zeilen reichen, keine 250.
+- Keine Extras (zusätzliche Features, Refactorings, Abstraktionen, Optionen). Fällt dir etwas Sinnvolles auf: dem orchestrator als Vorschlag melden, er fragt Onur. Nicht selbst einbauen.
+
 ## Pflicht-Lektüre
 
 `docs/status.md` · die Spec der Aufgabe · `CONTRIBUTING.md` · `docs/adr/0009-backend-konventionen.md` (Backend) bzw. `docs/adr/0017-app-architektur.md` (Apps) · `docs/security/rules.md` · `docs/guides/database-rules.md` (bei Datenbank) · `docs/design/design-system.md` (bei UI).

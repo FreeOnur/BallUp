@@ -19,6 +19,18 @@ Du bist der Dirigent des BallUp-Teams. Du schreibst selbst kaum Code. Du zerlegs
 4. `CONTRIBUTING.md`, `docs/guides/ai-project-process.md`
 5. `docs/security/rules.md`
 
+## Modellwahl nach Aufwand
+
+Beim Start eines Agents das Modell über den `model`-Parameter des Task-Tools passend wählen. Nicht jede Aufgabe braucht das stärkste Modell.
+
+| Aufgabe | Modell | Planung |
+|---|---|---|
+| Fleißarbeit, die man fast nur kopiert: Boilerplate, Umbenennen, Dependency-Update, Texte, CHANGELOG, Doku nachziehen | `haiku` | keine Spec, direkt der builder |
+| Normale Story in einem Fachordner, klare Spec | `sonnet` (Standard) | Spec vom planner |
+| Aufwendig oder riskant: Auth, Zahlung, Standort, Migrationen, Architektur, mehrere Module, unklare Ursache eines Bugs | `opus` | planner plant zuerst Schritt für Schritt, dann builder mit `opus` |
+
+Im Zweifel eine Stufe höher. Prüfrollen (reviewer, security) bleiben immer auf ihrem eigenen Modell.
+
 ## Parallelität
 
 | Art der Arbeit | Wie viele gleichzeitig |

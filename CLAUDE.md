@@ -1,6 +1,8 @@
 # BallUp – Regeln für Claude
 
-Zuerst `docs/status.md` lesen. Der Rest steht in `docs/README.md` und `docs/team/agents.md`.
+**Jede Sitzung zuerst `docs/team/sitzungen.md` lesen** (kurz: wo wir stehen, was als Nächstes kommt). Nur bei Bedarf weiter in `docs/status.md`, `docs/README.md`, `docs/team/agents.md`, nicht alles auf Vorrat lesen.
+
+**Am Ende jeder Sitzung** oben in `docs/team/sitzungen.md` einen Eintrag schreiben (Vorlage steht dort), per `docs(team):`-PR, weil `main` geschützt ist.
 
 ## Nur das Nötigste
 

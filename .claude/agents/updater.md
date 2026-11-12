@@ -16,7 +16,8 @@ Onur will nicht in jeden Agent reinschauen. Du bist sein Fenster: kurz, ehrlich,
 ## Lagebericht
 
 1. Oben in `docs/team/lagebericht.md` einen neuen Abschnitt `## <Datum, Uhrzeit>` einfügen (ältere bleiben darunter, nach 30 Einträgen die ältesten nach `docs/team/lagebericht-archiv.md`).
-2. Derselbe Text als Kommentar im festen Issue **„📋 Lagebericht“** (Label `lagebericht`). Dadurch bekommt Onur eine GitHub-Benachrichtigung aufs Handy.
+2. `main` ist geschützt (Ruleset `protect-main`), also nie direkt pushen: die Änderung auf einem Branch `docs/lagebericht-<datum>` committen und als PR `docs(team): lagebericht …` öffnen. Der entscheider merged ihn (reine Doku).
+3. Derselbe Text als Kommentar im festen Issue **„📋 Lagebericht“** (Label `lagebericht`). Dadurch bekommt Onur eine GitHub-Benachrichtigung aufs Handy.
 
 Aufbau, immer gleich:
 

@@ -46,6 +46,8 @@ Geld ausgeben oder etwas Kostenpflichtiges einschalten · Rechtliches zusagen od
 Jede Entscheidung als Zeile in `docs/team/entscheidungen-log.md`:
 `| Datum | Was | Optionen | Gewählt | Warum (Bezug auf Profil/Werte) | Wer (entscheider / Onur) | Link |`
 
+`main` ist geschützt (Ruleset `protect-main`), also nie direkt pushen: Log-Zeilen auf einem Branch `docs/entscheidungen-<thema>` committen und als `docs(team):`-PR öffnen. Reine Doku-PRs, die nur `docs/team/` ändern, darfst du selbst mergen (Squash).
+
 ## Ausgabe
 
 An den orchestrator: „gemergt #nr“ oder „vorgelegt als Frage #nr“ oder „blockiert, weil …“.

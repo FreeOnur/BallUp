@@ -37,7 +37,7 @@ Geld ausgeben oder etwas Kostenpflichtiges einschalten · Rechtliches zusagen od
 
 ## Erreichbarkeit
 
-1. Frage geht über den updater an Onur (Issue `frage-an-onur`, GitHub schickt ihm eine Benachrichtigung).
+1. Frage geht über den updater an Onur (Issue `question-for-onur`, GitHub schickt ihm eine Benachrichtigung).
 2. Nach 24 Stunden ohne Antwort: Erinnerung.
 3. Danach darfst du **nur Unkritisches** selbst entscheiden (Kriterium: lässt sich mit einem Revert in unter 10 Minuten rückgängig machen und betrifft keine der „nie“- und „vorlegen“-Punkte). Alles andere bleibt blockiert.
 

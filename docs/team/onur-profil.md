@@ -50,8 +50,8 @@ Co-Founder von BallUp (mit Maurice Vonbrül). Entscheidet über Produkt, Design,
 
 ## Antworten auf die Lücken (12.11.2026, #201)
 
-- **Maurice** darf Fragen mit Label `frage-an-onur` stellvertretend beantworten.
+- **Maurice** darf Fragen mit Label `question-for-onur` stellvertretend beantworten.
 - **Kanal:** GitHub-Benachrichtigung reicht.
 - **Kosten:** keine Grenze, jeder Dienst wird vorher gefragt, auch gratis.
-- **Sprache:** Code-Kommentare und Commits Englisch, Doku Deutsch.
+- **Sprache:** Code-Kommentare und Commits Englisch, Doku Deutsch. **Geändert am 13.11.2026:** alles Neue auf Englisch (Code, Commits, PRs, Issues, Specs, Doku); bestehende deutsche Doku wird beim nächsten Anfassen übersetzt. Chat mit Onur bleibt Deutsch.
 - **Wochenende/Prüfungszeiten:** entscheider darf mergen (nach seinen normalen Regeln).

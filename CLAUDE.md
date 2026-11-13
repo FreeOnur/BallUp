@@ -1,6 +1,6 @@
 # BallUp – Regeln für Claude
 
-**Jede Sitzung zuerst `docs/team/sitzungen.md` lesen** (kurz: wo wir stehen, was als Nächstes kommt). Nur bei Bedarf weiter in `docs/status.md`, `docs/README.md`, `docs/team/agents.md`, nicht alles auf Vorrat lesen.
+**Jede Sitzung zuerst `docs/team/sitzungen.md` lesen** (kurz: wo wir stehen, was als Nächstes kommt). Was geplant ist: `docs/roadmap.md` (Sprints), wie gearbeitet wird: `docs/guides/workflow.md`. Alles Neue auf Englisch (Chat mit Onur Deutsch). Nur bei Bedarf weiter in `docs/status.md`, `docs/README.md`, `docs/team/agents.md`, nicht alles auf Vorrat lesen.
 
 **Am Ende jeder Sitzung** oben in `docs/team/sitzungen.md` einen Eintrag schreiben (Vorlage steht dort), per `docs(team):`-PR, weil `main` geschützt ist.
 

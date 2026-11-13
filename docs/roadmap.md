@@ -18,7 +18,7 @@ Each sprint is one vertical slice or a group of small ones (backend → shared �
 
 | Sprint | Dates | Goal | Issues |
 |---|---|---|---|
-| **1** | 16.11.–29.11.2026 | Apps start, talk to the API, show the force-update hint; website moved to `web/` with imprint | #216 Android skeleton · #217 iOS skeleton · #218 Ktor network layer · #219 SQLDelight · #220 error format · #160 force-update in the apps (M1–M3) · #174 imprint (part) · #173 move site to `web/` (part, ADR 0022) |
+| **1** | 16.11.–29.11.2026 | Android app starts, talks to the API, shows the force-update hint; website moved to `web/` with imprint | #216 Android skeleton · #218 Ktor network layer · #219 SQLDelight · #220 error format · #160 force-update in the apps (M1–M3) · #174 imprint (part) · #173 move site to `web/` (part, ADR 0022) |
 | **2** | 30.11.–13.12. | Sign up and sign in | #74 email + password · #75 Google · #76 Apple · #77 stay signed in · #78 reset password · #221 staging |
 | **3** | 14.12.–27.12. | Safe accounts | #80 sessions · #81 new-device notice · #83 delete account · #84 export data · #90 youth protection 14–17 · #161 app integrity + rate limits |
 | **4** | 28.12.–10.01.2027 | Profile and home | #85 onboarding · #86 own profile + settings · #87 other profile / player card · #88 avatar builder (needs #229) · #151 home screen |
@@ -29,6 +29,14 @@ Each sprint is one vertical slice or a group of small ones (backend → shared �
 | **9** | 08.03.–21.03. | Ready for beta | #165 accessibility · #166 German + English · #167 performance targets · #175 consents · #176 store rules · #238 store apps · #239 beta (TestFlight / Play internal) · #240 store listings |
 
 Runs in parallel, not in a sprint slot: design and brand (#193, issues with `needs-decision`, decided by Onur), legal texts (#194), company and money (see [master checklist](checklists/master-checklist.md)).
+
+## iOS waits for a Mac
+
+There is no Mac yet (Xcode only runs on macOS). Until one is there (Mac mini or Onur's Mac):
+
+- Stories are built backend → shared → Android. Shared code stays iOS-ready (ios-ci still compiles and tests it on GitHub's macOS runners).
+- The iOS part of each story is collected in #217 (iOS skeleton) as a catch-up list and done in one go once the Mac is set up ([guide](guides/mac-mini-setup.md)).
+- No Hackintosh / dual boot: against Apple's licence and unreliable for Xcode.
 
 ## Dependencies to watch
 

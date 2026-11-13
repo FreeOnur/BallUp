@@ -61,7 +61,7 @@ An issue may go into a sprint when:
 An issue is closed when:
 
 - [ ] Spec in `docs/specs/` exists and its tasks are ticked
-- [ ] Backend, shared, Android and iOS parts are merged (whatever the story needs)
+- [ ] Backend, shared, Android and iOS parts are merged (whatever the story needs). Until there is a Mac, the iOS part is added to the catch-up list in #217 instead ([roadmap](../roadmap.md#ios-waits-for-a-mac))
 - [ ] Tests written and green in CI, coverage rules met ([testing.md](testing.md))
 - [ ] Accessibility ([checklist](../checklists/accessibility-and-motion.md)) and [security rules](../security/rules.md) followed
 - [ ] `contracts/openapi.json` updated if the API changed

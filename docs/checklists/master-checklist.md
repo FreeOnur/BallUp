@@ -20,8 +20,9 @@ Status: 2026-11-13.
 
 ## 1. Now (Sprint 1: 16.–29.11.2026)
 
-- [ ] Onur merges the planning PR and creates the GitHub Project board (see "Coding setup")
-- [ ] Sprint 1 issues (label `sprint:1`): #216 #217 #218 #219 #220 #160 #174 #173 – details in [roadmap](../roadmap.md)
+- [ ] Onur merges the planning PR
+- [x] GitHub Project board "BallUp" created with all open issues (13.11.2026)
+- [ ] Sprint 1 issues (label `sprint:1`): #216 #218 #219 #220 #160 #174 #173 (iOS #217 waits for a Mac) – details in [roadmap](../roadmap.md)
 - [ ] Rebuild and deploy the API image after the certifi update (`npm run deploy:api`)
 - [ ] Confirm the nightly backup ran (Uptime Kuma "DB-Backup nachts" green)
 - [ ] 28.11.2026: read the DMARC reports
@@ -32,10 +33,10 @@ Status: 2026-11-13.
 - [x] Workflow: 2-week sprints, Definition of Ready/Done, labels, issue templates ([workflow](../guides/workflow.md))
 - [x] Testing strategy ([testing](../guides/testing.md))
 - [x] All new work in English
-- [ ] GitHub Project board "BallUp" (Onur, 2 min: Projects → New → Board; add all open issues; group by label `sprint:<n>`; columns Backlog / Ready / In progress / Review / Done)
+- [x] GitHub Project board "BallUp" (github.com/users/FreeOnur/projects/4): Todo / In Progress / Done, new repo issues are added automatically
 - [ ] Mobile coverage tooling (Kover for shared/Android, Xcode coverage in ios-ci) #245
 - [ ] Staging environment #221 (needed for load tests and safe testing)
-- [ ] Mac mini for iOS ([guide](../guides/mac-mini-setup.md))
+- [ ] Mac mini (or Onur's Mac) for iOS ([guide](../guides/mac-mini-setup.md)); then work off the iOS catch-up list in #217
 - [ ] Translate existing German docs and issue bodies to English when touched #244
 
 ## 3. Phase 1 features (see roadmap for sprints)

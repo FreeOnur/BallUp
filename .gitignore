@@ -81,3 +81,9 @@ node_modules/
 
 # ---------- Founder research (lives in Google Drive, not in this repo) ----------
 founder/
+
+# BallUp Assets: alte Versionen + Installer nur lokal
+assets/maskottchen/archiv/
+tools/asset-sammler/_installer.zip
+tools/asset-sammler/_to_delete/
+assets/_to_delete/

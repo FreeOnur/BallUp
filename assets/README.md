@@ -5,7 +5,7 @@ Eine Quelle für alle Marken-Assets. Die Mobile-App, Merch, Social und der Asset
 ```
 assets/
   maskottchen/
-    aktuell/   aktueller Stil (v4 Flash-Cartoon), freigestellte PNGs + SVG; wird in Git eingecheckt
+    aktuell/   aktueller Stil (v5 Graffiti, DEC-014), freigestellte PNGs + SVG; wird in Git eingecheckt
     archiv/    alte Versionen v1–v3, Illustrator-Trace, Stilproben; nur lokal, steht in .gitignore
 ```
 

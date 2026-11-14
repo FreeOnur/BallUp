@@ -14,7 +14,7 @@ BallUp hat zwei Gründer und sehr viel geplanten Umfang (103 User Stories in dre
 - Der orchestrator läuft in der Hauptsitzung, weil Subagents keine Subagents starten können.
 - Werte für Entscheidungen: Sicherheit > zuverlässig > einfach > schnell > billig.
 - Der entscheider mergt nur grüne PRs außerhalb von Auth, Zahlung, Standortdaten, Migrationen, `deploy/`, CI und Rechtstexten. Alles andere legt er Onur vor.
-- Kommunikation mit Onur über GitHub: Issue „📋 Lagebericht“ und Issues mit Label `frage-an-onur`.
+- Kommunikation mit Onur über GitHub: Issue „📋 Lagebericht“ und Issues mit Label `question-for-onur`.
 - Angriffstests nur gegen die eigene App, lokal oder auf Staging.
 - Ergebnisse immer in `docs/` und auf GitHub, nie nur im Chat.
 

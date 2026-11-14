@@ -27,6 +27,10 @@ Keine Fach-Endpunkte, keine Login-Logik, keine Fach-Tabellen, kein Store-Upload.
 
 | Frage | Datei |
 |---|---|
+| What is planned, in which sprint | [`roadmap.md`](roadmap.md) |
+| Everything still open (also non-code) | [`checklists/master-checklist.md`](checklists/master-checklist.md) |
+| How we work, labels, Ready/Done | [`guides/workflow.md`](guides/workflow.md) |
+| How we test | [`guides/testing.md`](guides/testing.md) |
 | Wie ein Schnitt gebaut wird | [`guides/ai-project-process.md`](guides/ai-project-process.md) |
 | Security, immer | [`security/rules.md`](security/rules.md) |
 | Security vor einem Release | [`checklists/security.md`](checklists/security.md), [`checklists/security-masvs.md`](checklists/security-masvs.md) |

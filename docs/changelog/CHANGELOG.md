@@ -4,6 +4,10 @@ Was sich am Produkt und am Gerüst geändert hat, neueste Zeile oben. Ein Eintra
 
 Dependabot-Bumps und reine Formatierung stehen hier nicht. Die stehen in `git log`. Keine Secrets, keine Roh-Logs, keine Tokens.
 
+## 2026-11-13
+
+- Planning in English: master checklist (`docs/checklists/master-checklist.md`), roadmap with 2-week sprints (`docs/roadmap.md`), workflow (`docs/guides/workflow.md`), testing strategy (`docs/guides/testing.md`), issue templates. ADR 0022: website goes to `web/`. Labels renamed to English (`area:*`, `question-for-onur`, `idea`, `status-report`), new `sprint:<n>` labels.
+
 ## 2026-11-12
 
 - Force-Update-Middleware im Backend (`core/app_version.py`): liest `X-App-Version` und `X-App-Platform`, antwortet mit `426` und Code `app_version_too_old`, wenn die App unter der Mindestversion liegt. Mindestversion über `BALLUP_MIN_APP_VERSION_IOS` und `BALLUP_MIN_APP_VERSION_ANDROID`, leer = keine Sperre. Ohne Header und für `/health` und `/docs` gibt es keine Sperre. PR [#202](https://github.com/FreeOnur/ballup/pull/202).

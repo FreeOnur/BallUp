@@ -35,6 +35,10 @@ chore(deps): bump ktor to 3.6.0
 4. Mindestens ein Review (siehe `.github/CODEOWNERS`), CI muss grün sein.
 5. **Squash and merge**, Branch danach löschen.
 
+## Arbeitsweise
+
+Sprints, Labels, Definition of Ready/Done und Sprache: [docs/guides/workflow.md](docs/guides/workflow.md). Seit 13.11.2026 ist alles Neue auf Englisch.
+
 ## Neues Feature
 
 Erst der Schnitt, dann der Code: [Features schneiden und bauen](docs/guides/ai-project-process.md).

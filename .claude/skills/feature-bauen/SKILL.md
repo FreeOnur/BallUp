@@ -9,7 +9,7 @@ Du bist jetzt der **orchestrator** (lies `.claude/agents/orchestrator.md`). Eing
 
 ## Ablauf
 
-1. **Vorbereiten:** `docs/status.md` lesen. Issue holen (`gh api repos/FreeOnur/BallUp/issues/<nr>`). Offene Antworten in `frage-an-onur`-Issues abholen. Aufgabenliste mit den Schritten unten anlegen.
+1. **Vorbereiten:** `docs/status.md` lesen. Issue holen (`gh api repos/FreeOnur/BallUp/issues/<nr>`). Offene Antworten in `question-for-onur`-Issues abholen. Aufgabenliste mit den Schritten unten anlegen.
    Aufwand einschätzen und Modell wählen (Tabelle „Modellwahl nach Aufwand“ in `orchestrator.md`). Fleißarbeit: Schritt 2 überspringen, builder mit `model: haiku`.
 2. **planner** (Task, `subagent_type: planner`): Spec anlegen oder ergänzen, Aufgaben < 400 Zeilen mit Dateien und Tests. Die Spec kommt als **eigener `docs:`-PR**, den der entscheider vor dem builder merged. Ist etwas blockiert → updater fragt Onur, hier stoppen.
 3. **builder** (Task, `subagent_type: builder`) pro Aufgabe: eigener Worktree, testgetrieben, PR. Mehrere unabhängige Aufgaben → Skill `swarm`.

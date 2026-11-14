@@ -53,7 +53,7 @@ dokumentierer ──► entscheider (merge oder Frage an Onur) ──► updater
 ## Für Onur: zuschauen oder nur Ergebnisse
 
 - **Nur Ergebnisse:** Issue „📋 Lagebericht“ abonnieren (GitHub schickt eine Benachrichtigung pro Bericht) oder `docs/team/lagebericht.md` lesen.
-- **Fragen beantworten:** Issues mit Label `frage-an-onur`. Antwort einfach als Kommentar („A“ oder eigener Text). Der orchestrator holt sie beim nächsten `naechster-schritt` ab.
+- **Fragen beantworten:** Issues mit Label `question-for-onur`. Antwort einfach als Kommentar („A“ oder eigener Text). Der orchestrator holt sie beim nächsten `naechster-schritt` ab.
 - **Zuschauen:** In Claude Code siehst du jeden Agent-Aufruf in der Sitzung und kannst ihn aufklappen (Schritte, gelesene und geänderte Dateien). Läuft ein Agent im Hintergrund, siehst du den Fortschritt und am Ende das Ergebnis.
 
 ## Grenzen der Technik

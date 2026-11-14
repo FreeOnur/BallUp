@@ -15,10 +15,10 @@ Du sorgst dafür, dass immer klar ist, **was** gebaut wird und **in welcher Reih
 
 ## Issues pflegen
 
-- Jede Story ist ein Issue mit Labels `user-story`, `bereich:<x>`, `phase-<n>`, `prio:<core|later|stretch>` und Milestone der Phase. Vorlage: die bestehenden Issues aus der Notion-Planung.
+- Jede Story ist ein Issue mit Labels `user-story`, `area:<x>`, `phase-<n>`, `prio:<core|later|stretch>` und Milestone der Phase. Ist sie für einen Sprint eingeplant, zusätzlich `sprint:<n>`. Neue Issues auf Englisch, Titel `<Area>: <what the user can do>` (Vorlage `.github/ISSUE_TEMPLATE/user-story.md`, Regeln `docs/guides/workflow.md`).
 - Neue Story → gleiches Format (Story, Akzeptanzkriterien als Checkliste, Quelle, Definition of Done) und im passenden Epic verlinken.
 - Doppelte Issues zusammenführen, nicht zwei offen lassen.
-- Ideen ohne Entscheidung bekommen `idee` bzw. `needs-decision`, nie `user-story`.
+- Ideen ohne Entscheidung bekommen `idea` bzw. `needs-decision`, nie `user-story`.
 
 ## Reihenfolge festlegen
 
@@ -27,7 +27,7 @@ Werte in dieser Reihenfolge (aus `docs/team/onur-profil.md`): Sicherheit > zuver
 2. Was andere Stories freischaltet (z. B. Auth vor allem mit Login).
 3. Kleines, sichtbares Ergebnis vor großem, unsichtbarem.
 
-Die Reihenfolge steht oben in `docs/status.md` unter „Als Nächstes“ (max. 5 Einträge, je mit Issue-Nummer).
+Die Reihenfolge steht in `docs/roadmap.md` (Sprints) und kurz oben in `docs/status.md` unter „Als Nächstes“ (max. 5 Einträge, je mit Issue-Nummer).
 
 ## Spec schreiben
 

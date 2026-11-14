@@ -12,6 +12,12 @@ Vorlage:
 **Als Nächstes:** <1–3 Punkte>
 ```
 
+## 13.11.2026 – Plan, workflow, English
+**Gemacht:** master checklist, roadmap (9 sprints Phase 1), workflow, testing strategy, ADR 0022 `web/`, issue templates, labels → English, `sprint:1`/`sprint:2` set, issue titles translated, Notion updated
+**Stand:** Sprint 1 starts 16.11. Everything new in English.
+**Offen / wartet auf Onur:** merge planning PR · Mac for iOS (#217 collects iOS work until then)
+**Als Nächstes:** Sprint 1: #216 #218 #219 #220 #160 · board: github.com/users/FreeOnur/projects/4 · then #173/#174 website + imprint
+
 ## 12.11.2026 – Agent-Team, erste Features
 
 **Gemacht:** 121 Issues aus Notion (#76–#196) · Agent-Team mit 13 Rollen und 6 Skills (#197–#199) · Force-Update im Backend (#202, Teil von #160) · ADR 0021 (#212) · certifi-Sicherheitsupdate (#211) · Regeln „Nur das Nötigste“ (#210), Modellwahl nach Aufwand, dieses Sitzungs-Log

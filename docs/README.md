@@ -2,6 +2,13 @@
 
 Zuerst [`status.md`](status.md). Dort steht, was gebaut ist und was nicht.
 
+## Plan and workflow (English)
+
+- [Master checklist](checklists/master-checklist.md) – everything still to do, code and non-code
+- [Roadmap](roadmap.md) – phases, 2-week sprints, order of work
+- [How we work](guides/workflow.md) – sprints, labels, Definition of Ready/Done, language, where things live
+- [Testing strategy](guides/testing.md) – what, how much, when, performance
+
 ## Architektur
 
 - [ER-Diagramm](architecture/BallUp_ER-Diagramm.drawio) (draw.io) – Grundlage für alle Datenbank-Änderungen

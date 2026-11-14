@@ -15,7 +15,7 @@ Status: 2026-11-13.
 - **Accounts:** 2FA everywhere, Bitwarden, recovery codes, Docker Hub private, old keys and tokens removed
 - **Repo:** monorepo, CI for backend/Android/iOS, deploy scripts, Dependabot monthly, ADRs 0001–0022, agent team, ~150 issues with epics
 - **Backend:** skeleton per ADR 0009, Postgres + PostGIS + Alembic, `/health`, force-update middleware (ADR 0021)
-- **Brand:** brand core (target group 16–30, positioning, personality, mission, values, claim "Ball up, [place]."), mascot style (2000s Flash cartoon, boy + girl, 12 emotions, builder instead of AI generation) – Notion Design → Decisions
+- **Brand:** brand core (target group 16–30, positioning, personality, mission, values, claim "Ball up, [place]."), mascot style (v5 Graffiti per DEC-014, boy + girl, 12 emotions, builder instead of AI generation) – Notion Design → Decisions
 - **Planning:** this checklist, [workflow](../guides/workflow.md), [testing strategy](../guides/testing.md), [roadmap](../roadmap.md), sprint labels, issue templates
 
 ## 1. Now (Sprint 1: 16.–29.11.2026)
@@ -62,7 +62,7 @@ Status: 2026-11-13.
 
 ## 5. Design and brand (Onur decides, issues in epic #193)
 
-- [ ] Mascot finished: outfits, shoes, skin tones in Flash style, layers and colour slots, names, animation (Rive or Lottie) #222 #229 #172
+- [ ] Mascot finished: outfits, shoes, skin tones in Graffiti style, layers and colour slots, names, animation (Rive or Lottie) #222 #229 #172
 - [ ] Design direction #223
 - [ ] Colours #168 (own accent, not Strava/Nike), typography #169
 - [ ] Logo, app icon, favicon #170

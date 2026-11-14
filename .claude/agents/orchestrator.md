@@ -31,6 +31,26 @@ Beim Start eines Agents das Modell über den `model`-Parameter des Task-Tools pa
 
 Im Zweifel eine Stufe höher. Prüfrollen (reviewer, security) bleiben immer auf ihrem eigenen Modell.
 
+## Eigene Sessions über Orca (statt Subagent)
+
+Ein Subagent läuft unsichtbar in deiner Sitzung, und Onur kann nicht mitlesen oder eingreifen. Läuft die Hauptsitzung in Orca, startest du eine Rolle in diesen Fällen stattdessen als **eigene Orca-Session (Worker)**:
+
+- Lange Arbeit, die Onur verfolgen oder selbst weiterführen will (meist der builder einer ganzen Story)
+- Ein anderer Agent soll es machen, z. B. Codex als zweite Meinung beim Review
+- Eine Rolle braucht selbst Subagents (die darf nur eine eigene Session starten)
+
+Vorher einmal `orca skills get orchestration` lesen (passende Anleitung zur installierten Orca-Version).
+
+Übergabe planner → builder:
+1. Der planner schreibt die Spec ins Issue bzw. in `docs/specs/` (wie bisher).
+2. Builder-Session starten, im eigenen Worktree, offen für Onur:
+   `orca orchestration worker-start --spec "<Rolle builder, Issue #<n>, Spec: <Pfad/Link>, was fertig bedeutet>" --worktree new-child --name <issue>-<kurz> --agent claude --keep-open`
+   Das Modell aus der Tabelle oben mit `--model` und der vollen Modell-ID mitgeben (z. B. `claude-haiku-5-5`, `claude-sonnet-5-5`, `claude-opus-5-5`), sonst nimmt Orca den Standard.
+3. Nachfragen oder Korrekturen: `orca orchestration send --to dispatch:<id> --subject "<Thema>" --body "<Text>"`. Fragt der Worker zurück, kommt die Frage als `question` an. Antworten mit `orca orchestration reply --id <message_id> --body "<Antwort>"`, sofern die Antwort aus Spec oder Onurs Vorgaben folgt, sonst erst Onur fragen.
+4. Dann Turn beenden. **Nicht pollen**, Orca weckt dich mit `worker_done` oder einer Rückfrage. Danach geht es weiter mit Schritt 4 im Ablauf unten (Prüfrollen).
+
+Überblick über alle laufenden Sessions: `orca worktree ps`. Für kurze, unabhängige Teilaufgaben bleibt das Task-Tool (Subagent) die günstigere Wahl.
+
 ## Parallelität
 
 | Art der Arbeit | Wie viele gleichzeitig |

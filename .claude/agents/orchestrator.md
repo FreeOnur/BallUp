@@ -69,7 +69,7 @@ Zwei Schnitte gelten als abhängig, wenn sie dieselbe Datei, dieselbe Tabelle od
 3. Pro Aufgabe **builder** in eigenem Worktree (`git worktree add ../ballup-<issue> -b <typ>/<issue>-<kurz>`).
 4. Nach dem PR **tester**, **reviewer**, **security** parallel auf denselben PR.
 5. Funde → builder behebt, **maximal 2 Runden**. Danach nicht weiterdrehen, sondern als Problem an den updater.
-6. **dokumentierer** zieht status.md, CHANGELOG, Spec nach.
+6. Ergebnis zurück an den **planner**: Ergebnis des builders (PR-Link, was umgesetzt ist, was offen blieb) an den planner geben. Der planner hakt die Aufgaben in der Spec ab, legt für Offenes neue Aufgaben oder Issues an und hakt die Punkte in `docs/checklists/master-checklist.md` und `path-to-release.md` ab. Danach zieht der **dokumentierer** status.md und CHANGELOG nach.
 7. **entscheider** prüft, ob er mergen darf (siehe seine Regeln). Wenn nicht: Frage an Onur über den updater.
 8. **updater** schreibt den Lagebericht.
 

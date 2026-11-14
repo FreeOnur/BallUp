@@ -1,6 +1,6 @@
 # Master checklist
 
-Everything BallUp still needs, code and non-code, in one list. Feature work is tracked in GitHub Issues (numbers below); this list links to them instead of repeating them. Order of coding: [roadmap.md](../roadmap.md). How we work: [guides/workflow.md](../guides/workflow.md).
+Everything BallUp still needs, code and non-code, in one list. Feature work is tracked in GitHub Issues (numbers below); this list links to them instead of repeating them. Order of coding: [roadmap.md](../roadmap.md). How we work: [guides/workflow.md](../guides/workflow.md). **Step by step in the right order: [path-to-release.md](path-to-release.md).**
 
 Update rule: tick an item when it is done and add the date. Remove nothing; move finished sections to "Done" once in a while.
 
@@ -20,11 +20,11 @@ Status: 2026-11-13.
 
 ## 1. Now (Sprint 1: 16.–29.11.2026)
 
-- [ ] Onur merges the planning PR
+- [x] Onur merges the planning PR (14.11.2026)
 - [x] GitHub Project board "BallUp" created with all open issues (13.11.2026)
 - [ ] Sprint 1 issues (label `sprint:1`): #216 #218 #219 #220 #160 #174 #173 (iOS #217 waits for a Mac) – details in [roadmap](../roadmap.md)
-- [ ] Rebuild and deploy the API image after the certifi update (`npm run deploy:api`)
-- [ ] Confirm the nightly backup ran (Uptime Kuma "DB-Backup nachts" green)
+- [x] Rebuild and deploy the API image after the certifi update (`npm run deploy:api`) (14.11.2026, `ballup-api:11c4389`)
+- [x] Confirm the nightly backup ran (systemd run 14.11.2026 03:30 successful)
 - [ ] 28.11.2026: read the DMARC reports
 
 ## 2. Coding setup
